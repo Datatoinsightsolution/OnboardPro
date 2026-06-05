@@ -15,7 +15,7 @@ add_to_apps_screen = [
 	{
 		"name": "onboardpro",
 		"logo": "/assets/onboardpro/logo.png",
-		"title": "Risto",
+		"title": "OnboardPro",
 		"route": "/onboardpro",
 		"has_permission": "onboardpro.api.has_app_permission",
 	}
@@ -27,7 +27,7 @@ website_route_rules = [
 	{"from_route": "/onboardpro/<path:path>", "to_route": "onboardpro"},
 ]
 
-fixtures = ["Role"]
+fixtures = ["Role", "Workspace"]
 
 # Includes in <head>
 # ------------------

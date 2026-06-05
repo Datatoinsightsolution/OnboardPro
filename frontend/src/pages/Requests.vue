@@ -318,38 +318,38 @@ import CreateRequestDialog from '@/components/CreateRequestDialog.vue'
 
 const props = defineProps({ role: { type: String, default: 'staff' } })
 const emit = defineEmits(['requests-loaded'])
-const route  = useRoute()
+const route = useRoute()
 const router = useRouter()
 
 const BATCH = 20
 
 // Initialise state from URL query params so refresh/navigation preserves choices
-const activeTab = ref(route.query.tab    || 'all')
-const layout    = ref(route.query.layout || 'table')
-const q         = ref(route.query.q      || '')
-const sortField = ref(route.query.sort   || 'creation')
-const sortDir   = ref(route.query.dir    || 'desc')
-const visible   = ref(BATCH)
+const activeTab = ref(route.query.tab || 'all')
+const layout = ref(route.query.layout || 'table')
+const q = ref(route.query.q || '')
+const sortField = ref(route.query.sort || 'creation')
+const sortDir = ref(route.query.dir || 'desc')
+const visible = ref(BATCH)
 const createOpen = ref(false)
-const now        = ref(Date.now())
-const unreadSet  = ref(new Set())
+const now = ref(Date.now())
+const unreadSet = ref(new Set())
 
 // Collapse back to first batch whenever the effective row set changes
 watch([activeTab, q, sortField, sortDir, layout], () => {
-  visible.value = BATCH
+	visible.value = BATCH
 })
 
 // Keep URL in sync when user changes any of these (replace, not push, to avoid polluting history)
 watch([activeTab, layout, sortField, sortDir, q], () => {
-  router.replace({
-    query: {
-      ...(layout.value    !== 'table'    && { layout:  layout.value }),
-      ...(activeTab.value !== 'all'      && { tab:     activeTab.value }),
-      ...(sortField.value !== 'creation' && { sort:    sortField.value }),
-      ...(sortDir.value   !== 'desc'     && { dir:     sortDir.value }),
-      ...(q.value.trim()                 && { q:       q.value }),
-    },
-  })
+	router.replace({
+		query: {
+			...(layout.value !== 'table' && { layout: layout.value }),
+			...(activeTab.value !== 'all' && { tab: activeTab.value }),
+			...(sortField.value !== 'creation' && { sort: sortField.value }),
+			...(sortDir.value !== 'desc' && { dir: sortDir.value }),
+			...(q.value.trim() && { q: q.value }),
+		},
+	})
 })
 
 async function refreshUnread() {
@@ -431,7 +431,7 @@ const sorted = computed(() => {
 const rows = computed(() => sorted.value.filter((r) => matchTab(r, activeTab.value)))
 
 const visibleRows = computed(() => rows.value.slice(0, visible.value))
-const hasMore     = computed(() => visible.value < rows.value.length)
+const hasMore = computed(() => visible.value < rows.value.length)
 
 const counts = computed(() => {
 	const rs = filtered.value

@@ -41,7 +41,6 @@ def get_activity(docname):
 	)
 
 	STAFF = {"Onboardpro Staff", "System Manager", "Administrator"}
-	unique_owners = {c.owner for c in comments}
 	user_cache = {}
 
 	def _user(email):
@@ -274,10 +273,7 @@ def get_session_role():
 	"""Return role and display name for the logged-in user."""
 	roles = set(frappe.get_roles())
 	role = "staff" if roles & {"Onboardpro Staff", "System Manager", "Administrator"} else "customer"
-	full_name = (
-		frappe.db.get_value("User", frappe.session.user, "full_name")
-		or frappe.session.user
-	)
+	full_name = frappe.db.get_value("User", frappe.session.user, "full_name") or frappe.session.user
 	return {"role": role, "full_name": full_name}
 
 

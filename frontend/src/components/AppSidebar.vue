@@ -87,27 +87,31 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { FeatherIcon, frappeRequest } from 'frappe-ui'
+import { FeatherIcon } from 'frappe-ui'
 import RistoAvatar from '@/components/RistoAvatar.vue'
 
 const props = defineProps({
-	openCount:  { type: Number, default: 0 },
+	openCount: { type: Number, default: 0 },
 	breachCount: { type: Number, default: 0 },
-	role:       { type: String, default: 'staff' },
-	userName:   { type: String, default: '' },
+	role: { type: String, default: 'staff' },
+	userName: { type: String, default: '' },
 })
 
 const route = useRoute()
 const menuOpen = ref(false)
 const helpdeskUrl = `${window.location.protocol}//${window.location.hostname}/helpdesk`
-const currentUser = computed(() => props.userName || window.frappe?.session?.user_fullname || 'User')
+const currentUser = computed(
+	() => props.userName || window.frappe?.session?.user_fullname || 'User'
+)
 
 async function logout() {
 	try {
-		await frappeRequest({ url: 'logout' })
+		await fetch('/api/method/logout', {
+			method: 'POST',
+			headers: { 'X-Frappe-CSRF-Token': window.frappe?.csrf_token || 'fetch' },
+		})
 	} finally {
-		// Redirect to Frappe's login page via hostname (no Vite port)
-		window.location.href = `${window.location.protocol}//${window.location.hostname}/login`
+		window.location.href = '/login'
 	}
 }
 </script>

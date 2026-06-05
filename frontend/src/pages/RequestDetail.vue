@@ -436,7 +436,7 @@ const filesList = createListResource({
 const attachments = computed(() => filesList.data ?? [])
 
 // Build timeline from merged activity
-const meEmail        = window.frappe?.session?.user || ''
+const meEmail = window.frappe?.session?.user || ''
 const currentUserName = window.frappe?.session?.user_fullname || meEmail
 const timeline = computed(() =>
 	activityData.value.map((ev) => ({

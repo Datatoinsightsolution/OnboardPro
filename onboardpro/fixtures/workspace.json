@@ -1,0 +1,25 @@
+[
+ {
+  "doctype": "Workspace",
+  "name": "OnboardPro",
+  "label": "OnboardPro",
+  "title": "OnboardPro",
+  "type": "Workspace",
+  "module": "Onboardpro",
+  "icon": "inbox",
+  "indicator_color": "blue",
+  "public": 1,
+  "is_hidden": 0,
+  "content": "[]",
+  "shortcuts": [
+   {
+    "doctype": "Workspace Shortcut",
+    "label": "Open Portal",
+    "type": "URL",
+    "url": "/onboardpro",
+    "icon": "inbox",
+    "color": "blue"
+   }
+  ]
+ }
+]

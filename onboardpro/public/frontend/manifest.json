@@ -1,0 +1,57 @@
+{
+  "index.html": {
+    "file": "assets/index.bb379715.js",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_vendor.c56b79f7.js"
+    ],
+    "css": [
+      "assets/index.14a24cfc.css"
+    ]
+  },
+  "_vendor.c56b79f7.js": {
+    "file": "assets/vendor.c56b79f7.js",
+    "dynamicImports": [
+      "node_modules/frappe-ui/src/components/TextEditor/FontColor.vue",
+      "node_modules/frappe-ui/src/components/TextEditor/InsertLink.vue",
+      "node_modules/frappe-ui/src/components/TextEditor/InsertImage.vue",
+      "node_modules/frappe-ui/src/components/TextEditor/InsertVideo.vue"
+    ],
+    "css": [
+      "assets/vendor.1f7d581e.css"
+    ]
+  },
+  "node_modules/frappe-ui/src/components/TextEditor/FontColor.vue": {
+    "file": "assets/FontColor.401fdf29.js",
+    "src": "node_modules/frappe-ui/src/components/TextEditor/FontColor.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor.c56b79f7.js"
+    ]
+  },
+  "node_modules/frappe-ui/src/components/TextEditor/InsertLink.vue": {
+    "file": "assets/InsertLink.eceb793b.js",
+    "src": "node_modules/frappe-ui/src/components/TextEditor/InsertLink.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor.c56b79f7.js"
+    ]
+  },
+  "node_modules/frappe-ui/src/components/TextEditor/InsertImage.vue": {
+    "file": "assets/InsertImage.a4bfe392.js",
+    "src": "node_modules/frappe-ui/src/components/TextEditor/InsertImage.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor.c56b79f7.js"
+    ]
+  },
+  "node_modules/frappe-ui/src/components/TextEditor/InsertVideo.vue": {
+    "file": "assets/InsertVideo.e1fa31db.js",
+    "src": "node_modules/frappe-ui/src/components/TextEditor/InsertVideo.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor.c56b79f7.js"
+    ]
+  }
+}

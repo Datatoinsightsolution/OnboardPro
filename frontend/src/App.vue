@@ -6,7 +6,12 @@
 
 	<!-- Authenticated app shell -->
 	<div v-else class="app">
-		<AppSidebar :open-count="openCount" :breach-count="breachCount" :role="role" :user-name="userName" />
+		<AppSidebar
+			:open-count="openCount"
+			:breach-count="breachCount"
+			:role="role"
+			:user-name="userName"
+		/>
 
 		<div class="main">
 			<!-- Topbar -->
@@ -69,20 +74,20 @@ import AppSidebar from '@/components/AppSidebar.vue'
 const route = useRoute()
 const router = useRouter()
 
-const loading      = ref(true)
-const role         = ref('staff')
-const userName     = ref('')
-const pageTitle    = ref('')
-const openCount    = ref(0)
-const breachCount  = ref(0)
-const toasts       = ref([])
+const loading = ref(true)
+const role = ref('staff')
+const userName = ref('')
+const pageTitle = ref('')
+const openCount = ref(0)
+const breachCount = ref(0)
+const toasts = ref([])
 
 onMounted(async () => {
 	try {
 		const r = await frappeRequest({ url: 'onboardpro.api.get_session_role' })
-		role.value     = r.role
+		role.value = r.role
 		userName.value = r.full_name
-		loading.value  = false
+		loading.value = false
 	} catch {
 		// Not logged in or session expired — hand off to Frappe's login page
 		redirectToLogin()
