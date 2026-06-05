@@ -1,0 +1,269 @@
+{
+ "actions": [],
+ "autoname": "IR-.YYYY.-.#####",
+ "creation": "2026-06-05 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "subject",
+  "customer",
+  "customer_name",
+  "customer_email",
+  "col_break_0",
+  "status",
+  "priority",
+  "section_break_details",
+  "data_type",
+  "assignee",
+  "assignee_name",
+  "section_break_description",
+  "description",
+  "section_break_sla",
+  "sla_policy",
+  "first_responded_on",
+  "col_break_sla_top",
+  "sla_creation",
+  "on_hold_since",
+  "total_hold_time",
+  "section_break_sla_targets",
+  "fr_due_at",
+  "fr_state",
+  "col_break_sla",
+  "res_due_at",
+  "res_state"
+ ],
+ "fields": [
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Subject",
+   "length": 255,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer",
+   "options": "User",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fetch_from": "customer.full_name",
+   "fetch_if_empty": 0,
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.email",
+   "fetch_if_empty": 0,
+   "fieldname": "customer_email",
+   "fieldtype": "Data",
+   "label": "Customer Email",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "col_break_0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Open",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Open\nIn Review\nNeeds Revision\nResolved"
+  },
+  {
+   "default": "High",
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Priority",
+   "options": "Urgent\nHigh\nMedium\nLow"
+  },
+  {
+   "fieldname": "section_break_details",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "default": "Master Data",
+   "fieldname": "data_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Data Type",
+   "options": "Master Data\nOpening Balances\nConfiguration\nReconciliation\nDocuments"
+  },
+  {
+   "fieldname": "assignee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Assignee",
+   "options": "User"
+  },
+  {
+   "fetch_from": "assignee.full_name",
+   "fetch_if_empty": 0,
+   "fieldname": "assignee_name",
+   "fieldtype": "Data",
+   "label": "Assignee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_description",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Long Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "section_break_sla",
+   "fieldtype": "Section Break",
+   "label": "SLA"
+  },
+  {
+   "fieldname": "sla_policy",
+   "fieldtype": "Link",
+   "label": "SLA Policy",
+   "options": "SLA Policy",
+   "read_only": 1
+  },
+  {
+   "fieldname": "first_responded_on",
+   "fieldtype": "Datetime",
+   "label": "First Responded On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_sla_top",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sla_creation",
+   "fieldtype": "Datetime",
+   "hidden": 1,
+   "label": "SLA Creation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_customer_reply",
+   "fieldtype": "Datetime",
+   "hidden": 1,
+   "label": "Last Customer Reply",
+   "read_only": 1
+  },
+  {
+   "fieldname": "on_hold_since",
+   "fieldtype": "Datetime",
+   "hidden": 1,
+   "label": "On Hold Since",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_hold_time",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Total Hold Time (seconds)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_sla_targets",
+   "fieldtype": "Section Break",
+   "label": "SLA Targets"
+  },
+  {
+   "fieldname": "fr_due_at",
+   "fieldtype": "Datetime",
+   "label": "First Response Due At",
+   "read_only": 1
+  },
+  {
+   "default": "In Progress",
+   "fieldname": "fr_state",
+   "fieldtype": "Select",
+   "label": "First Response State",
+   "options": "In Progress\nFulfilled\nFailed\nPaused",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_sla",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "res_due_at",
+   "fieldtype": "Datetime",
+   "label": "Resolution Due At",
+   "read_only": 1
+  },
+  {
+   "default": "In Progress",
+   "fieldname": "res_state",
+   "fieldtype": "Select",
+   "label": "Resolution State",
+   "options": "In Progress\nFulfilled\nFailed\nPaused",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-05 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Onboardpro",
+ "name": "Implementation Request",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Onboardpro Staff",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Onboardpro Customer",
+   "write": 1
+  }
+ ],
+ "search_fields": "subject,customer_name,data_type",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "subject",
+ "track_changes": 1
+}

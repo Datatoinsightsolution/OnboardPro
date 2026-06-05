@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "autoname": "field:policy_name",
+ "creation": "2026-06-05 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "policy_name",
+  "enabled",
+  "is_default",
+  "section_break_priorities",
+  "priorities",
+  "section_break_hours",
+  "working_hours",
+  "section_break_holidays",
+  "holidays"
+ ],
+ "fields": [
+  {
+   "fieldname": "policy_name",
+   "fieldtype": "Data",
+   "label": "Policy Name",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Is Default"
+  },
+  {
+   "fieldname": "section_break_priorities",
+   "fieldtype": "Section Break",
+   "label": "Priorities"
+  },
+  {
+   "fieldname": "priorities",
+   "fieldtype": "Table",
+   "label": "Priorities",
+   "options": "SLA Priority"
+  },
+  {
+   "fieldname": "section_break_hours",
+   "fieldtype": "Section Break",
+   "label": "Working Hours"
+  },
+  {
+   "fieldname": "working_hours",
+   "fieldtype": "Table",
+   "label": "Working Hours",
+   "options": "SLA Working Day"
+  },
+  {
+   "fieldname": "section_break_holidays",
+   "fieldtype": "Section Break",
+   "label": "Holidays"
+  },
+  {
+   "fieldname": "holidays",
+   "fieldtype": "Table",
+   "label": "Holidays",
+   "options": "SLA Holiday"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-05 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Onboardpro",
+ "name": "SLA Policy",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "Onboardpro Staff",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "policy_name"
+}

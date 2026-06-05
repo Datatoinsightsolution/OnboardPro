@@ -11,15 +11,23 @@ app_license = "mit"
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "onboardpro",
-# 		"logo": "/assets/onboardpro/logo.png",
-# 		"title": "Onboardpro",
-# 		"route": "/onboardpro",
-# 		"has_permission": "onboardpro.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "onboardpro",
+		"logo": "/assets/onboardpro/logo.png",
+		"title": "Risto",
+		"route": "/onboardpro",
+		"has_permission": "onboardpro.api.has_app_permission",
+	}
+]
+
+# Map all /onboardpro/* paths to the same SPA template so Vue Router handles routing
+website_route_rules = [
+	{"from_route": "/onboardpro", "to_route": "onboardpro"},
+	{"from_route": "/onboardpro/<path:path>", "to_route": "onboardpro"},
+]
+
+fixtures = ["Role"]
 
 # Includes in <head>
 # ------------------
@@ -120,13 +128,17 @@ app_license = "mit"
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+scheduler_events = {
+	"hourly": ["onboardpro.onboardpro.sla.update_all_sla_statuses"],
+}
+
+permission_query_conditions = {
+	"Implementation Request": "onboardpro.onboardpro.doctype.implementation_request.implementation_request.get_permission_query_conditions",
+}
+
+has_permission = {
+	"Implementation Request": "onboardpro.onboardpro.doctype.implementation_request.implementation_request.has_permission",
+}
 
 # Document Events
 # ---------------
@@ -236,4 +248,3 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
