@@ -97,7 +97,7 @@
 								<div class="bhead">
 									<span class="nm">{{ ev.owner_name || ev.owner }}</span>
 									<span :class="['tag', ev.isStaff ? 'staff' : 'customer']">{{
-										ev.isStaff ? 'Risto' : 'Customer'
+										ev.isStaff ? 'User' : 'Customer'
 									}}</span>
 									<span class="when">{{ fmtAgo(toMs(ev.creation), now) }}</span>
 								</div>
@@ -157,9 +157,7 @@
 						<span class="grow"></span>
 						<span class="as"
 							>Posting as
-							<b style="color: var(--ink-2)">{{
-								role === 'staff' ? 'Staff' : 'Customer'
-							}}</b></span
+							<b style="color: var(--ink-2)">{{ currentUserName }}</b></span
 						>
 						<button class="btn sm" @click="replyOpen = false">Cancel</button>
 						<button
@@ -438,7 +436,8 @@ const filesList = createListResource({
 const attachments = computed(() => filesList.data ?? [])
 
 // Build timeline from merged activity
-const meEmail = window.frappe?.session?.user || ''
+const meEmail        = window.frappe?.session?.user || ''
+const currentUserName = window.frappe?.session?.user_fullname || meEmail
 const timeline = computed(() =>
 	activityData.value.map((ev) => ({
 		...ev,

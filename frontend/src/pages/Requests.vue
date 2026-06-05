@@ -118,7 +118,7 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="r in rows"
+							v-for="r in visibleRows"
 							:key="r.name"
 							:class="{ unread: unreadSet.has(r.name) }"
 							@click="open(r.name)"
@@ -176,7 +176,7 @@
 		<template v-else-if="layout === 'cards'">
 			<div class="cards">
 				<div
-					v-for="r in rows"
+					v-for="r in visibleRows"
 					:key="r.name"
 					:class="['rcard', unreadSet.has(r.name) ? 'unread' : '']"
 					@click="open(r.name)"
@@ -292,6 +292,15 @@
 			</div>
 		</template>
 
+		<div v-if="hasMore && layout !== 'kanban'" class="load-more">
+			<button class="btn" @click="visible += BATCH">
+				Load more
+				<span style="color: var(--ink-4); font-weight: 400">
+					({{ rows.length - visible }} remaining)
+				</span>
+			</button>
+		</div>
+
 		<CreateRequestDialog v-if="createOpen" @close="createOpen = false" @created="onCreated" />
 	</div>
 </template>
@@ -299,7 +308,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { createListResource, FeatherIcon, frappeRequest } from 'frappe-ui'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { PRIORITY_META, DATATYPE_ICON, toMs } from '@/utils/helpers'
 import StatusBadge from '@/components/StatusBadge.vue'
 import PriorityBadge from '@/components/PriorityBadge.vue'
@@ -309,16 +318,39 @@ import CreateRequestDialog from '@/components/CreateRequestDialog.vue'
 
 const props = defineProps({ role: { type: String, default: 'staff' } })
 const emit = defineEmits(['requests-loaded'])
+const route  = useRoute()
 const router = useRouter()
 
-const activeTab = ref('all')
-const layout = ref('table')
-const q = ref('')
+const BATCH = 20
+
+// Initialise state from URL query params so refresh/navigation preserves choices
+const activeTab = ref(route.query.tab    || 'all')
+const layout    = ref(route.query.layout || 'table')
+const q         = ref(route.query.q      || '')
+const sortField = ref(route.query.sort   || 'creation')
+const sortDir   = ref(route.query.dir    || 'desc')
+const visible   = ref(BATCH)
 const createOpen = ref(false)
-const now = ref(Date.now())
-const unreadSet = ref(new Set())
-const sortField = ref('creation')
-const sortDir = ref('desc')
+const now        = ref(Date.now())
+const unreadSet  = ref(new Set())
+
+// Collapse back to first batch whenever the effective row set changes
+watch([activeTab, q, sortField, sortDir, layout], () => {
+  visible.value = BATCH
+})
+
+// Keep URL in sync when user changes any of these (replace, not push, to avoid polluting history)
+watch([activeTab, layout, sortField, sortDir, q], () => {
+  router.replace({
+    query: {
+      ...(layout.value    !== 'table'    && { layout:  layout.value }),
+      ...(activeTab.value !== 'all'      && { tab:     activeTab.value }),
+      ...(sortField.value !== 'creation' && { sort:    sortField.value }),
+      ...(sortDir.value   !== 'desc'     && { dir:     sortDir.value }),
+      ...(q.value.trim()                 && { q:       q.value }),
+    },
+  })
+})
 
 async function refreshUnread() {
 	if (props.role !== 'staff') return
@@ -398,6 +430,9 @@ const sorted = computed(() => {
 
 const rows = computed(() => sorted.value.filter((r) => matchTab(r, activeTab.value)))
 
+const visibleRows = computed(() => rows.value.slice(0, visible.value))
+const hasMore     = computed(() => visible.value < rows.value.length)
+
 const counts = computed(() => {
 	const rs = filtered.value
 	const c = { all: rs.length }
@@ -446,5 +481,11 @@ function onCreated(id) {
 	to {
 		transform: rotate(360deg);
 	}
+}
+
+.load-more {
+	display: flex;
+	justify-content: center;
+	padding: 20px 0 8px;
 }
 </style>
