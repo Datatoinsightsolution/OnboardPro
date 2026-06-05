@@ -631,9 +631,9 @@
   "home_page": null,
   "is_custom": 0,
   "modified": "2026-05-27 12:05:16.986990",
-  "name": "Risto Staff",
+  "name": "Onboardpro Staff",
   "restrict_to_domain": null,
-  "role_name": "Risto Staff",
+  "role_name": "Onboardpro Staff",
   "two_factor_auth": 0
  },
  {
@@ -644,9 +644,9 @@
   "home_page": null,
   "is_custom": 0,
   "modified": "2026-05-27 12:41:22.554128",
-  "name": "Risto Customer",
+  "name": "Onboardpro Customer",
   "restrict_to_domain": null,
-  "role_name": "Risto Customer",
+  "role_name": "Onboardpro Customer",
   "two_factor_auth": 0
  }
 ]

@@ -181,10 +181,10 @@ def add_comment(docname, content):
 def mark_seen(docname):
 	"""Record that the current user has viewed this request (persisted in cache for 30 days)."""
 	cache_key = f"risto_seen_{frappe.session.user}"
-	seen_map = frappe.cache().get_value(cache_key) or {}
+	seen_map = frappe.cache.get_value(cache_key) or {}
 	# Use str(now_datetime()) — same "YYYY-MM-DD HH:MM:SS" format as DB, so string comparison works
 	seen_map[docname] = str(frappe.utils.now_datetime())
-	frappe.cache().set_value(cache_key, seen_map, expires_in_sec=86400 * 30)
+	frappe.cache.set_value(cache_key, seen_map, expires_in_sec=86400 * 30)
 
 
 @frappe.whitelist()
@@ -198,7 +198,7 @@ def get_unread_requests():
 		return []
 
 	cache_key = f"risto_seen_{frappe.session.user}"
-	seen_map = frappe.cache().get_value(cache_key) or {}
+	seen_map = frappe.cache.get_value(cache_key) or {}
 
 	with_reply = frappe.get_all(
 		"Implementation Request",
