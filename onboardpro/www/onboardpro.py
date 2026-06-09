@@ -3,7 +3,6 @@ import os
 
 import frappe
 
-
 _ALLOWED_ROLES = {"Onboardpro Staff", "Onboardpro Customer"}
 
 
