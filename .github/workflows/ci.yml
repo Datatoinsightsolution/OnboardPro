@@ -23,7 +23,7 @@ jobs:
             node-version: 18
           - frappe-branch: version-16
             python-version: '3.14'
-            node-version: 20
+            node-version: 24
     name: Server (${{ matrix.frappe-branch }})
 
     services:
