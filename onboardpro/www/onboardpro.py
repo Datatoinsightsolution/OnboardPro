@@ -10,6 +10,7 @@ def get_context(context):
 		raise frappe.Redirect
 
 	context.no_cache = 1
+	context.csrf_token = frappe.sessions.get_csrf_token()
 	context.session_user = frappe.session.user
 	context.session_user_fullname = (
 		frappe.db.get_value("User", frappe.session.user, "full_name") or frappe.session.user

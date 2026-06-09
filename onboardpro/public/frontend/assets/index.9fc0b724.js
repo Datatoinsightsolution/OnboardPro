@@ -143,11 +143,11 @@ function Se(d, h, _) {
 		? (m = g + "h " + String(f).padStart(2, "0") + "m")
 		: (m = f + "m");
 	const $ = r ? "Breached " + m : m + " left",
-		x = r ? "\u2212" + m : m;
+		w = r ? "\u2212" + m : m;
 	let j = "ok";
 	r ? (j = "breach") : p < 4 * Z && (j = "warn");
 	const D = _ ? Math.min(1.4, 1 - p / (_ * Z)) : 0;
-	return { ms: p, breached: r, label: $, short: x, tone: j, pct: D };
+	return { ms: p, breached: r, label: $, short: w, tone: j, pct: D };
 }
 const Ue = { ok: "green", warn: "amber", breach: "red" };
 function at(d) {
@@ -410,7 +410,7 @@ const Fe = {
 						? S
 						: null;
 				}),
-				x = R(() => n.value.subject.trim().length > 2 && !!n.value.customer),
+				w = R(() => n.value.subject.trim().length > 2 && !!n.value.customer),
 				j = ge({
 					url: "frappe.client.insert",
 					onSuccess(i) {
@@ -421,7 +421,7 @@ const Fe = {
 					},
 				});
 			function D() {
-				!x.value ||
+				!w.value ||
 					((g.value = !0),
 					j.submit({
 						doc: {
@@ -676,7 +676,7 @@ const Fe = {
 									"button",
 									{
 										class: "btn primary",
-										disabled: !t(x) || g.value,
+										disabled: !t(w) || g.value,
 										onClick: D,
 									},
 									[
@@ -802,15 +802,15 @@ const Ft = { class: "subhead" },
 				f = q(p.query.layout || "table"),
 				m = q(p.query.q || ""),
 				$ = q(p.query.sort || "creation"),
-				x = q(p.query.dir || "desc"),
+				w = q(p.query.dir || "desc"),
 				j = q(n),
 				D = q(!1),
 				L = q(Date.now()),
 				C = q(new Set());
-			ue([g, m, $, x, f], () => {
+			ue([g, m, $, w, f], () => {
 				j.value = n;
 			}),
-				ue([g, f, $, x, m], () => {
+				ue([g, f, $, w, m], () => {
 					r.replace({
 						query: J(
 							J(
@@ -821,7 +821,7 @@ const Ft = { class: "subhead" },
 									),
 									$.value !== "creation" && { sort: $.value }
 								),
-								x.value !== "desc" && { dir: x.value }
+								w.value !== "desc" && { dir: w.value }
 							),
 							m.value.trim() && { q: m.value }
 						),
@@ -830,8 +830,8 @@ const Ft = { class: "subhead" },
 			function i() {
 				return V(this, null, function* () {
 					if (_.role !== "staff") return;
-					const w = yield ne({ url: "onboardpro.api.get_unread_requests" });
-					C.value = new Set(w);
+					const x = yield ne({ url: "onboardpro.api.get_unread_requests" });
+					C.value = new Set(x);
 				});
 			}
 			$e(i);
@@ -871,30 +871,30 @@ const Ft = { class: "subhead" },
 					auto: !0,
 				}),
 				Q = R(() => {
-					var w;
-					return (w = F.data) != null ? w : [];
+					var x;
+					return (x = F.data) != null ? x : [];
 				});
-			function ve(w, b) {
+			function ve(x, b) {
 				return b === "all"
 					? !0
 					: b === "breached"
-					? w.status !== "Resolved" && O(w.res_due_at) < L.value
-					: w.status === b;
+					? x.status !== "Resolved" && O(x.res_due_at) < L.value
+					: x.status === b;
 			}
 			const le = R(() => {
-					let w = Q.value;
+					let x = Q.value;
 					if (m.value.trim()) {
 						const b = m.value.toLowerCase();
-						w = w.filter((s) =>
+						x = x.filter((s) =>
 							(s.subject + s.customer_name + s.name + s.data_type)
 								.toLowerCase()
 								.includes(b)
 						);
 					}
-					return w;
+					return x;
 				}),
 				W = R(() => {
-					const w = x.value === "asc" ? 1 : -1,
+					const x = w.value === "asc" ? 1 : -1,
 						b = $.value;
 					return [...le.value].sort((s, N) => {
 						var u, A, v, P, re, de;
@@ -914,52 +914,52 @@ const Ft = { class: "subhead" },
 									: (de = N[b]) != null
 									? de
 									: "";
-						return z < E ? -w : z > E ? w : 0;
+						return z < E ? -x : z > E ? x : 0;
 					});
 				}),
-				G = R(() => W.value.filter((w) => ve(w, g.value))),
+				G = R(() => W.value.filter((x) => ve(x, g.value))),
 				ie = R(() => G.value.slice(0, j.value)),
 				be = R(() => j.value < G.value.length),
 				ee = R(() => {
-					const w = le.value,
-						b = { all: w.length };
+					const x = le.value,
+						b = { all: x.length };
 					return (
 						B.slice(1).forEach((s) => {
-							b[s.key] = w.filter((N) => ve(N, s.key)).length;
+							b[s.key] = x.filter((N) => ve(N, s.key)).length;
 						}),
 						b
 					);
 				}),
 				ce = R(() => {
-					const w = {};
+					const x = {};
 					return (
 						T.forEach((b) => {
-							w[b] = [];
+							x[b] = [];
 						}),
 						W.value.forEach((b) => {
-							w[b.status] && w[b.status].push(b);
+							x[b.status] && x[b.status].push(b);
 						}),
-						w
+						x
 					);
 				});
 			ue(
 				Q,
-				(w) => {
-					const b = w.filter((N) => N.status !== "Resolved").length,
-						s = w.filter(
+				(x) => {
+					const b = x.filter((N) => N.status !== "Resolved").length,
+						s = x.filter(
 							(N) => N.status !== "Resolved" && O(N.res_due_at) < L.value
 						).length;
 					h("requests-loaded", { open: b, breach: s });
 				},
 				{ immediate: !0 }
 			);
-			function te(w) {
-				r.push({ name: "RequestDetail", params: { id: w } });
+			function te(x) {
+				r.push({ name: "RequestDetail", params: { id: x } });
 			}
-			function me(w) {
-				(D.value = !1), F.reload(), i(), te(w);
+			function me(x) {
+				(D.value = !1), F.reload(), i(), te(x);
 			}
-			return (w, b) => (
+			return (x, b) => (
 				a(),
 				c("div", null, [
 					e("div", Ft, [
@@ -1054,17 +1054,17 @@ const Ft = { class: "subhead" },
 								"button",
 								{
 									class: "sort-dir",
-									title: x.value === "desc" ? "Descending" : "Ascending",
+									title: w.value === "desc" ? "Descending" : "Ascending",
 									onClick:
 										b[2] ||
 										(b[2] = (s) =>
-											(x.value = x.value === "desc" ? "asc" : "desc")),
+											(w.value = w.value === "desc" ? "asc" : "desc")),
 								},
 								[
 									o(
 										t(y),
 										{
-											name: x.value === "desc" ? "arrow-down" : "arrow-up",
+											name: w.value === "desc" ? "arrow-down" : "arrow-up",
 											style: { width: "14px", height: "14px" },
 										},
 										null,
@@ -1750,7 +1750,7 @@ const Ft = { class: "subhead" },
 				f = q(!1),
 				m = q(!1),
 				$ = q(null),
-				x = q(null),
+				w = q(null),
 				j = q(null),
 				D = q(null),
 				L = ["Open", "In Review", "Needs Revision", "Resolved"],
@@ -1847,7 +1847,7 @@ const Ft = { class: "subhead" },
 			function be() {
 				return V(this, null, function* () {
 					var u;
-					(f.value = !0), yield Ie(), (u = x.value) == null || u.focus();
+					(f.value = !0), yield Ie(), (u = w.value) == null || u.focus();
 				});
 			}
 			function ee() {
@@ -1862,7 +1862,7 @@ const Ft = { class: "subhead" },
 							}),
 								(n.value = ""),
 								(f.value = !1),
-								x.value && (x.value.style.height = "auto"),
+								w.value && (w.value.style.height = "auto"),
 								yield B();
 						} finally {
 							g.value = !1;
@@ -1871,7 +1871,7 @@ const Ft = { class: "subhead" },
 				});
 			}
 			function ce() {
-				const u = x.value;
+				const u = w.value;
 				u &&
 					((u.style.height = "auto"),
 					(u.style.height = Math.min(160, u.scrollHeight) + "px"));
@@ -1889,7 +1889,7 @@ const Ft = { class: "subhead" },
 				var u;
 				(u = j.value) == null || u.click();
 			}
-			function w(u) {
+			function x(u) {
 				return V(this, null, function* () {
 					var P, re, de;
 					const A = (P = u.target.files) == null ? void 0 : P[0];
@@ -2102,7 +2102,7 @@ const Ft = { class: "subhead" },
 													ref: j,
 													type: "file",
 													style: { display: "none" },
-													onChange: w,
+													onChange: x,
 												},
 												null,
 												544
@@ -2291,7 +2291,7 @@ const Ft = { class: "subhead" },
 														"textarea",
 														{
 															ref_key: "taRef",
-															ref: x,
+															ref: w,
 															"onUpdate:modelValue":
 																A[0] ||
 																(A[0] = (v) => (n.value = v)),
@@ -2793,14 +2793,14 @@ const Ft = { class: "subhead" },
 				f = R(() => g.value.filter((D) => D.status !== "Resolved")),
 				m = R(() => g.value.filter((D) => D.status === "Resolved")),
 				$ = R(() => f.value.filter((D) => O(D.res_due_at) < p.value)),
-				x = R(() =>
+				w = R(() =>
 					f.value.filter((D) => {
 						const L = O(D.res_due_at) - p.value;
 						return L > 0 && L < 8 * 36e5;
 					})
 				),
 				j = R(() =>
-					[...$.value, ...x.value]
+					[...$.value, ...w.value]
 						.sort((D, L) => O(D.res_due_at) - O(L.res_due_at))
 						.slice(0, 8)
 				);
@@ -2854,16 +2854,16 @@ const Ft = { class: "subhead" },
 						),
 						e(
 							"div",
-							{ class: "stat", "data-tone": t(x).length ? "amber" : "green" },
+							{ class: "stat", "data-tone": t(w).length ? "amber" : "green" },
 							[
 								e("div", oa, [o(t(y), { name: "clock" }), na]),
 								e(
 									"div",
 									{
 										class: "num",
-										style: se(t(x).length ? "color:var(--t-ink)" : ""),
+										style: se(t(w).length ? "color:var(--t-ink)" : ""),
 									},
-									l(t(x).length),
+									l(t(w).length),
 									5
 								),
 								aa,
@@ -3100,12 +3100,12 @@ const La = { class: "side" },
 										$,
 										{ to: "/pulse", custom: "" },
 										{
-											default: ze(({ navigate: x, isActive: j }) => [
+											default: ze(({ navigate: w, isActive: j }) => [
 												e(
 													"button",
 													{
 														class: H(["nav-item", j ? "active" : ""]),
-														onClick: x,
+														onClick: w,
 													},
 													[
 														o(t(y), { name: "activity" }),
@@ -3126,7 +3126,7 @@ const La = { class: "side" },
 										$,
 										{ to: "/", custom: "" },
 										{
-											default: ze(({ navigate: x, isActive: j }) => [
+											default: ze(({ navigate: w, isActive: j }) => [
 												e(
 													"button",
 													{
@@ -3136,7 +3136,7 @@ const La = { class: "side" },
 																? "active"
 																: "",
 														]),
-														onClick: x,
+														onClick: w,
 													},
 													[
 														o(t(y), { name: "inbox" }),
@@ -3163,7 +3163,7 @@ const La = { class: "side" },
 														rel: "noopener noreferrer",
 														class: "user-menu-item",
 														onClick:
-															m[0] || (m[0] = (x) => (p.value = !1)),
+															m[0] || (m[0] = (w) => (p.value = !1)),
 													},
 													[o(t(y), { name: "headphones" }), Ea]
 												),
@@ -3178,7 +3178,7 @@ const La = { class: "side" },
 										"button",
 										{
 											class: "user-card",
-											onClick: m[1] || (m[1] = (x) => (p.value = !p.value)),
+											onClick: m[1] || (m[1] = (w) => (p.value = !p.value)),
 										},
 										[
 											o(Y, { name: t(n), role: d.role, size: 32 }, null, 8, [
@@ -3214,7 +3214,7 @@ const La = { class: "side" },
 								  c("div", {
 										key: 0,
 										class: "menu-scrim",
-										onClick: m[2] || (m[2] = (x) => (p.value = !1)),
+										onClick: m[2] || (m[2] = (w) => (p.value = !1)),
 								  }))
 								: M("", !0),
 						],
@@ -3252,13 +3252,17 @@ const La = { class: "side" },
 				V(this, null, function* () {
 					try {
 						const L = yield ne({ url: "onboardpro.api.get_session_role" });
+						if (L.role === "guest") {
+							w();
+							return;
+						}
 						(r.value = L.role), (n.value = L.full_name), (p.value = !1);
 					} catch (L) {
-						x();
+						w();
 					}
 				})
 			);
-			function x() {
+			function w() {
 				const L = encodeURIComponent(window.location.pathname || "/onboardpro");
 				window.location.href = `/login?redirect-to=${L}`;
 			}
