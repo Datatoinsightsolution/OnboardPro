@@ -40,7 +40,7 @@ def get_activity(docname):
 		order_by="creation asc",
 	)
 
-	STAFF = {"Onboardpro Staff", "System Manager", "Administrator"}
+	STAFF = {"Onboardpro Staff"}
 	user_cache = {}
 
 	def _user(email):
@@ -157,7 +157,7 @@ def add_comment(docname, content):
 	frappe.db.commit()
 
 	sender_roles = set(frappe.get_roles(frappe.session.user))
-	is_customer = not bool(sender_roles & {"Onboardpro Staff", "System Manager", "Administrator"})
+	is_customer = not bool(sender_roles & {"Onboardpro Staff"})
 
 	if is_customer:
 		# Stamp last customer reply so staff can see unread indicator
@@ -194,7 +194,7 @@ def get_unread_requests():
 	user last viewed them. Only meaningful for staff.
 	"""
 	roles = set(frappe.get_roles())
-	if not (roles & {"Onboardpro Staff", "System Manager", "Administrator"}):
+	if not (roles & {"Onboardpro Staff"}):
 		return []
 
 	cache_key = f"risto_seen_{frappe.session.user}"
@@ -234,7 +234,7 @@ def get_comments(docname):
 
 	# Batch-resolve owner full names and staff status
 	unique_owners = {c.owner for c in comments}
-	STAFF = {"Onboardpro Staff", "System Manager", "Administrator"}
+	STAFF = {"Onboardpro Staff"}
 	user_info = {}
 	for email in unique_owners:
 		roles = set(frappe.get_roles(email))
@@ -272,7 +272,9 @@ def get_sla_config():
 def get_session_role():
 	"""Return role and display name for the logged-in user."""
 	roles = set(frappe.get_roles())
-	role = "staff" if roles & {"Onboardpro Staff", "System Manager", "Administrator"} else "customer"
+	if not roles & {"Onboardpro Staff", "Onboardpro Customer"}:
+		frappe.throw("Not permitted", frappe.PermissionError)
+	role = "staff" if "Onboardpro Staff" in roles else "customer"
 	full_name = frappe.db.get_value("User", frappe.session.user, "full_name") or frappe.session.user
 	return {"role": role, "full_name": full_name}
 
@@ -280,5 +282,4 @@ def get_session_role():
 @frappe.whitelist()
 def has_app_permission():
 	"""Return True if the current user has access to the OnboardPro app."""
-	allowed = {"Onboardpro Staff", "Onboardpro Customer", "System Manager", "Administrator"}
-	return bool(allowed.intersection(set(frappe.get_roles())))
+	return bool({"Onboardpro Staff", "Onboardpro Customer"}.intersection(set(frappe.get_roles())))
