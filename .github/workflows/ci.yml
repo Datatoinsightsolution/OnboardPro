@@ -4,27 +4,18 @@ on:
   push:
     branches:
       - develop
+      - version-15
+      - version-16
   pull_request:
 
 concurrency:
-  group: develop-onboardpro-${{ github.event.number }}
+  group: onboardpro-${{ github.ref }}-${{ github.event.number }}
   cancel-in-progress: true
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        frappe-branch: [version-15, version-16]
-        include:
-          - frappe-branch: version-15
-            python-version: '3.11'
-            node-version: 18
-          - frappe-branch: version-16
-            python-version: '3.12'
-            node-version: 20
-    name: Server (${{ matrix.frappe-branch }})
+    name: Server
 
     services:
       redis-cache:
@@ -47,20 +38,37 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4
 
-      - name: Find tests
+      - name: Resolve branch config
+        id: cfg
         run: |
-          echo "Finding tests"
-          grep -rn "def test" > /dev/null
+          BRANCH="${{ github.base_ref || github.ref_name }}"
+          case "$BRANCH" in
+            version-15)
+              echo "frappe_branch=version-15" >> $GITHUB_OUTPUT
+              echo "python_version=3.11"       >> $GITHUB_OUTPUT
+              echo "node_version=18"           >> $GITHUB_OUTPUT
+              ;;
+            version-16)
+              echo "frappe_branch=version-16" >> $GITHUB_OUTPUT
+              echo "python_version=3.14"       >> $GITHUB_OUTPUT
+              echo "node_version=20"           >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "frappe_branch=version-16" >> $GITHUB_OUTPUT
+              echo "python_version=3.14"       >> $GITHUB_OUTPUT
+              echo "node_version=20"           >> $GITHUB_OUTPUT
+              ;;
+          esac
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ steps.cfg.outputs.python_version }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ steps.cfg.outputs.node_version }}
           check-latest: true
 
       - name: Cache pip
@@ -74,7 +82,7 @@ jobs:
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: 'echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT'
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         id: yarn-cache
@@ -92,7 +100,10 @@ jobs:
       - name: Setup
         run: |
           pip install frappe-bench
-          bench init --skip-redis-config-generation --skip-assets --python "$(which python)" --frappe-branch ${{ matrix.frappe-branch }} ~/frappe-bench
+          bench init --skip-redis-config-generation --skip-assets \
+            --python "$(which python)" \
+            --frappe-branch ${{ steps.cfg.outputs.frappe_branch }} \
+            ~/frappe-bench
           mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
           mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
 
