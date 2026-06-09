@@ -22,7 +22,7 @@ jobs:
             python-version: '3.11'
             node-version: 18
           - frappe-branch: version-16
-            python-version: '3.12'
+            python-version: '3.14'
             node-version: 20
     name: Server (${{ matrix.frappe-branch }})
 
