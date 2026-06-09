@@ -1,8 +1,9 @@
 import frappe
+from frappe import _
 
 
 @frappe.whitelist()
-def search_customers(query="", limit=500):
+def search_customers(query: str = "", limit: int = 500):
 	"""Return enabled Users who have the Onboardpro Customer role."""
 	like = f"%{query}%" if query else "%"
 	return frappe.db.sql(
@@ -22,7 +23,7 @@ def search_customers(query="", limit=500):
 
 
 @frappe.whitelist()
-def get_activity(docname):
+def get_activity(docname: str):
 	"""Return merged activity (comments + status changes) for an Implementation Request."""
 	frappe.has_permission("Implementation Request", ptype="read", doc=docname, throw=True)
 
@@ -40,7 +41,7 @@ def get_activity(docname):
 		order_by="creation asc",
 	)
 
-	STAFF = {"Onboardpro Staff", "System Manager", "Administrator"}
+	STAFF = {"Onboardpro Staff"}
 	user_cache = {}
 
 	def _user(email):
@@ -139,7 +140,7 @@ def get_activity(docname):
 
 
 @frappe.whitelist()
-def add_comment(docname, content):
+def add_comment(docname: str, content: str):
 	"""Insert a comment on behalf of the logged-in user after verifying request access."""
 	frappe.has_permission("Implementation Request", ptype="read", doc=docname, throw=True)
 
@@ -157,7 +158,7 @@ def add_comment(docname, content):
 	frappe.db.commit()
 
 	sender_roles = set(frappe.get_roles(frappe.session.user))
-	is_customer = not bool(sender_roles & {"Onboardpro Staff", "System Manager", "Administrator"})
+	is_customer = not bool(sender_roles & {"Onboardpro Staff"})
 
 	if is_customer:
 		# Stamp last customer reply so staff can see unread indicator
@@ -178,7 +179,7 @@ def add_comment(docname, content):
 
 
 @frappe.whitelist()
-def mark_seen(docname):
+def mark_seen(docname: str):
 	"""Record that the current user has viewed this request (persisted in cache for 30 days)."""
 	cache_key = f"risto_seen_{frappe.session.user}"
 	seen_map = frappe.cache.get_value(cache_key) or {}
@@ -194,7 +195,7 @@ def get_unread_requests():
 	user last viewed them. Only meaningful for staff.
 	"""
 	roles = set(frappe.get_roles())
-	if not (roles & {"Onboardpro Staff", "System Manager", "Administrator"}):
+	if not (roles & {"Onboardpro Staff"}):
 		return []
 
 	cache_key = f"risto_seen_{frappe.session.user}"
@@ -217,7 +218,7 @@ def get_unread_requests():
 
 
 @frappe.whitelist()
-def get_comments(docname):
+def get_comments(docname: str):
 	"""Return comments for an Implementation Request with resolved owner full names."""
 	frappe.has_permission("Implementation Request", doc=docname, throw=True)
 
@@ -234,7 +235,7 @@ def get_comments(docname):
 
 	# Batch-resolve owner full names and staff status
 	unique_owners = {c.owner for c in comments}
-	STAFF = {"Onboardpro Staff", "System Manager", "Administrator"}
+	STAFF = {"Onboardpro Staff"}
 	user_info = {}
 	for email in unique_owners:
 		roles = set(frappe.get_roles(email))
@@ -272,7 +273,9 @@ def get_sla_config():
 def get_session_role():
 	"""Return role and display name for the logged-in user."""
 	roles = set(frappe.get_roles())
-	role = "staff" if roles & {"Onboardpro Staff", "System Manager", "Administrator"} else "customer"
+	if not roles & {"Onboardpro Staff", "Onboardpro Customer"}:
+		frappe.throw(_("Not permitted"), frappe.PermissionError)
+	role = "staff" if "Onboardpro Staff" in roles else "customer"
 	full_name = frappe.db.get_value("User", frappe.session.user, "full_name") or frappe.session.user
 	return {"role": role, "full_name": full_name}
 
@@ -280,5 +283,4 @@ def get_session_role():
 @frappe.whitelist()
 def has_app_permission():
 	"""Return True if the current user has access to the OnboardPro app."""
-	allowed = {"Onboardpro Staff", "Onboardpro Customer", "System Manager", "Administrator"}
-	return bool(allowed.intersection(set(frappe.get_roles())))
+	return bool({"Onboardpro Staff", "Onboardpro Customer"}.intersection(set(frappe.get_roles())))

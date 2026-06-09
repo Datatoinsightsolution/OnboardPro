@@ -3,11 +3,16 @@ import os
 
 import frappe
 
+_ALLOWED_ROLES = {"Onboardpro Staff", "Onboardpro Customer"}
+
 
 def get_context(context):
 	if frappe.session.user == "Guest":
 		frappe.local.flags.redirect_location = "/login?redirect-to=/onboardpro"
 		raise frappe.Redirect
+
+	if not _ALLOWED_ROLES.intersection(set(frappe.get_roles())):
+		frappe.throw(frappe._("Not permitted"), frappe.PermissionError)
 
 	context.no_cache = 1
 	context.csrf_token = frappe.sessions.get_csrf_token()
