@@ -1,8 +1,9 @@
 import frappe
+from frappe import _
 
 
 @frappe.whitelist()
-def search_customers(query="", limit=500):
+def search_customers(query: str = "", limit: int = 500):
 	"""Return enabled Users who have the Onboardpro Customer role."""
 	like = f"%{query}%" if query else "%"
 	return frappe.db.sql(
@@ -22,7 +23,7 @@ def search_customers(query="", limit=500):
 
 
 @frappe.whitelist()
-def get_activity(docname):
+def get_activity(docname: str):
 	"""Return merged activity (comments + status changes) for an Implementation Request."""
 	frappe.has_permission("Implementation Request", ptype="read", doc=docname, throw=True)
 
@@ -139,7 +140,7 @@ def get_activity(docname):
 
 
 @frappe.whitelist()
-def add_comment(docname, content):
+def add_comment(docname: str, content: str):
 	"""Insert a comment on behalf of the logged-in user after verifying request access."""
 	frappe.has_permission("Implementation Request", ptype="read", doc=docname, throw=True)
 
@@ -178,7 +179,7 @@ def add_comment(docname, content):
 
 
 @frappe.whitelist()
-def mark_seen(docname):
+def mark_seen(docname: str):
 	"""Record that the current user has viewed this request (persisted in cache for 30 days)."""
 	cache_key = f"risto_seen_{frappe.session.user}"
 	seen_map = frappe.cache.get_value(cache_key) or {}
@@ -217,7 +218,7 @@ def get_unread_requests():
 
 
 @frappe.whitelist()
-def get_comments(docname):
+def get_comments(docname: str):
 	"""Return comments for an Implementation Request with resolved owner full names."""
 	frappe.has_permission("Implementation Request", doc=docname, throw=True)
 
@@ -273,7 +274,7 @@ def get_session_role():
 	"""Return role and display name for the logged-in user."""
 	roles = set(frappe.get_roles())
 	if not roles & {"Onboardpro Staff", "Onboardpro Customer"}:
-		frappe.throw("Not permitted", frappe.PermissionError)
+		frappe.throw(_("Not permitted"), frappe.PermissionError)
 	role = "staff" if "Onboardpro Staff" in roles else "customer"
 	full_name = frappe.db.get_value("User", frappe.session.user, "full_name") or frappe.session.user
 	return {"role": role, "full_name": full_name}

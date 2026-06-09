@@ -12,7 +12,7 @@ def get_context(context):
 		raise frappe.Redirect
 
 	if not _ALLOWED_ROLES.intersection(set(frappe.get_roles())):
-		frappe.throw("Not permitted", frappe.PermissionError)
+		frappe.throw(frappe._("Not permitted"), frappe.PermissionError)
 
 	context.no_cache = 1
 	context.csrf_token = frappe.sessions.get_csrf_token()
