@@ -1,5 +1,5 @@
 <template>
-	<aside class="side">
+	<aside :class="['side', open ? 'open' : '']">
 		<!-- Brand -->
 		<div class="brand">
 			<div class="brand-mark">
@@ -95,6 +95,7 @@ const props = defineProps({
 	breachCount: { type: Number, default: 0 },
 	role: { type: String, default: 'staff' },
 	userName: { type: String, default: '' },
+	open: { type: Boolean, default: false },
 })
 
 const route = useRoute()
