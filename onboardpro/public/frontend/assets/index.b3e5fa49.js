@@ -1,1 +1,3476 @@
-var Fe=Object.defineProperty,Ee=Object.defineProperties;var Ve=Object.getOwnPropertyDescriptors;var De=Object.getOwnPropertySymbols;var Ke=Object.prototype.hasOwnProperty,Ye=Object.prototype.propertyIsEnumerable;var Le=(d,h,_)=>h in d?Fe(d,h,{enumerable:!0,configurable:!0,writable:!0,value:_}):d[h]=_,J=(d,h)=>{for(var _ in h||(h={}))Ke.call(h,_)&&Le(d,_,h[_]);if(De)for(var _ of De(h))Ye.call(h,_)&&Le(d,_,h[_]);return d},Te=(d,h)=>Ee(d,Ve(h));var V=(d,h,_)=>new Promise((p,r)=>{var a=m=>{try{f(_.next(m))}catch(k){r(k)}},g=m=>{try{f(_.throw(m))}catch(k){r(k)}},f=m=>m.done?p(m.value):Promise.resolve(m.value).then(a,g);f((_=_.apply(d,h)).next())});import{c as R,o as l,a as c,b as w,t as i,n as H,u as t,d as e,F as O,r as B,e as se,i as Ae,f as S,g as ge,h as fe,j as n,_ as y,w as oe,v as ye,k as T,l as Me,T as We,m as ne,p as $e,q as ke,s as we,x as xe,y as Ne,z as ae,A as Xe,B as Ce,C as je,D as Ie,E as Ge,G as Je,H as He,I as Oe,J as ze,K as Ze,L as Qe,M as et,N as tt,O as st}from"./vendor.c56b79f7.js";const ot=function(){const h=document.createElement("link").relList;if(h&&h.supports&&h.supports("modulepreload"))return;for(const r of document.querySelectorAll('link[rel="modulepreload"]'))p(r);new MutationObserver(r=>{for(const a of r)if(a.type==="childList")for(const g of a.addedNodes)g.tagName==="LINK"&&g.rel==="modulepreload"&&p(g)}).observe(document,{childList:!0,subtree:!0});function _(r){const a={};return r.integrity&&(a.integrity=r.integrity),r.referrerpolicy&&(a.referrerPolicy=r.referrerpolicy),r.crossorigin==="use-credentials"?a.credentials="include":r.crossorigin==="anonymous"?a.credentials="omit":a.credentials="same-origin",a}function p(r){if(r.ep)return;r.ep=!0;const a=_(r);fetch(r.href,a)}};ot();const Z=36e5,Pe=24*Z,Re=6e4,P=d=>d?new Date(d).getTime():0;function _e(d,h){const _=h-d;if(_<Re)return"just now";if(_<Z)return Math.round(_/Re)+"m ago";if(_<Pe)return Math.round(_/Z)+"h ago";const p=Math.round(_/Pe);return p<7?p+(p===1?" day ago":" days ago"):new Date(d).toLocaleDateString(void 0,{month:"short",day:"numeric"})}function nt(d){return new Date(d).toLocaleDateString(void 0,{month:"short",day:"numeric",year:"numeric"})}function Se(d,h,_){const p=d-h,r=p<=0,a=Math.abs(p),g=Math.floor(a/Z),f=Math.floor(a%Z/Re);let m;g>=48?m=Math.round(g/24)+"d":g>=1?m=g+"h "+String(f).padStart(2,"0")+"m":m=f+"m";const k=r?"Breached "+m:m+" left",$=r?"\u2212"+m:m;let N="ok";r?N="breach":p<4*Z&&(N="warn");const q=_?Math.min(1.4,1-p/(_*Z)):0;return{ms:p,breached:r,label:k,short:$,tone:N,pct:q}}const Ue={ok:"green",warn:"amber",breach:"red"};function at(d){return(d||"?").split(" ").filter(Boolean).map(h=>h[0]).join("").slice(0,2).toUpperCase()}const Be={Open:{tone:"blue",group:"open",desc:"Raised \u2014 awaiting action"},"In Review":{tone:"violet",group:"open",desc:"Risto reviewing submission"},"Needs Revision":{tone:"red",group:"open",desc:"Sent back to customer"},Resolved:{tone:"green",group:"closed",desc:"Data accepted & complete"}},K={Urgent:{rank:0,tone:"red",frH:4,resH:24},High:{rank:1,tone:"amber",frH:8,resH:48},Medium:{rank:2,tone:"blue",frH:24,resH:96},Low:{rank:3,tone:"slate",frH:48,resH:168}},he={"Master Data":"database","Opening Balances":"bar-chart-2",Configuration:"sliders",Reconciliation:"git-merge",Documents:"file"},lt=["data-tone"],it=e("span",{class:"ring"},null,-1),X={props:{status:{type:String,default:"Open"}},setup(d){const h=d,_=R(()=>{var r,a;return(a=(r=Be[h.status])==null?void 0:r.tone)!=null?a:"slate"}),p=R(()=>{var r;return((r=Be[h.status])==null?void 0:r.group)==="closed"});return(r,a)=>(l(),c("span",{class:H(["statuspill",t(p)?"closed":""]),"data-tone":t(_)},[it,w(i(d.status),1)],10,lt))}},ct=["data-tone"],rt={class:"bars","aria-hidden":"true"},pe={props:{priority:{type:String,default:"Medium"}},setup(d){const h=d,_=R(()=>{var a;return(a=K[h.priority])!=null?a:K.Medium}),p=R(()=>_.value.tone),r=R(()=>4-_.value.rank);return(a,g)=>(l(),c("span",{class:"prio","data-tone":t(p)},[e("span",rt,[(l(),c(O,null,B(4,f=>e("i",{key:f,class:H(f<=t(r)?"on":""),style:se({height:5+(f-1)*2.3+"px"})},null,6)),64))]),w(" "+i(d.priority),1)],8,ct))}},dt=["data-tone"],ut=e("span",{class:"heart"},null,-1),le={props:{deadline:{type:[Number,String],default:null},now:{type:Number,required:!0},windowH:{type:Number,default:48},state:{type:String,default:null}},setup(d){const h=d,_=R(()=>{var a;if(h.state==="Fulfilled")return{tone:"ok",label:"Fulfilled"};if(h.state==="Failed")return{tone:"breach",label:"Failed"};if(h.state==="Paused")return{tone:"ok",label:"Paused"};const r=typeof h.deadline=="string"?P(h.deadline):(a=h.deadline)!=null?a:0;return Se(r,h.now,h.windowH)}),p=R(()=>{var r;return(r=Ue[_.value.tone])!=null?r:"slate"});return(r,a)=>(l(),c("span",{class:"slachip","data-tone":t(p)},[ut,w(i(t(_).label),1)],8,dt))}},_t=["title"],Y={props:{name:{type:String,default:"?"},role:{type:String,default:"staff"},size:{type:Number,default:32}},setup(d){const h=d,_=R(()=>h.role==="staff"?"staff":"customer");return(p,r)=>(l(),c("div",{class:H(["av",t(_),"av-sz-"+d.size]),title:d.name},i(t(at)(d.name)),11,_t))}},ht={class:"slideover",role:"dialog","aria-modal":"true"},pt={class:"so-head"},vt=e("div",null,[e("div",{class:"t"},"New data request"),e("div",{class:"s"}," Raise a request against a customer to collect implementation data ")],-1),mt={class:"so-body"},ft={style:{display:"flex","align-items":"baseline","justify-content":"space-between","margin-bottom":"5px"}},yt=e("label",{class:"flabel",style:{"margin-bottom":"0"}},[w("Subject "),e("span",{"data-tone":"red",style:{color:"var(--t-ink)"}},"*")],-1),bt={key:0,style:{"font-size":"12px",color:"oklch(0.5 0.18 25)","margin-top":"4px"}},gt=e("label",{class:"flabel"},"Customer",-1),$t=e("option",{value:"",disabled:""},"Select customer\u2026",-1),kt=["value"],wt=e("label",{class:"flabel"},"Data type",-1),xt={class:"chiprow"},Ct=["onClick"],Rt=e("label",{class:"flabel"},"Priority",-1),St={class:"chiprow"},qt=["data-tone","onClick"],Dt=e("span",{class:"dot"},null,-1),Lt={key:0,class:"slacalc",style:{"margin-top":"12px"}},Tt={class:"ic"},At={class:"txt"},Mt=w(" Business-hours SLA \u2014 first response within "),Nt=w(", resolution within "),jt=w(" of working time. "),It=e("label",{class:"flabel"},"Instructions to customer",-1),Ht=e("div",{class:"fhint"}," The customer sees this in the request, along with any template you attach after creating it. ",-1),Ot={class:"so-foot"},zt={class:"grow",style:{"font-size":"12px",color:"var(--ink-3)"}},Pt=["disabled"],Ut={emits:["close","created"],setup(d,{emit:h}){var j,C;const _=Ae("toast",()=>{}),p=((C=(j=window.frappe)==null?void 0:j.session)==null?void 0:C.user_fullname)||"Staff",r=["Master Data","Opening Balances","Configuration","Reconciliation","Documents"],a=S({subject:"",customer:"",data_type:"Master Data",priority:"High",description:""}),g=S(!1),f=ge({url:"onboardpro.api.search_customers",params:{query:"",limit:500},auto:!0}),m=ge({url:"onboardpro.api.get_sla_config",auto:!0}),k=R(()=>{var s,D;return(D=((s=m.data)!=null?s:{})[a.value.priority])!=null?D:null}),$=R(()=>a.value.subject.trim().length>2&&!!a.value.customer),N=ge({url:"frappe.client.insert",onSuccess(s){g.value=!1,_("Request "+s.name+" raised"),h("created",s.name)},onError(){g.value=!1}});function q(){!$.value||(g.value=!0,N.submit({doc:{doctype:"Implementation Request",subject:a.value.subject.trim(),customer:a.value.customer,data_type:a.value.data_type,priority:a.value.priority,description:a.value.description.trim(),status:"Open"}}))}return(s,D)=>{var I;return l(),fe(We,{to:"body"},[e("div",{class:"scrim",onClick:D[0]||(D[0]=L=>s.$emit("close"))}),e("div",ht,[e("div",pt,[vt,e("button",{class:"iconbtn",onClick:D[1]||(D[1]=L=>s.$emit("close"))},[n(t(y),{name:"x"})])]),e("div",mt,[e("div",null,[e("div",ft,[yt,e("span",{style:se([{"font-size":"11px"},{color:a.value.subject.length>120?"oklch(0.50 0.18 25)":"var(--ink-4)"}])},i(a.value.subject.length)+"/140 ",5)]),oe(e("input",{"onUpdate:modelValue":D[2]||(D[2]=L=>a.value.subject=L),class:"finput",autofocus:"",maxlength:"140",placeholder:"e.g. Provide opening balances \u2014 FY25"},null,512),[[ye,a.value.subject]]),a.value.subject.length>120?(l(),c("div",bt,i(140-a.value.subject.length)+" characters remaining \u2014 keep subjects concise. ",1)):T("",!0)]),e("div",null,[gt,oe(e("select",{"onUpdate:modelValue":D[3]||(D[3]=L=>a.value.customer=L),class:"finput"},[$t,(l(!0),c(O,null,B((I=t(f).data)!=null?I:[],L=>(l(),c("option",{key:L.name,value:L.name},i(L.customer_name||L.name),9,kt))),128))],512),[[Me,a.value.customer]])]),e("div",null,[wt,e("div",xt,[(l(),c(O,null,B(r,L=>e("button",{key:L,type:"button",class:H(["chip",a.value.data_type===L?"on":""]),onClick:F=>a.value.data_type=L},[n(t(y),{name:t(he)[L],style:{width:"15px",height:"15px"}},null,8,["name"]),w(" "+i(L),1)],10,Ct)),64))])]),e("div",null,[Rt,e("div",St,[(l(!0),c(O,null,B(t(K),(L,F)=>(l(),c("button",{key:F,type:"button",class:H(["chip",a.value.priority===F?"on":""]),"data-tone":L.tone,onClick:Q=>a.value.priority=F},[Dt,w(i(F),1)],10,qt))),128))]),t(k)?(l(),c("div",Lt,[e("div",Tt,[n(t(y),{name:"clock"})]),e("div",At,[Mt,e("b",null,i(t(k).frH)+"h",1),Nt,e("b",null,i(t(k).resH>=48?Math.round(t(k).resH/24)+" days":t(k).resH+"h"),1),jt])])):T("",!0)]),e("div",null,[It,oe(e("textarea",{"onUpdate:modelValue":D[4]||(D[4]=L=>a.value.description=L),class:"finput fta",placeholder:"Describe exactly what data is needed, format, cut-off dates\u2026"},null,512),[[ye,a.value.description]]),Ht])]),e("div",Ot,[e("span",zt,"Assigned to you \xB7 "+i(t(p)),1),e("button",{class:"btn",onClick:D[5]||(D[5]=L=>s.$emit("close"))},"Cancel"),e("button",{class:"btn primary",disabled:!t($)||g.value,onClick:q},[n(t(y),{name:"plus",style:{width:"14px",height:"14px"}}),w(" "+i(g.value?"Raising\u2026":"Raise request"),1)],8,Pt)])])])}}};const Bt={class:"subhead"},Ft={class:"h1"},Et={class:"tabs"},Vt=["onClick"],Kt=["data-tone"],Yt={class:"toolbar"},Wt={class:"search"},Xt=e("div",{style:{flex:"1"}},null,-1),Gt={class:"sort-ctrl"},Jt=e("option",{value:"creation"},"Created",-1),Zt=e("option",{value:"modified"},"Last updated",-1),Qt=e("option",{value:"priority"},"Priority",-1),es=[Jt,Zt,Qt],ts=["title"],ss={class:"seg-mini"},os=w("New request "),ns={key:0,style:{"text-align":"center",padding:"80px 20px"}},as=e("div",{style:{width:"24px",height:"24px",border:"2px solid var(--accent)","border-top-color":"transparent","border-radius":"99px",animation:"spin 0.7s linear infinite",margin:"0 auto"}},null,-1),ls=[as],is={key:1,class:"empty"},cs=e("div",{style:{"font-weight":"600",color:"var(--ink-2)"}},"Nothing here",-1),rs=e("div",{style:{"font-size":"13px"}},"No requests match this filter.",-1),ds={key:2,class:"tablewrap"},us={class:"tbl"},_s=e("th",{style:{width:"80px"}},"ID",-1),hs=e("th",null,"Request",-1),ps=e("th",{style:{width:"190px"}},"Customer",-1),vs=e("th",{style:{width:"110px"}},"Priority",-1),ms=e("th",{style:{width:"150px"}},"SLA",-1),fs=e("th",{style:{width:"150px"}},"Status",-1),ys={key:0,style:{width:"48px"}},bs=["onClick"],gs={class:"id"},$s=["title"],ks={class:"subj"},ws={class:"meta"},xs={class:"cust-cell"},Cs={class:"nm"},Rs={class:"co"},Ss={key:0},qs={key:3,class:"cards"},Ds=["onClick"],Ls={class:"top"},Ts={class:"id"},As={class:"subj"},Ms={style:{display:"flex","align-items":"center",gap:"8px"}},Ns={class:"pill","data-tone":"slate",style:{gap:"6px"}},js={style:{"margin-top":"auto"}},Is={class:"foot"},Hs={class:"cust-cell"},Os={class:"co",style:{"font-weight":"550",color:"var(--ink-2)"}},zs={key:4,style:{"overflow-x":"auto"}},Ps={class:"board"},Us={class:"col-head"},Bs={class:"cnt"},Fs={class:"col-body"},Es=["onClick"],Vs={class:"row"},Ks={style:{"font-family":"var(--mono)","font-size":"11px",color:"var(--ink-4)"}},Ys={class:"subj"},Ws={class:"row"},Xs={class:"row",style:{"padding-top":"8px","border-top":"1px solid var(--border)"}},Gs={class:"cust-cell"},Js={class:"co"},Zs={key:0,style:{"font-size":"12px",color:"var(--ink-4)",padding:"10px 4px","font-style":"italic"}},Qs={key:5,class:"load-more"},eo=w(" Load more "),to={style:{color:"var(--ink-4)","font-weight":"400"}},so={props:{role:{type:String,default:"staff"}},emits:["requests-loaded"],setup(d,{emit:h}){const _=d,p=xe(),r=Ne(),a=20,g=S(p.query.tab||"all"),f=S(p.query.layout||"table"),m=S(p.query.q||""),k=S(p.query.sort||"creation"),$=S(p.query.dir||"desc"),N=S(a),q=S(!1),j=S(Date.now()),C=S(new Set);ne([g,m,k,$,f],()=>{N.value=a}),ne([g,f,k,$,m],()=>{r.replace({query:J(J(J(J(J({},f.value!=="table"&&{layout:f.value}),g.value!=="all"&&{tab:g.value}),k.value!=="creation"&&{sort:k.value}),$.value!=="desc"&&{dir:$.value}),m.value.trim()&&{q:m.value})})});function s(){return V(this,null,function*(){if(_.role!=="staff")return;const x=yield ae({url:"onboardpro.api.get_unread_requests"});C.value=new Set(x)})}$e(s);const D=setInterval(()=>{j.value=Date.now()},1e3);ke(()=>clearInterval(D));const I=[{key:"all",label:"All"},{key:"In Review",label:"In Review"},{key:"Needs Revision",label:"Needs Revision"},{key:"Resolved",label:"Resolved"},{key:"breached",label:"Breached"}],L=["Open","In Review","Needs Revision","Resolved"],F=we({doctype:"Implementation Request",fields:["name","subject","customer","customer_name","status","priority","data_type","assignee","assignee_name","fr_state","res_state","fr_due_at","res_due_at","creation","modified"],orderBy:"creation desc",pageLength:100,auto:!0}),Q=R(()=>{var x;return(x=F.data)!=null?x:[]});function ve(x,b){return b==="all"?!0:b==="breached"?x.status!=="Resolved"&&P(x.res_due_at)<j.value:x.status===b}const ie=R(()=>{let x=Q.value;if(m.value.trim()){const b=m.value.toLowerCase();x=x.filter(o=>(o.subject+o.customer_name+o.name+o.data_type).toLowerCase().includes(b))}return x}),W=R(()=>{const x=$.value==="asc"?1:-1,b=k.value;return[...ie.value].sort((o,M)=>{var u,A,v,U,de,ue;const z=b==="priority"?(A=(u=K[o.priority])==null?void 0:u.rank)!=null?A:99:(v=o[b])!=null?v:"",E=b==="priority"?(de=(U=K[M.priority])==null?void 0:U.rank)!=null?de:99:(ue=M[b])!=null?ue:"";return z<E?-x:z>E?x:0})}),G=R(()=>W.value.filter(x=>ve(x,g.value))),ce=R(()=>G.value.slice(0,N.value)),be=R(()=>N.value<G.value.length),ee=R(()=>{const x=ie.value,b={all:x.length};return I.slice(1).forEach(o=>{b[o.key]=x.filter(M=>ve(M,o.key)).length}),b}),re=R(()=>{const x={};return L.forEach(b=>{x[b]=[]}),W.value.forEach(b=>{x[b.status]&&x[b.status].push(b)}),x});ne(Q,x=>{const b=x.filter(M=>M.status!=="Resolved").length,o=x.filter(M=>M.status!=="Resolved"&&P(M.res_due_at)<j.value).length;h("requests-loaded",{open:b,breach:o})},{immediate:!0});function te(x){r.push({name:"RequestDetail",params:{id:x}})}function me(x){q.value=!1,F.reload(),s(),te(x)}return(x,b)=>(l(),c("div",null,[e("div",Bt,[e("div",Ft,i(d.role==="customer"?"Your data requests":"Requests"),1),e("div",Et,[(l(),c(O,null,B(I,o=>{var M;return e("button",{key:o.key,class:H(["tab",g.value===o.key?"on":""]),onClick:z=>g.value=o.key},[o.key==="breached"&&t(ee)[o.key]>0?(l(),fe(t(y),{key:0,name:"alert-triangle",style:{width:"13px",height:"13px",color:"var(--t-solid)"},"data-tone":"red"})):T("",!0),w(" "+i(o.label)+" ",1),e("span",{class:"cnt","data-tone":o.key==="breached"?"red":"slate"},i((M=t(ee)[o.key])!=null?M:0),9,Kt)],10,Vt)}),64))])]),e("div",Yt,[e("label",Wt,[n(t(y),{name:"search"}),oe(e("input",{"onUpdate:modelValue":b[0]||(b[0]=o=>m.value=o),placeholder:"Search by subject, customer, ID\u2026"},null,512),[[ye,m.value]])]),Xt,e("div",Gt,[oe(e("select",{"onUpdate:modelValue":b[1]||(b[1]=o=>k.value=o),class:"sort-sel"},es,512),[[Me,k.value]]),e("button",{class:"sort-dir",title:$.value==="desc"?"Descending":"Ascending",onClick:b[2]||(b[2]=o=>$.value=$.value==="desc"?"asc":"desc")},[n(t(y),{name:$.value==="desc"?"arrow-down":"arrow-up",style:{width:"14px",height:"14px"}},null,8,["name"])],8,ts)]),e("div",ss,[e("button",{class:H(f.value==="table"?"on":""),title:"Table",onClick:b[3]||(b[3]=o=>f.value="table")},[n(t(y),{name:"list"})],2),e("button",{class:H(f.value==="cards"?"on":""),title:"Cards",onClick:b[4]||(b[4]=o=>f.value="cards")},[n(t(y),{name:"grid"})],2),e("button",{class:H(f.value==="kanban"?"on":""),title:"Board",onClick:b[5]||(b[5]=o=>f.value="kanban")},[n(t(y),{name:"columns"})],2)]),d.role==="staff"?(l(),c("button",{key:0,class:"btn primary",onClick:b[6]||(b[6]=o=>q.value=!0)},[n(t(y),{name:"plus",style:{width:"15px",height:"15px"}}),os])):T("",!0)]),t(F).list.loading?(l(),c("div",ns,ls)):t(G).length===0?(l(),c("div",is,[n(t(y),{name:"inbox"}),cs,rs])):f.value==="table"?(l(),c("div",ds,[e("table",us,[e("thead",null,[e("tr",null,[_s,hs,ps,vs,ms,fs,d.role==="staff"?(l(),c("th",ys,"Owner")):T("",!0)])]),e("tbody",null,[(l(!0),c(O,null,B(t(ce),o=>{var M,z;return l(),c("tr",{key:o.name,class:H({unread:C.value.has(o.name)}),onClick:E=>te(o.name)},[e("td",null,[e("span",gs,i(o.name),1)]),e("td",{class:"req-cell",title:o.subject},[e("div",ks,i(o.subject),1),e("div",ws,[n(t(y),{name:t(he)[o.data_type]||"file",style:{width:"13px",height:"13px",opacity:"0.6"}},null,8,["name"]),w(" "+i(o.data_type),1)])],8,$s),e("td",null,[e("div",xs,[n(Y,{name:o.customer_name||o.customer,role:"customer",size:28},null,8,["name"]),e("div",null,[e("div",Cs,i(o.customer_name),1),e("div",Rs,i(o.customer),1)])])]),e("td",null,[n(pe,{priority:o.priority},null,8,["priority"])]),e("td",null,[n(le,{deadline:o.res_due_at,now:j.value,"window-h":(z=(M=t(K)[o.priority])==null?void 0:M.resH)!=null?z:48,state:o.res_state},null,8,["deadline","now","window-h","state"])]),e("td",null,[n(X,{status:o.status},null,8,["status"])]),d.role==="staff"?(l(),c("td",Ss,[n(Y,{name:o.assignee_name||o.assignee||"?",role:"staff",size:28},null,8,["name"])])):T("",!0)],10,bs)}),128))])])])):f.value==="cards"?(l(),c("div",qs,[(l(!0),c(O,null,B(t(ce),o=>{var M,z;return l(),c("div",{key:o.name,class:H(["rcard",C.value.has(o.name)?"unread":""]),onClick:E=>te(o.name)},[e("div",Ls,[e("span",Ts,"#"+i(o.name),1),n(X,{status:o.status},null,8,["status"])]),e("div",As,i(o.subject),1),e("div",Ms,[e("span",Ns,[n(t(y),{name:t(he)[o.data_type]||"file",style:{width:"12px",height:"12px"}},null,8,["name"]),w(" "+i(o.data_type),1)]),n(pe,{priority:o.priority},null,8,["priority"])]),e("div",js,[n(le,{deadline:o.res_due_at,now:j.value,"window-h":(z=(M=t(K)[o.priority])==null?void 0:M.resH)!=null?z:48,state:o.res_state},null,8,["deadline","now","window-h","state"])]),e("div",Is,[e("div",Hs,[n(Y,{name:o.customer_name||o.customer,role:"customer",size:20},null,8,["name"]),e("span",Os,i(o.customer_name),1)])])],10,Ds)}),128))])):(l(),c("div",zs,[e("div",Ps,[(l(),c(O,null,B(L,o=>{var M,z,E;return e("div",{key:o,class:"col"},[e("div",Us,[n(X,{status:o},null,8,["status"]),e("span",Bs,i((z=(M=t(re)[o])==null?void 0:M.length)!=null?z:0),1)]),e("div",Fs,[(l(!0),c(O,null,B(t(re)[o],u=>{var A,v;return l(),c("div",{key:u.name,class:H(["kcard",C.value.has(u.name)?"unread":""]),onClick:U=>te(u.name)},[e("div",Vs,[e("span",Ks,"#"+i(u.name),1),n(pe,{priority:u.priority},null,8,["priority"])]),e("div",Ys,i(u.subject),1),e("div",Ws,[n(le,{deadline:u.res_due_at,now:j.value,"window-h":(v=(A=t(K)[u.priority])==null?void 0:A.resH)!=null?v:48,state:u.res_state},null,8,["deadline","now","window-h","state"])]),e("div",Xs,[e("div",Gs,[n(Y,{name:u.customer_name||u.customer,role:"customer",size:20},null,8,["name"]),e("span",Js,i(u.customer_name),1)]),n(Y,{name:u.assignee_name||u.assignee||"?",role:"staff",size:20},null,8,["name"])])],10,Es)}),128)),((E=t(re)[o])==null?void 0:E.length)?T("",!0):(l(),c("div",Zs," No requests "))])])}),64))])])),t(be)&&f.value!=="kanban"?(l(),c("div",Qs,[e("button",{class:"btn",onClick:b[7]||(b[7]=o=>N.value+=a)},[eo,e("span",to," ("+i(t(G).length-N.value)+" remaining) ",1)])])):T("",!0),q.value?(l(),fe(Ut,{key:6,onClose:b[8]||(b[8]=o=>q.value=!1),onCreated:me})):T("",!0)]))}},oo={props:{ext:{type:String,default:"doc"}},setup(d){const h=d,_=["xlsx","csv","pdf","zip","doc"],p=R(()=>{const a=(h.ext||"doc").toLowerCase();return _.includes(a)?a:"doc"}),r=R(()=>p.value.slice(0,4).toUpperCase());return(a,g)=>(l(),c("span",{class:H(["fileicon",t(p)])},i(t(r)),3))}},no={key:0,class:"detail"},ao={class:"detail-main"},lo={class:"detail-head"},io={class:"subj"},co={class:"sub"},ro={class:"id"},uo=e("span",{class:"dot-sep"},null,-1),_o=e("span",{class:"dot-sep"},null,-1),ho=e("span",{class:"dot-sep"},null,-1),po={class:"descblock"},vo={class:"dl"},mo={class:"pill","data-tone":"slate",style:{gap:"6px"}},fo=e("div",{class:"section-label"},"Data & attachments",-1),yo={class:"attach-grid"},bo={key:0,style:{"font-size":"13px",color:"var(--ink-4)","margin-bottom":"4px"}},go=["href"],$o={class:"fmeta"},ko={class:"fn"},wo={class:"fs"},xo={class:"by"},Co={class:"big"},Ro={class:"sm"},So=e("div",{class:"section-label",style:{"margin-top":"28px"}},"Activity",-1),qo={class:"timeline"},Do={class:"msg-av"},Lo={class:"bubble"},To={class:"bhead"},Ao={class:"nm"},Mo={class:"when"},No={class:"btext"},jo={key:1,class:"tl-item"},Io=["data-tone"],Ho={class:"tl-event"},Oo=["innerHTML"],zo={class:"when"},Po={class:"composer"},Uo={key:0,class:"reply-trigger"},Bo=w(" Reply "),Fo={key:1,class:"composer-box"},Eo=["placeholder","onKeydown"],Vo={class:"composer-bar"},Ko=e("span",{class:"grow"},null,-1),Yo={class:"as"},Wo=w("Posting as "),Xo={style:{color:"var(--ink-2)"}},Go=["disabled"],Jo=w("Send "),Zo={class:"rail"},Qo={class:"rail-card"},en=e("h3",null,"Status",-1),tn={key:0,class:"menu"},sn=["onClick"],on={key:1,style:{padding:"4px 0"}},nn={class:"rail-card"},an=e("h3",null,"SLA tracking",-1),ln={key:0,class:"sla-hold-badge"},cn=w(" Clock paused \u2014 under review "),rn={class:"slahero"},dn={class:"slatrack"},un={class:"lh"},_n={class:"nm"},hn=w("First response"),pn=["data-tone"],vn={key:0,class:"sla-meta"},mn={class:"slatrack"},fn={class:"lh"},yn={class:"nm"},bn=w("Resolution"),gn=["data-tone"],$n={key:0,class:"sla-meta"},kn={class:"rail-card"},wn=e("h3",null,"Details",-1),xn={class:"field"},Cn=e("span",{class:"k"},"Priority",-1),Rn={class:"v"},Sn={class:"field"},qn=e("span",{class:"k"},"Data type",-1),Dn={class:"v"},Ln={class:"field"},Tn=e("span",{class:"k"},"Owner",-1),An={class:"v"},Mn={class:"field"},Nn=e("span",{class:"k"},"Customer",-1),jn={class:"v"},In={class:"field"},Hn=e("span",{class:"k"},"Created",-1),On={class:"v"},zn={key:1,style:{display:"flex","align-items":"center","justify-content":"center",flex:"1",height:"100%"}},Pn=e("div",{style:{width:"24px",height:"24px",border:"2px solid var(--accent)","border-top-color":"transparent","border-radius":"99px",animation:"spin 0.7s linear infinite"}},null,-1),Un=[Pn],Bn={props:{id:{type:String,required:!0},role:{type:String,default:"staff"}},emits:["set-title"],setup(d,{emit:h}){var o,M,z,E;const _=d,p=Ae("toast",()=>{}),r=S(Date.now()),a=S(""),g=S(!1),f=S(!1),m=S(!1),k=S(null),$=S(null),N=S(null),q=S(null),j=["Open","In Review","Needs Revision","Resolved"],C=setInterval(()=>{r.value=Date.now()},1e3);ke(()=>clearInterval(C)),$e(()=>{document.addEventListener("mousedown",u=>{q.value&&!q.value.contains(u.target)&&(m.value=!1)}),_.role==="staff"&&ae({url:"onboardpro.api.mark_seen",params:{docname:_.id}})});const s=Xe({doctype:"Implementation Request",name:_.id,auto:!0});ne(()=>{var u;return(u=s.doc)==null?void 0:u.subject},u=>{u&&h("set-title",u)});const D=S([]);function I(){return V(this,null,function*(){D.value=yield ae({url:"onboardpro.api.get_activity",params:{docname:_.id}})})}I();const L=we({doctype:"File",fields:["name","file_name","file_url","file_size","creation","attached_to_name"],filters:[["attached_to_doctype","=","Implementation Request"],["attached_to_name","=",_.id]],orderBy:"creation asc",auto:!0}),F=R(()=>{var u;return(u=L.data)!=null?u:[]}),Q=((M=(o=window.frappe)==null?void 0:o.session)==null?void 0:M.user)||"",ve=((E=(z=window.frappe)==null?void 0:z.session)==null?void 0:E.user_fullname)||Q,ie=R(()=>D.value.map(u=>Te(J({},u),{isStaff:!!u.is_staff,isSelf:u.owner===Q})));ne(()=>ie.value.length,()=>V(this,null,function*(){yield Ie(),k.value&&(k.value.scrollTop=k.value.scrollHeight)}));const W=R(()=>{var u,A;return K[(A=(u=s.doc)==null?void 0:u.priority)!=null?A:"High"]});function G(u,A){var U;if(u==="Fulfilled")return"green";if(u==="Failed")return"red";if(!A)return"blue";const{tone:v}=Se(P(A),r.value,W.value.resH);return(U=Ue[v])!=null?U:"blue"}function ce(u,A,v){if(A==="Fulfilled")return"100%";if(!u||!v)return"40%";const{pct:U}=Se(P(u),r.value,v);return Math.min(100,Math.max(4,U*100))+"%"}function be(){return V(this,null,function*(){var u;f.value=!0,yield Ie(),(u=$.value)==null||u.focus()})}function ee(){return V(this,null,function*(){const u=a.value.trim();if(!(!u||g.value)){g.value=!0;try{yield ae({url:"onboardpro.api.add_comment",params:{docname:_.id,content:u}}),a.value="",f.value=!1,$.value&&($.value.style.height="auto"),yield I()}finally{g.value=!1}}})}function re(){const u=$.value;u&&(u.style.height="auto",u.style.height=Math.min(160,u.scrollHeight)+"px")}function te(u){return V(this,null,function*(){m.value=!1,u!==s.doc.status&&(yield s.setValue.submit({status:u}),p("Status \u2192 "+u),yield I())})}function me(){var u;(u=N.value)==null||u.click()}function x(u){return V(this,null,function*(){var U,de,ue;const A=(U=u.target.files)==null?void 0:U[0];if(!A)return;const v=new FormData;v.append("file",A),v.append("doctype","Implementation Request"),v.append("docname",_.id),yield fetch("/api/method/upload_file",{method:"POST",body:v,headers:{"X-Frappe-CSRF-Token":(ue=(de=window.frappe)==null?void 0:de.csrf_token)!=null?ue:""}}),L.reload(),p("File attached")})}function b(u){return(u||"").split(".").pop()||"doc"}return(u,A)=>t(s).doc?(l(),c("div",no,[e("div",ao,[e("div",lo,[e("div",io,i(t(s).doc.subject),1),e("div",co,[e("span",ro,"#"+i(t(s).doc.name),1),uo,n(X,{status:t(s).doc.status},null,8,["status"]),_o,e("span",null,"Opened "+i(t(_e)(t(P)(t(s).doc.creation),r.value)),1),ho,e("span",null,i(t(s).doc.customer_name||t(s).doc.customer),1)])]),e("div",{ref_key:"scrollEl",ref:k,class:"detail-scroll"},[e("div",po,[e("p",null,i(t(s).doc.description||"No description provided."),1),e("div",vo,[e("span",mo,[n(t(y),{name:t(he)[t(s).doc.data_type]||"file",style:{width:"12px",height:"12px"}},null,8,["name"]),w(" "+i(t(s).doc.data_type),1)]),n(pe,{priority:t(s).doc.priority},null,8,["priority"])])]),fo,e("div",yo,[t(F).length?T("",!0):(l(),c("div",bo," No files yet. ")),(l(!0),c(O,null,B(t(F),v=>(l(),c("div",{key:v.name,class:"attach-row"},[e("a",{class:"attach",href:v.file_url,target:"_blank"},[n(oo,{ext:b(v.file_name)},null,8,["ext"]),e("div",$o,[e("div",ko,i(v.file_name),1),e("div",wo,i(v.file_size?(v.file_size/1024).toFixed(0)+" KB":"")+" \xB7 "+i(v.attached_to_name),1)])],8,go),e("span",xo,i(t(_e)(t(P)(v.creation),r.value)),1)]))),128)),t(s).doc.status!=="Resolved"?(l(),c("div",{key:1,class:"dropzone",onClick:me},[n(t(y),{name:"upload"}),e("div",Co,i(d.role==="customer"?"Upload your data here":"Attach a file"),1),e("div",Ro,i(d.role==="customer"?"Drag a file or click to browse \u2014 XLSX, CSV, PDF, ZIP":"Drag & drop or click to browse"),1)])):T("",!0),e("input",{ref_key:"fileInput",ref:N,type:"file",style:{display:"none"},onChange:x},null,544)]),So,e("div",qo,[(l(!0),c(O,null,B(t(ie),(v,U)=>(l(),c(O,{key:U},[v.kind==="msg"?(l(),c("div",{key:0,class:H(["msg",v.isSelf?"self":""])},[e("div",Do,[n(Y,{name:v.owner_name||v.owner,role:v.isStaff?"staff":"customer",size:28},null,8,["name","role"])]),e("div",Lo,[e("div",To,[e("span",Ao,i(v.owner_name||v.owner),1),e("span",{class:H(["tag",v.isStaff?"staff":"customer"])},i(v.isStaff?"User":"Customer"),3),e("span",Mo,i(t(_e)(t(P)(v.creation),r.value)),1)]),e("div",No,i(v.content),1)])],2)):(l(),c("div",jo,[e("div",{class:"tl-node","data-tone":v.tone||void 0},[n(t(y),{name:v.icon,style:{width:"13px",height:"13px"}},null,8,["name"])],8,Io),e("div",Ho,[e("span",{innerHTML:v.html},null,8,Oo),e("span",zo,i(t(_e)(t(P)(v.creation),r.value)),1)])]))],64))),128)),T("",!0)])],512),e("div",Po,[f.value?(l(),c("div",Fo,[oe(e("textarea",{ref_key:"taRef",ref:$,"onUpdate:modelValue":A[0]||(A[0]=v=>a.value=v),placeholder:d.role==="customer"?"Reply to Risto\u2026":"Reply to "+(t(s).doc.customer_name||"customer")+"\u2026",onInput:re,onKeydown:[Ce(je(ee,["ctrl","prevent"]),["enter"]),Ce(je(ee,["meta","prevent"]),["enter"]),A[1]||(A[1]=Ce(v=>f.value=!1,["esc"]))]},null,40,Eo),[[ye,a.value]]),e("div",Vo,[e("button",{class:"iconbtn",title:"Attach file",onClick:me},[n(t(y),{name:"paperclip"})]),Ko,e("span",Yo,[Wo,e("b",Xo,i(t(ve)),1)]),e("button",{class:"btn sm",onClick:A[2]||(A[2]=v=>f.value=!1)},"Cancel"),e("button",{class:"btn primary sm",disabled:!a.value.trim()||g.value,onClick:ee},[n(t(y),{name:"send",style:{width:"14px",height:"14px"}}),Jo],8,Go)])])):(l(),c("div",Uo,[e("button",{class:"btn reply-btn",onClick:be},[n(t(y),{name:"corner-up-left",style:{width:"15px",height:"15px"}}),Bo])]))])]),e("aside",Zo,[e("div",Qo,[en,d.role==="staff"?(l(),c("div",{key:0,class:"statussel",ref_key:"statusRef",ref:q},[e("button",{onClick:A[3]||(A[3]=v=>m.value=!m.value)},[n(X,{status:t(s).doc.status},null,8,["status"]),n(t(y),{name:"chevron-down",class:"chev",style:{width:"16px",height:"16px"}})]),m.value?(l(),c("div",tn,[(l(),c(O,null,B(j,v=>e("button",{key:v,onClick:U=>te(v)},[n(X,{status:v},null,8,["status"]),v===t(s).doc.status?(l(),fe(t(y),{key:0,name:"check",class:"check",style:{width:"15px",height:"15px"}})):T("",!0)],8,sn)),64))])):T("",!0)],512)):(l(),c("div",on,[n(X,{status:t(s).doc.status},null,8,["status"])]))]),e("div",nn,[an,t(s).doc.on_hold_since?(l(),c("div",ln,[n(t(y),{name:"pause-circle",style:{width:"13px",height:"13px"}}),cn])):T("",!0),e("div",rn,[e("div",dn,[e("div",un,[e("span",_n,[n(t(y),{name:"clock"}),hn]),n(le,{deadline:t(s).doc.fr_due_at,now:r.value,"window-h":t(W).frH,state:t(s).doc.fr_state},null,8,["deadline","now","window-h","state"])]),e("div",{class:"slabar","data-tone":G(t(s).doc.fr_state,t(s).doc.fr_due_at)},[e("i",{style:se({width:ce(t(s).doc.fr_due_at,t(s).doc.fr_state,t(W).frH)})},null,4)],8,pn),t(s).doc.first_responded_on?(l(),c("div",vn,[n(t(y),{name:"check",style:{width:"11px",height:"11px"}}),w(" Responded "+i(t(_e)(t(P)(t(s).doc.first_responded_on),r.value)),1)])):T("",!0)]),e("div",mn,[e("div",fn,[e("span",yn,[n(t(y),{name:"clock"}),bn]),n(le,{deadline:t(s).doc.res_due_at,now:r.value,"window-h":t(W).resH,state:t(s).doc.res_state},null,8,["deadline","now","window-h","state"])]),e("div",{class:"slabar","data-tone":G(t(s).doc.res_state,t(s).doc.res_due_at)},[e("i",{style:se({width:ce(t(s).doc.res_due_at,t(s).doc.res_state,t(W).resH)})},null,4)],8,gn),(t(s).doc.total_hold_time||0)>=60?(l(),c("div",$n,[n(t(y),{name:"pause",style:{width:"11px",height:"11px"}}),w(" "+i(Math.round(t(s).doc.total_hold_time/360)/10)+"h paused (deadline extended) ",1)])):T("",!0)])])]),e("div",kn,[wn,e("div",xn,[Cn,e("span",Rn,[n(pe,{priority:t(s).doc.priority},null,8,["priority"])])]),e("div",Sn,[qn,e("span",Dn,[n(t(y),{name:t(he)[t(s).doc.data_type]||"file",style:{width:"15px",height:"15px",color:"var(--ink-3)"}},null,8,["name"]),w(" "+i(t(s).doc.data_type),1)])]),e("div",Ln,[Tn,e("span",An,[n(Y,{name:t(s).doc.assignee_name||t(s).doc.assignee||"?",role:"staff",size:20},null,8,["name"]),w(" "+i(t(s).doc.assignee_name||t(s).doc.assignee),1)])]),e("div",Mn,[Nn,e("span",jn,[n(Y,{name:t(s).doc.customer_name||t(s).doc.customer,role:"customer",size:20},null,8,["name"]),w(" "+i(t(s).doc.customer_name||t(s).doc.customer),1)])]),e("div",In,[Hn,e("span",On,i(t(nt)(t(P)(t(s).doc.creation))),1)])])])])):(l(),c("div",zn,Un))}},Fn={class:"pulse"},En=e("div",{class:"h1",style:{"margin-bottom":"4px"}},"SLA Pulse",-1),Vn={style:{color:"var(--ink-3)","font-size":"13.5px","margin-bottom":"22px"}},Kn={class:"stat-grid"},Yn={class:"stat"},Wn={class:"lbl"},Xn=w("Open requests"),Gn={class:"num"},Jn={class:"sub2"},Zn=["data-tone"],Qn={class:"lbl"},ea=w("SLA breached"),ta=e("div",{class:"sub2"},"Need attention now",-1),sa=["data-tone"],oa={class:"lbl"},na=w("At risk (<8h)"),aa=e("div",{class:"sub2"},"Approaching deadline",-1),la={class:"stat","data-tone":"green"},ia={class:"lbl"},ca=w("Resolved"),ra={class:"num",style:{color:"var(--t-ink)"}},da=e("div",{class:"sub2"},"Data accepted",-1),ua=e("div",{class:"section-label"},"Watchlist \xB7 soonest deadlines",-1),_a={class:"tablewrap",style:{padding:"0 0 40px"}},ha={class:"tbl"},pa=e("th",{style:{width:"80px"}},"ID",-1),va=e("th",null,"Request",-1),ma={key:0,style:{width:"190px"}},fa=e("th",{style:{width:"160px"}},"Resolution SLA",-1),ya=e("th",{style:{width:"150px"}},"Status",-1),ba={key:0},ga=["colspan"],$a=["onClick"],ka={class:"id"},wa={class:"subj"},xa={key:0},Ca={class:"cust-cell"},Ra={class:"nm"},Sa={class:"co"},qa={props:{role:{type:String,default:"staff"}},setup(d){const h=d,_=R(()=>h.role),p=S(Date.now()),r=setInterval(()=>{p.value=Date.now()},1e3);ke(()=>clearInterval(r));const a=we({doctype:"Implementation Request",fields:["name","subject","customer","customer_name","status","priority","res_state","res_due_at"],orderBy:"res_due_at asc",pageLength:200,auto:!0}),g=R(()=>{var q;return(q=a.data)!=null?q:[]}),f=R(()=>g.value.filter(q=>q.status!=="Resolved")),m=R(()=>g.value.filter(q=>q.status==="Resolved")),k=R(()=>f.value.filter(q=>P(q.res_due_at)<p.value)),$=R(()=>f.value.filter(q=>{const j=P(q.res_due_at)-p.value;return j>0&&j<8*36e5})),N=R(()=>[...k.value,...$.value].sort((q,j)=>P(q.res_due_at)-P(j.res_due_at)).slice(0,8));return(q,j)=>(l(),c("div",Fn,[En,e("div",Vn,i(t(_)==="customer"?"Live status of your open data requests.":"Live health of every open data request."),1),e("div",Kn,[e("div",Yn,[e("div",Wn,[n(t(y),{name:"inbox"}),Xn]),e("div",Gn,i(t(f).length),1),e("div",Jn,i(t(_)==="customer"?"Your active requests":"Across all customers"),1)]),e("div",{class:"stat","data-tone":t(k).length?"red":"green"},[e("div",Qn,[n(t(y),{name:"alert-triangle"}),ea]),e("div",{class:"num",style:se(t(k).length?"color:var(--t-ink)":"")},i(t(k).length),5),ta],8,Zn),e("div",{class:"stat","data-tone":t($).length?"amber":"green"},[e("div",oa,[n(t(y),{name:"clock"}),na]),e("div",{class:"num",style:se(t($).length?"color:var(--t-ink)":"")},i(t($).length),5),aa],8,sa),e("div",la,[e("div",ia,[n(t(y),{name:"check-circle"}),ca]),e("div",ra,i(t(m).length),1),da])]),ua,e("div",_a,[e("table",ha,[e("thead",null,[e("tr",null,[pa,va,t(_)==="staff"?(l(),c("th",ma,"Customer")):T("",!0),fa,ya])]),e("tbody",null,[t(N).length?T("",!0):(l(),c("tr",ba,[e("td",{colspan:t(_)==="staff"?5:4,style:{"text-align":"center",color:"var(--ink-4)",height:"80px"}}," All clear \u2014 nothing at risk. ",8,ga)])),(l(!0),c(O,null,B(t(N),C=>{var s,D;return l(),c("tr",{key:C.name,onClick:I=>q.$router.push({name:"RequestDetail",params:{id:C.name}})},[e("td",null,[e("span",ka,i(C.name),1)]),e("td",null,[e("div",wa,i(C.subject),1)]),t(_)==="staff"?(l(),c("td",xa,[e("div",Ca,[n(Y,{name:C.customer_name||C.customer,role:"customer",size:28},null,8,["name"]),e("div",null,[e("div",Ra,i(C.customer_name),1),e("div",Sa,i(C.customer),1)])])])):T("",!0),e("td",null,[n(le,{deadline:C.res_due_at,now:p.value,"window-h":(D=(s=t(K)[C.priority])==null?void 0:s.resH)!=null?D:48,state:C.res_state},null,8,["deadline","now","window-h","state"])]),e("td",null,[n(X,{status:C.status},null,8,["status"])])],8,$a)}),128))])])])]))}};var Da=Ge({history:Je("/onboardpro/"),routes:[{path:"/",name:"Requests",component:so},{path:"/pulse",name:"Pulse",component:qa},{path:"/request/:id",name:"RequestDetail",component:Bn,props:!0}]});const La={class:"brand"},Ta={class:"brand-mark"},Aa=e("div",null,[e("div",{class:"brand-name"},"OnboardPro"),e("div",{class:"brand-sub"},"Implementation Portal")],-1),Ma={class:"nav"},Na=e("div",{class:"nav-label"},"Workspace",-1),ja=["onClick"],Ia=w(" SLA Pulse "),Ha={key:0,class:"nav-count",style:{color:"var(--t-solid)"},"data-tone":"red"},Oa=["onClick"],za=w(" Requests "),Pa={class:"nav-count"},Ua={class:"side-foot"},Ba={key:0,class:"user-menu"},Fa=w(" Helpdesk "),Ea=w(" Log out "),Va={class:"user-card-info"},Ka={class:"user-card-name"},Ya={class:"user-card-role"},Wa={props:{openCount:{type:Number,default:0},breachCount:{type:Number,default:0},role:{type:String,default:"staff"},userName:{type:String,default:""},open:{type:Boolean,default:!1}},setup(d){const h=d,_=xe(),p=S(!1),r=`${window.location.protocol}//${window.location.hostname}/helpdesk`,a=R(()=>{var f,m;return h.userName||((m=(f=window.frappe)==null?void 0:f.session)==null?void 0:m.user_fullname)||"User"});function g(){return V(this,null,function*(){var f;try{yield fetch("/api/method/logout",{method:"POST",headers:{"X-Frappe-CSRF-Token":((f=window.frappe)==null?void 0:f.csrf_token)||"fetch"}})}finally{window.location.href="/login"}})}return(f,m)=>{const k=He("router-link");return l(),c(O,null,[e("aside",{class:H(["side",d.open?"open":""])},[e("div",La,[e("div",Ta,[n(t(y),{name:"inbox"})]),Aa]),e("nav",Ma,[Na,n(k,{to:"/pulse",custom:""},{default:Oe(({navigate:$,isActive:N})=>[e("button",{class:H(["nav-item",N?"active":""]),onClick:$},[n(t(y),{name:"activity"}),Ia,d.breachCount>0?(l(),c("span",Ha,i(d.breachCount),1)):T("",!0)],10,ja)]),_:1}),n(k,{to:"/",custom:""},{default:Oe(({navigate:$,isActive:N})=>[e("button",{class:H(["nav-item",N&&t(_).name!=="Pulse"?"active":""]),onClick:$},[n(t(y),{name:"inbox"}),za,e("span",Pa,i(d.openCount),1)],10,Oa)]),_:1})]),e("div",Ua,[p.value?(l(),c("div",Ba,[e("a",{href:r,target:"_blank",rel:"noopener noreferrer",class:"user-menu-item",onClick:m[0]||(m[0]=$=>p.value=!1)},[n(t(y),{name:"headphones"}),Fa]),e("button",{class:"user-menu-item danger",onClick:g},[n(t(y),{name:"log-out"}),Ea])])):T("",!0),e("button",{class:"user-card",onClick:m[1]||(m[1]=$=>p.value=!p.value)},[n(Y,{name:t(a),role:d.role,size:32},null,8,["name","role"]),e("div",Va,[e("div",Ka,i(t(a)),1),e("div",Ya,i(d.role==="staff"?"User":"Customer"),1)]),n(t(y),{class:"user-card-caret",name:p.value?"chevron-up":"chevron-down",style:{width:"14px",height:"14px"}},null,8,["name"])])])],2),p.value?(l(),c("div",{key:0,class:"menu-scrim",onClick:m[2]||(m[2]=$=>p.value=!1)})):T("",!0)],64)}}},Xa={key:0,class:"auth-loading"},Ga=e("div",{class:"auth-spinner"},null,-1),Ja=[Ga],Za={key:1,class:"app"},Qa={class:"main"},el={class:"topbar"},tl={class:"crumb"},sl={class:"here"},ol=e("span",{class:"here"},"SLA Pulse",-1),nl=e("span",{class:"grow"},null,-1),al=w("Close "),ll={class:"viewport"},il={class:"toasts"},cl={setup(d){const h=xe(),_=Ne(),p=S(!0),r=S("staff"),a=S(""),g=S(""),f=S(0),m=S(0),k=S([]),$=S(!1);ne(h,()=>{$.value=!1}),$e(()=>V(this,null,function*(){try{const C=yield ae({url:"onboardpro.api.get_session_role"});r.value=C.role,a.value=C.full_name,p.value=!1}catch(C){N()}}));function N(){const C=encodeURIComponent(window.location.pathname||"/onboardpro");window.location.href=`/login?redirect-to=${C}`}function q({open:C,breach:s}){f.value=C,m.value=s}function j(C){const s=Math.random();k.value.push({id:s,msg:C}),setTimeout(()=>{k.value=k.value.filter(D=>D.id!==s)},2600)}return ze("toast",j),ze("role",r),(C,s)=>{const D=He("router-view");return p.value?(l(),c("div",Xa,Ja)):(l(),c("div",Za,[n(Wa,{"open-count":f.value,"breach-count":m.value,role:r.value,"user-name":a.value,open:$.value},null,8,["open-count","breach-count","role","user-name","open"]),$.value?(l(),c("div",{key:0,class:"mob-sidebar-scrim",onClick:s[0]||(s[0]=I=>$.value=!1)})):T("",!0),e("div",Qa,[e("div",el,[e("button",{class:"mob-menu-btn",onClick:s[1]||(s[1]=I=>$.value=!$.value)},[n(t(y),{name:"menu"})]),e("div",tl,[e("span",{class:"root",onClick:s[2]||(s[2]=I=>t(_).push("/"))},i(r.value==="customer"?"My requests":"Requests"),1),t(h).name==="RequestDetail"?(l(),c(O,{key:0},[n(t(y),{name:"chevron-right",style:{width:"15px",height:"15px",color:"var(--ink-4)",flex:"none"}}),e("span",sl,i(g.value||t(h).params.id),1)],64)):t(h).name==="Pulse"?(l(),c(O,{key:1},[n(t(y),{name:"chevron-right",style:{width:"15px",height:"15px",color:"var(--ink-4)",flex:"none"}}),ol],64)):T("",!0)]),nl,t(h).name==="RequestDetail"?(l(),c("button",{key:0,class:"btn",onClick:s[3]||(s[3]=I=>t(_).push("/"))},[n(t(y),{name:"x",style:{width:"14px",height:"14px"}}),al])):T("",!0)]),e("div",ll,[n(D,{role:r.value,onRequestsLoaded:q,onSetTitle:s[4]||(s[4]=I=>g.value=I)},null,8,["role"])])]),e("div",il,[(l(!0),c(O,null,B(k.value,I=>(l(),c("div",{key:I.id,class:"toast"},[n(t(y),{name:"check-circle",class:"tk",style:{width:"16px",height:"16px"}}),w(" "+i(I.msg),1)]))),128))])]))}}};const qe=Ze(cl);Qe("resourceFetcher",ae);qe.use(Da);[et,tt,y,st].forEach(d=>qe.component(d.name,d));qe.mount("#app");
+var Fe = Object.defineProperty,
+	Ee = Object.defineProperties;
+var Ve = Object.getOwnPropertyDescriptors;
+var De = Object.getOwnPropertySymbols;
+var Ke = Object.prototype.hasOwnProperty,
+	Ye = Object.prototype.propertyIsEnumerable;
+var Le = (d, h, _) =>
+		h in d
+			? Fe(d, h, { enumerable: !0, configurable: !0, writable: !0, value: _ })
+			: (d[h] = _),
+	J = (d, h) => {
+		for (var _ in h || (h = {})) Ke.call(h, _) && Le(d, _, h[_]);
+		if (De) for (var _ of De(h)) Ye.call(h, _) && Le(d, _, h[_]);
+		return d;
+	},
+	Te = (d, h) => Ee(d, Ve(h));
+var V = (d, h, _) =>
+	new Promise((p, r) => {
+		var a = (m) => {
+				try {
+					f(_.next(m));
+				} catch (k) {
+					r(k);
+				}
+			},
+			g = (m) => {
+				try {
+					f(_.throw(m));
+				} catch (k) {
+					r(k);
+				}
+			},
+			f = (m) => (m.done ? p(m.value) : Promise.resolve(m.value).then(a, g));
+		f((_ = _.apply(d, h)).next());
+	});
+import {
+	c as R,
+	o as l,
+	a as c,
+	b as w,
+	t as i,
+	n as H,
+	u as t,
+	d as e,
+	F as O,
+	r as B,
+	e as se,
+	i as Ae,
+	f as S,
+	g as ge,
+	h as fe,
+	j as n,
+	_ as y,
+	w as oe,
+	v as ye,
+	k as T,
+	l as Me,
+	T as We,
+	m as ne,
+	p as $e,
+	q as ke,
+	s as we,
+	x as xe,
+	y as Ne,
+	z as ae,
+	A as Xe,
+	B as Ce,
+	C as je,
+	D as Ie,
+	E as Ge,
+	G as Je,
+	H as He,
+	I as Oe,
+	J as ze,
+	K as Ze,
+	L as Qe,
+	M as et,
+	N as tt,
+	O as st,
+} from "./vendor.c56b79f7.js";
+const ot = function () {
+	const h = document.createElement("link").relList;
+	if (h && h.supports && h.supports("modulepreload")) return;
+	for (const r of document.querySelectorAll('link[rel="modulepreload"]')) p(r);
+	new MutationObserver((r) => {
+		for (const a of r)
+			if (a.type === "childList")
+				for (const g of a.addedNodes)
+					g.tagName === "LINK" && g.rel === "modulepreload" && p(g);
+	}).observe(document, { childList: !0, subtree: !0 });
+	function _(r) {
+		const a = {};
+		return (
+			r.integrity && (a.integrity = r.integrity),
+			r.referrerpolicy && (a.referrerPolicy = r.referrerpolicy),
+			r.crossorigin === "use-credentials"
+				? (a.credentials = "include")
+				: r.crossorigin === "anonymous"
+				? (a.credentials = "omit")
+				: (a.credentials = "same-origin"),
+			a
+		);
+	}
+	function p(r) {
+		if (r.ep) return;
+		r.ep = !0;
+		const a = _(r);
+		fetch(r.href, a);
+	}
+};
+ot();
+const Z = 36e5,
+	Pe = 24 * Z,
+	Re = 6e4,
+	P = (d) => (d ? new Date(d).getTime() : 0);
+function _e(d, h) {
+	const _ = h - d;
+	if (_ < Re) return "just now";
+	if (_ < Z) return Math.round(_ / Re) + "m ago";
+	if (_ < Pe) return Math.round(_ / Z) + "h ago";
+	const p = Math.round(_ / Pe);
+	return p < 7
+		? p + (p === 1 ? " day ago" : " days ago")
+		: new Date(d).toLocaleDateString(void 0, { month: "short", day: "numeric" });
+}
+function nt(d) {
+	return new Date(d).toLocaleDateString(void 0, {
+		month: "short",
+		day: "numeric",
+		year: "numeric",
+	});
+}
+function Se(d, h, _) {
+	const p = d - h,
+		r = p <= 0,
+		a = Math.abs(p),
+		g = Math.floor(a / Z),
+		f = Math.floor((a % Z) / Re);
+	let m;
+	g >= 48
+		? (m = Math.round(g / 24) + "d")
+		: g >= 1
+		? (m = g + "h " + String(f).padStart(2, "0") + "m")
+		: (m = f + "m");
+	const k = r ? "Breached " + m : m + " left",
+		$ = r ? "\u2212" + m : m;
+	let N = "ok";
+	r ? (N = "breach") : p < 4 * Z && (N = "warn");
+	const q = _ ? Math.min(1.4, 1 - p / (_ * Z)) : 0;
+	return { ms: p, breached: r, label: k, short: $, tone: N, pct: q };
+}
+const Ue = { ok: "green", warn: "amber", breach: "red" };
+function at(d) {
+	return (d || "?")
+		.split(" ")
+		.filter(Boolean)
+		.map((h) => h[0])
+		.join("")
+		.slice(0, 2)
+		.toUpperCase();
+}
+const Be = {
+		Open: { tone: "blue", group: "open", desc: "Raised \u2014 awaiting action" },
+		"In Review": { tone: "violet", group: "open", desc: "Risto reviewing submission" },
+		"Needs Revision": { tone: "red", group: "open", desc: "Sent back to customer" },
+		Resolved: { tone: "green", group: "closed", desc: "Data accepted & complete" },
+	},
+	K = {
+		Urgent: { rank: 0, tone: "red", frH: 4, resH: 24 },
+		High: { rank: 1, tone: "amber", frH: 8, resH: 48 },
+		Medium: { rank: 2, tone: "blue", frH: 24, resH: 96 },
+		Low: { rank: 3, tone: "slate", frH: 48, resH: 168 },
+	},
+	he = {
+		"Master Data": "database",
+		"Opening Balances": "bar-chart-2",
+		Configuration: "sliders",
+		Reconciliation: "git-merge",
+		Documents: "file",
+	},
+	lt = ["data-tone"],
+	it = e("span", { class: "ring" }, null, -1),
+	X = {
+		props: { status: { type: String, default: "Open" } },
+		setup(d) {
+			const h = d,
+				_ = R(() => {
+					var r, a;
+					return (a = (r = Be[h.status]) == null ? void 0 : r.tone) != null
+						? a
+						: "slate";
+				}),
+				p = R(() => {
+					var r;
+					return ((r = Be[h.status]) == null ? void 0 : r.group) === "closed";
+				});
+			return (r, a) => (
+				l(),
+				c(
+					"span",
+					{ class: H(["statuspill", t(p) ? "closed" : ""]), "data-tone": t(_) },
+					[it, w(i(d.status), 1)],
+					10,
+					lt
+				)
+			);
+		},
+	},
+	ct = ["data-tone"],
+	rt = { class: "bars", "aria-hidden": "true" },
+	pe = {
+		props: { priority: { type: String, default: "Medium" } },
+		setup(d) {
+			const h = d,
+				_ = R(() => {
+					var a;
+					return (a = K[h.priority]) != null ? a : K.Medium;
+				}),
+				p = R(() => _.value.tone),
+				r = R(() => 4 - _.value.rank);
+			return (a, g) => (
+				l(),
+				c(
+					"span",
+					{ class: "prio", "data-tone": t(p) },
+					[
+						e("span", rt, [
+							(l(),
+							c(
+								O,
+								null,
+								B(4, (f) =>
+									e(
+										"i",
+										{
+											key: f,
+											class: H(f <= t(r) ? "on" : ""),
+											style: se({ height: 5 + (f - 1) * 2.3 + "px" }),
+										},
+										null,
+										6
+									)
+								),
+								64
+							)),
+						]),
+						w(" " + i(d.priority), 1),
+					],
+					8,
+					ct
+				)
+			);
+		},
+	},
+	dt = ["data-tone"],
+	ut = e("span", { class: "heart" }, null, -1),
+	le = {
+		props: {
+			deadline: { type: [Number, String], default: null },
+			now: { type: Number, required: !0 },
+			windowH: { type: Number, default: 48 },
+			state: { type: String, default: null },
+		},
+		setup(d) {
+			const h = d,
+				_ = R(() => {
+					var a;
+					if (h.state === "Fulfilled") return { tone: "ok", label: "Fulfilled" };
+					if (h.state === "Failed") return { tone: "breach", label: "Failed" };
+					if (h.state === "Paused") return { tone: "ok", label: "Paused" };
+					const r =
+						typeof h.deadline == "string"
+							? P(h.deadline)
+							: (a = h.deadline) != null
+							? a
+							: 0;
+					return Se(r, h.now, h.windowH);
+				}),
+				p = R(() => {
+					var r;
+					return (r = Ue[_.value.tone]) != null ? r : "slate";
+				});
+			return (r, a) => (
+				l(),
+				c(
+					"span",
+					{ class: "slachip", "data-tone": t(p) },
+					[ut, w(i(t(_).label), 1)],
+					8,
+					dt
+				)
+			);
+		},
+	},
+	_t = ["title"],
+	Y = {
+		props: {
+			name: { type: String, default: "?" },
+			role: { type: String, default: "staff" },
+			size: { type: Number, default: 32 },
+		},
+		setup(d) {
+			const h = d,
+				_ = R(() => (h.role === "staff" ? "staff" : "customer"));
+			return (p, r) => (
+				l(),
+				c(
+					"div",
+					{ class: H(["av", t(_), "av-sz-" + d.size]), title: d.name },
+					i(t(at)(d.name)),
+					11,
+					_t
+				)
+			);
+		},
+	},
+	ht = { class: "slideover", role: "dialog", "aria-modal": "true" },
+	pt = { class: "so-head" },
+	vt = e(
+		"div",
+		null,
+		[
+			e("div", { class: "t" }, "New data request"),
+			e(
+				"div",
+				{ class: "s" },
+				" Raise a request against a customer to collect implementation data "
+			),
+		],
+		-1
+	),
+	mt = { class: "so-body" },
+	ft = {
+		style: {
+			display: "flex",
+			"align-items": "baseline",
+			"justify-content": "space-between",
+			"margin-bottom": "5px",
+		},
+	},
+	yt = e(
+		"label",
+		{ class: "flabel", style: { "margin-bottom": "0" } },
+		[w("Subject "), e("span", { "data-tone": "red", style: { color: "var(--t-ink)" } }, "*")],
+		-1
+	),
+	bt = {
+		key: 0,
+		style: { "font-size": "12px", color: "oklch(0.5 0.18 25)", "margin-top": "4px" },
+	},
+	gt = e("label", { class: "flabel" }, "Customer", -1),
+	$t = e("option", { value: "", disabled: "" }, "Select customer\u2026", -1),
+	kt = ["value"],
+	wt = e("label", { class: "flabel" }, "Data type", -1),
+	xt = { class: "chiprow" },
+	Ct = ["onClick"],
+	Rt = e("label", { class: "flabel" }, "Priority", -1),
+	St = { class: "chiprow" },
+	qt = ["data-tone", "onClick"],
+	Dt = e("span", { class: "dot" }, null, -1),
+	Lt = { key: 0, class: "slacalc", style: { "margin-top": "12px" } },
+	Tt = { class: "ic" },
+	At = { class: "txt" },
+	Mt = w(" Business-hours SLA \u2014 first response within "),
+	Nt = w(", resolution within "),
+	jt = w(" of working time. "),
+	It = e("label", { class: "flabel" }, "Instructions to customer", -1),
+	Ht = e(
+		"div",
+		{ class: "fhint" },
+		" The customer sees this in the request, along with any template you attach after creating it. ",
+		-1
+	),
+	Ot = { class: "so-foot" },
+	zt = { class: "grow", style: { "font-size": "12px", color: "var(--ink-3)" } },
+	Pt = ["disabled"],
+	Ut = {
+		emits: ["close", "created"],
+		setup(d, { emit: h }) {
+			var j, C;
+			const _ = Ae("toast", () => {}),
+				p =
+					((C = (j = window.frappe) == null ? void 0 : j.session) == null
+						? void 0
+						: C.user_fullname) || "Staff",
+				r = [
+					"Master Data",
+					"Opening Balances",
+					"Configuration",
+					"Reconciliation",
+					"Documents",
+				],
+				a = S({
+					subject: "",
+					customer: "",
+					data_type: "Master Data",
+					priority: "High",
+					description: "",
+				}),
+				g = S(!1),
+				f = ge({
+					url: "onboardpro.api.search_customers",
+					params: { query: "", limit: 500 },
+					auto: !0,
+				}),
+				m = ge({ url: "onboardpro.api.get_sla_config", auto: !0 }),
+				k = R(() => {
+					var s, D;
+					return (D = ((s = m.data) != null ? s : {})[a.value.priority]) != null
+						? D
+						: null;
+				}),
+				$ = R(() => a.value.subject.trim().length > 2 && !!a.value.customer),
+				N = ge({
+					url: "frappe.client.insert",
+					onSuccess(s) {
+						(g.value = !1), _("Request " + s.name + " raised"), h("created", s.name);
+					},
+					onError() {
+						g.value = !1;
+					},
+				});
+			function q() {
+				!$.value ||
+					((g.value = !0),
+					N.submit({
+						doc: {
+							doctype: "Implementation Request",
+							subject: a.value.subject.trim(),
+							customer: a.value.customer,
+							data_type: a.value.data_type,
+							priority: a.value.priority,
+							description: a.value.description.trim(),
+							status: "Open",
+						},
+					}));
+			}
+			return (s, D) => {
+				var I;
+				return (
+					l(),
+					fe(We, { to: "body" }, [
+						e("div", {
+							class: "scrim",
+							onClick: D[0] || (D[0] = (L) => s.$emit("close")),
+						}),
+						e("div", ht, [
+							e("div", pt, [
+								vt,
+								e(
+									"button",
+									{
+										class: "iconbtn",
+										onClick: D[1] || (D[1] = (L) => s.$emit("close")),
+									},
+									[n(t(y), { name: "x" })]
+								),
+							]),
+							e("div", mt, [
+								e("div", null, [
+									e("div", ft, [
+										yt,
+										e(
+											"span",
+											{
+												style: se([
+													{ "font-size": "11px" },
+													{
+														color:
+															a.value.subject.length > 120
+																? "oklch(0.50 0.18 25)"
+																: "var(--ink-4)",
+													},
+												]),
+											},
+											i(a.value.subject.length) + "/140 ",
+											5
+										),
+									]),
+									oe(
+										e(
+											"input",
+											{
+												"onUpdate:modelValue":
+													D[2] || (D[2] = (L) => (a.value.subject = L)),
+												class: "finput",
+												autofocus: "",
+												maxlength: "140",
+												placeholder:
+													"e.g. Provide opening balances \u2014 FY25",
+											},
+											null,
+											512
+										),
+										[[ye, a.value.subject]]
+									),
+									a.value.subject.length > 120
+										? (l(),
+										  c(
+												"div",
+												bt,
+												i(140 - a.value.subject.length) +
+													" characters remaining \u2014 keep subjects concise. ",
+												1
+										  ))
+										: T("", !0),
+								]),
+								e("div", null, [
+									gt,
+									oe(
+										e(
+											"select",
+											{
+												"onUpdate:modelValue":
+													D[3] || (D[3] = (L) => (a.value.customer = L)),
+												class: "finput",
+											},
+											[
+												$t,
+												(l(!0),
+												c(
+													O,
+													null,
+													B(
+														(I = t(f).data) != null ? I : [],
+														(L) => (
+															l(),
+															c(
+																"option",
+																{ key: L.name, value: L.name },
+																i(L.customer_name || L.name),
+																9,
+																kt
+															)
+														)
+													),
+													128
+												)),
+											],
+											512
+										),
+										[[Me, a.value.customer]]
+									),
+								]),
+								e("div", null, [
+									wt,
+									e("div", xt, [
+										(l(),
+										c(
+											O,
+											null,
+											B(r, (L) =>
+												e(
+													"button",
+													{
+														key: L,
+														type: "button",
+														class: H([
+															"chip",
+															a.value.data_type === L ? "on" : "",
+														]),
+														onClick: (F) => (a.value.data_type = L),
+													},
+													[
+														n(
+															t(y),
+															{
+																name: t(he)[L],
+																style: {
+																	width: "15px",
+																	height: "15px",
+																},
+															},
+															null,
+															8,
+															["name"]
+														),
+														w(" " + i(L), 1),
+													],
+													10,
+													Ct
+												)
+											),
+											64
+										)),
+									]),
+								]),
+								e("div", null, [
+									Rt,
+									e("div", St, [
+										(l(!0),
+										c(
+											O,
+											null,
+											B(
+												t(K),
+												(L, F) => (
+													l(),
+													c(
+														"button",
+														{
+															key: F,
+															type: "button",
+															class: H([
+																"chip",
+																a.value.priority === F ? "on" : "",
+															]),
+															"data-tone": L.tone,
+															onClick: (Q) => (a.value.priority = F),
+														},
+														[Dt, w(i(F), 1)],
+														10,
+														qt
+													)
+												)
+											),
+											128
+										)),
+									]),
+									t(k)
+										? (l(),
+										  c("div", Lt, [
+												e("div", Tt, [n(t(y), { name: "clock" })]),
+												e("div", At, [
+													Mt,
+													e("b", null, i(t(k).frH) + "h", 1),
+													Nt,
+													e(
+														"b",
+														null,
+														i(
+															t(k).resH >= 48
+																? Math.round(t(k).resH / 24) +
+																		" days"
+																: t(k).resH + "h"
+														),
+														1
+													),
+													jt,
+												]),
+										  ]))
+										: T("", !0),
+								]),
+								e("div", null, [
+									It,
+									oe(
+										e(
+											"textarea",
+											{
+												"onUpdate:modelValue":
+													D[4] ||
+													(D[4] = (L) => (a.value.description = L)),
+												class: "finput fta",
+												placeholder:
+													"Describe exactly what data is needed, format, cut-off dates\u2026",
+											},
+											null,
+											512
+										),
+										[[ye, a.value.description]]
+									),
+									Ht,
+								]),
+							]),
+							e("div", Ot, [
+								e("span", zt, "Assigned to you \xB7 " + i(t(p)), 1),
+								e(
+									"button",
+									{
+										class: "btn",
+										onClick: D[5] || (D[5] = (L) => s.$emit("close")),
+									},
+									"Cancel"
+								),
+								e(
+									"button",
+									{
+										class: "btn primary",
+										disabled: !t($) || g.value,
+										onClick: q,
+									},
+									[
+										n(t(y), {
+											name: "plus",
+											style: { width: "14px", height: "14px" },
+										}),
+										w(" " + i(g.value ? "Raising\u2026" : "Raise request"), 1),
+									],
+									8,
+									Pt
+								),
+							]),
+						]),
+					])
+				);
+			};
+		},
+	};
+const Bt = { class: "subhead" },
+	Ft = { class: "h1" },
+	Et = { class: "tabs" },
+	Vt = ["onClick"],
+	Kt = ["data-tone"],
+	Yt = { class: "toolbar" },
+	Wt = { class: "search" },
+	Xt = e("div", { style: { flex: "1" } }, null, -1),
+	Gt = { class: "sort-ctrl" },
+	Jt = e("option", { value: "creation" }, "Created", -1),
+	Zt = e("option", { value: "modified" }, "Last updated", -1),
+	Qt = e("option", { value: "priority" }, "Priority", -1),
+	es = [Jt, Zt, Qt],
+	ts = ["title"],
+	ss = { class: "seg-mini" },
+	os = w("New request "),
+	ns = { key: 0, style: { "text-align": "center", padding: "80px 20px" } },
+	as = e(
+		"div",
+		{
+			style: {
+				width: "24px",
+				height: "24px",
+				border: "2px solid var(--accent)",
+				"border-top-color": "transparent",
+				"border-radius": "99px",
+				animation: "spin 0.7s linear infinite",
+				margin: "0 auto",
+			},
+		},
+		null,
+		-1
+	),
+	ls = [as],
+	is = { key: 1, class: "empty" },
+	cs = e("div", { style: { "font-weight": "600", color: "var(--ink-2)" } }, "Nothing here", -1),
+	rs = e("div", { style: { "font-size": "13px" } }, "No requests match this filter.", -1),
+	ds = { key: 2, class: "tablewrap" },
+	us = { class: "tbl" },
+	_s = e("th", { style: { width: "80px" } }, "ID", -1),
+	hs = e("th", null, "Request", -1),
+	ps = e("th", { style: { width: "190px" } }, "Customer", -1),
+	vs = e("th", { style: { width: "110px" } }, "Priority", -1),
+	ms = e("th", { style: { width: "150px" } }, "SLA", -1),
+	fs = e("th", { style: { width: "150px" } }, "Status", -1),
+	ys = { key: 0, style: { width: "48px" } },
+	bs = ["onClick"],
+	gs = { class: "id" },
+	$s = ["title"],
+	ks = { class: "subj" },
+	ws = { class: "meta" },
+	xs = { class: "cust-cell" },
+	Cs = { class: "nm" },
+	Rs = { class: "co" },
+	Ss = { key: 0 },
+	qs = { key: 3, class: "cards" },
+	Ds = ["onClick"],
+	Ls = { class: "top" },
+	Ts = { class: "id" },
+	As = { class: "subj" },
+	Ms = { style: { display: "flex", "align-items": "center", gap: "8px" } },
+	Ns = { class: "pill", "data-tone": "slate", style: { gap: "6px" } },
+	js = { style: { "margin-top": "auto" } },
+	Is = { class: "foot" },
+	Hs = { class: "cust-cell" },
+	Os = { class: "co", style: { "font-weight": "550", color: "var(--ink-2)" } },
+	zs = { key: 4, style: { "overflow-x": "auto" } },
+	Ps = { class: "board" },
+	Us = { class: "col-head" },
+	Bs = { class: "cnt" },
+	Fs = { class: "col-body" },
+	Es = ["onClick"],
+	Vs = { class: "row" },
+	Ks = { style: { "font-family": "var(--mono)", "font-size": "11px", color: "var(--ink-4)" } },
+	Ys = { class: "subj" },
+	Ws = { class: "row" },
+	Xs = {
+		class: "row",
+		style: { "padding-top": "8px", "border-top": "1px solid var(--border)" },
+	},
+	Gs = { class: "cust-cell" },
+	Js = { class: "co" },
+	Zs = {
+		key: 0,
+		style: {
+			"font-size": "12px",
+			color: "var(--ink-4)",
+			padding: "10px 4px",
+			"font-style": "italic",
+		},
+	},
+	Qs = { key: 5, class: "load-more" },
+	eo = w(" Load more "),
+	to = { style: { color: "var(--ink-4)", "font-weight": "400" } },
+	so = {
+		props: { role: { type: String, default: "staff" } },
+		emits: ["requests-loaded"],
+		setup(d, { emit: h }) {
+			const _ = d,
+				p = xe(),
+				r = Ne(),
+				a = 20,
+				g = S(p.query.tab || "all"),
+				f = S(p.query.layout || "table"),
+				m = S(p.query.q || ""),
+				k = S(p.query.sort || "creation"),
+				$ = S(p.query.dir || "desc"),
+				N = S(a),
+				q = S(!1),
+				j = S(Date.now()),
+				C = S(new Set());
+			ne([g, m, k, $, f], () => {
+				N.value = a;
+			}),
+				ne([g, f, k, $, m], () => {
+					r.replace({
+						query: J(
+							J(
+								J(
+									J(
+										J({}, f.value !== "table" && { layout: f.value }),
+										g.value !== "all" && { tab: g.value }
+									),
+									k.value !== "creation" && { sort: k.value }
+								),
+								$.value !== "desc" && { dir: $.value }
+							),
+							m.value.trim() && { q: m.value }
+						),
+					});
+				});
+			function s() {
+				return V(this, null, function* () {
+					if (_.role !== "staff") return;
+					const x = yield ae({ url: "onboardpro.api.get_unread_requests" });
+					C.value = new Set(x);
+				});
+			}
+			$e(s);
+			const D = setInterval(() => {
+				j.value = Date.now();
+			}, 1e3);
+			ke(() => clearInterval(D));
+			const I = [
+					{ key: "all", label: "All" },
+					{ key: "In Review", label: "In Review" },
+					{ key: "Needs Revision", label: "Needs Revision" },
+					{ key: "Resolved", label: "Resolved" },
+					{ key: "breached", label: "Breached" },
+				],
+				L = ["Open", "In Review", "Needs Revision", "Resolved"],
+				F = we({
+					doctype: "Implementation Request",
+					fields: [
+						"name",
+						"subject",
+						"customer",
+						"customer_name",
+						"status",
+						"priority",
+						"data_type",
+						"assignee",
+						"assignee_name",
+						"fr_state",
+						"res_state",
+						"fr_due_at",
+						"res_due_at",
+						"creation",
+						"modified",
+					],
+					orderBy: "creation desc",
+					pageLength: 100,
+					auto: !0,
+				}),
+				Q = R(() => {
+					var x;
+					return (x = F.data) != null ? x : [];
+				});
+			function ve(x, b) {
+				return b === "all"
+					? !0
+					: b === "breached"
+					? x.status !== "Resolved" && P(x.res_due_at) < j.value
+					: x.status === b;
+			}
+			const ie = R(() => {
+					let x = Q.value;
+					if (m.value.trim()) {
+						const b = m.value.toLowerCase();
+						x = x.filter((o) =>
+							(o.subject + o.customer_name + o.name + o.data_type)
+								.toLowerCase()
+								.includes(b)
+						);
+					}
+					return x;
+				}),
+				W = R(() => {
+					const x = $.value === "asc" ? 1 : -1,
+						b = k.value;
+					return [...ie.value].sort((o, M) => {
+						var u, A, v, U, de, ue;
+						const z =
+								b === "priority"
+									? (A = (u = K[o.priority]) == null ? void 0 : u.rank) != null
+										? A
+										: 99
+									: (v = o[b]) != null
+									? v
+									: "",
+							E =
+								b === "priority"
+									? (de = (U = K[M.priority]) == null ? void 0 : U.rank) != null
+										? de
+										: 99
+									: (ue = M[b]) != null
+									? ue
+									: "";
+						return z < E ? -x : z > E ? x : 0;
+					});
+				}),
+				G = R(() => W.value.filter((x) => ve(x, g.value))),
+				ce = R(() => G.value.slice(0, N.value)),
+				be = R(() => N.value < G.value.length),
+				ee = R(() => {
+					const x = ie.value,
+						b = { all: x.length };
+					return (
+						I.slice(1).forEach((o) => {
+							b[o.key] = x.filter((M) => ve(M, o.key)).length;
+						}),
+						b
+					);
+				}),
+				re = R(() => {
+					const x = {};
+					return (
+						L.forEach((b) => {
+							x[b] = [];
+						}),
+						W.value.forEach((b) => {
+							x[b.status] && x[b.status].push(b);
+						}),
+						x
+					);
+				});
+			ne(
+				Q,
+				(x) => {
+					const b = x.filter((M) => M.status !== "Resolved").length,
+						o = x.filter(
+							(M) => M.status !== "Resolved" && P(M.res_due_at) < j.value
+						).length;
+					h("requests-loaded", { open: b, breach: o });
+				},
+				{ immediate: !0 }
+			);
+			function te(x) {
+				r.push({ name: "RequestDetail", params: { id: x } });
+			}
+			function me(x) {
+				(q.value = !1), F.reload(), s(), te(x);
+			}
+			return (x, b) => (
+				l(),
+				c("div", null, [
+					e("div", Bt, [
+						e(
+							"div",
+							Ft,
+							i(d.role === "customer" ? "Your data requests" : "Requests"),
+							1
+						),
+						e("div", Et, [
+							(l(),
+							c(
+								O,
+								null,
+								B(I, (o) => {
+									var M;
+									return e(
+										"button",
+										{
+											key: o.key,
+											class: H(["tab", g.value === o.key ? "on" : ""]),
+											onClick: (z) => (g.value = o.key),
+										},
+										[
+											o.key === "breached" && t(ee)[o.key] > 0
+												? (l(),
+												  fe(t(y), {
+														key: 0,
+														name: "alert-triangle",
+														style: {
+															width: "13px",
+															height: "13px",
+															color: "var(--t-solid)",
+														},
+														"data-tone": "red",
+												  }))
+												: T("", !0),
+											w(" " + i(o.label) + " ", 1),
+											e(
+												"span",
+												{
+													class: "cnt",
+													"data-tone":
+														o.key === "breached" ? "red" : "slate",
+												},
+												i((M = t(ee)[o.key]) != null ? M : 0),
+												9,
+												Kt
+											),
+										],
+										10,
+										Vt
+									);
+								}),
+								64
+							)),
+						]),
+					]),
+					e("div", Yt, [
+						e("label", Wt, [
+							n(t(y), { name: "search" }),
+							oe(
+								e(
+									"input",
+									{
+										"onUpdate:modelValue":
+											b[0] || (b[0] = (o) => (m.value = o)),
+										placeholder: "Search by subject, customer, ID\u2026",
+									},
+									null,
+									512
+								),
+								[[ye, m.value]]
+							),
+						]),
+						Xt,
+						e("div", Gt, [
+							oe(
+								e(
+									"select",
+									{
+										"onUpdate:modelValue":
+											b[1] || (b[1] = (o) => (k.value = o)),
+										class: "sort-sel",
+									},
+									es,
+									512
+								),
+								[[Me, k.value]]
+							),
+							e(
+								"button",
+								{
+									class: "sort-dir",
+									title: $.value === "desc" ? "Descending" : "Ascending",
+									onClick:
+										b[2] ||
+										(b[2] = (o) =>
+											($.value = $.value === "desc" ? "asc" : "desc")),
+								},
+								[
+									n(
+										t(y),
+										{
+											name: $.value === "desc" ? "arrow-down" : "arrow-up",
+											style: { width: "14px", height: "14px" },
+										},
+										null,
+										8,
+										["name"]
+									),
+								],
+								8,
+								ts
+							),
+						]),
+						e("div", ss, [
+							e(
+								"button",
+								{
+									class: H(f.value === "table" ? "on" : ""),
+									title: "Table",
+									onClick: b[3] || (b[3] = (o) => (f.value = "table")),
+								},
+								[n(t(y), { name: "list" })],
+								2
+							),
+							e(
+								"button",
+								{
+									class: H(f.value === "cards" ? "on" : ""),
+									title: "Cards",
+									onClick: b[4] || (b[4] = (o) => (f.value = "cards")),
+								},
+								[n(t(y), { name: "grid" })],
+								2
+							),
+							e(
+								"button",
+								{
+									class: H(f.value === "kanban" ? "on" : ""),
+									title: "Board",
+									onClick: b[5] || (b[5] = (o) => (f.value = "kanban")),
+								},
+								[n(t(y), { name: "columns" })],
+								2
+							),
+						]),
+						d.role === "staff"
+							? (l(),
+							  c(
+									"button",
+									{
+										key: 0,
+										class: "btn primary",
+										onClick: b[6] || (b[6] = (o) => (q.value = !0)),
+									},
+									[
+										n(t(y), {
+											name: "plus",
+											style: { width: "15px", height: "15px" },
+										}),
+										os,
+									]
+							  ))
+							: T("", !0),
+					]),
+					t(F).list.loading
+						? (l(), c("div", ns, ls))
+						: t(G).length === 0
+						? (l(), c("div", is, [n(t(y), { name: "inbox" }), cs, rs]))
+						: f.value === "table"
+						? (l(),
+						  c("div", ds, [
+								e("table", us, [
+									e("thead", null, [
+										e("tr", null, [
+											_s,
+											hs,
+											ps,
+											vs,
+											ms,
+											fs,
+											d.role === "staff"
+												? (l(), c("th", ys, "Owner"))
+												: T("", !0),
+										]),
+									]),
+									e("tbody", null, [
+										(l(!0),
+										c(
+											O,
+											null,
+											B(t(ce), (o) => {
+												var M, z;
+												return (
+													l(),
+													c(
+														"tr",
+														{
+															key: o.name,
+															class: H({
+																unread: C.value.has(o.name),
+															}),
+															onClick: (E) => te(o.name),
+														},
+														[
+															e("td", null, [
+																e("span", gs, i(o.name), 1),
+															]),
+															e(
+																"td",
+																{
+																	class: "req-cell",
+																	title: o.subject,
+																},
+																[
+																	e("div", ks, i(o.subject), 1),
+																	e("div", ws, [
+																		n(
+																			t(y),
+																			{
+																				name:
+																					t(he)[
+																						o.data_type
+																					] || "file",
+																				style: {
+																					width: "13px",
+																					height: "13px",
+																					opacity: "0.6",
+																				},
+																			},
+																			null,
+																			8,
+																			["name"]
+																		),
+																		w(" " + i(o.data_type), 1),
+																	]),
+																],
+																8,
+																$s
+															),
+															e("td", null, [
+																e("div", xs, [
+																	n(
+																		Y,
+																		{
+																			name:
+																				o.customer_name ||
+																				o.customer,
+																			role: "customer",
+																			size: 28,
+																		},
+																		null,
+																		8,
+																		["name"]
+																	),
+																	e("div", null, [
+																		e(
+																			"div",
+																			Cs,
+																			i(o.customer_name),
+																			1
+																		),
+																		e(
+																			"div",
+																			Rs,
+																			i(o.customer),
+																			1
+																		),
+																	]),
+																]),
+															]),
+															e("td", null, [
+																n(
+																	pe,
+																	{ priority: o.priority },
+																	null,
+																	8,
+																	["priority"]
+																),
+															]),
+															e("td", null, [
+																n(
+																	le,
+																	{
+																		deadline: o.res_due_at,
+																		now: j.value,
+																		"window-h":
+																			(z =
+																				(M =
+																					t(K)[
+																						o.priority
+																					]) == null
+																					? void 0
+																					: M.resH) !=
+																			null
+																				? z
+																				: 48,
+																		state: o.res_state,
+																	},
+																	null,
+																	8,
+																	[
+																		"deadline",
+																		"now",
+																		"window-h",
+																		"state",
+																	]
+																),
+															]),
+															e("td", null, [
+																n(
+																	X,
+																	{ status: o.status },
+																	null,
+																	8,
+																	["status"]
+																),
+															]),
+															d.role === "staff"
+																? (l(),
+																  c("td", Ss, [
+																		n(
+																			Y,
+																			{
+																				name:
+																					o.assignee_name ||
+																					o.assignee ||
+																					"?",
+																				role: "staff",
+																				size: 28,
+																			},
+																			null,
+																			8,
+																			["name"]
+																		),
+																  ]))
+																: T("", !0),
+														],
+														10,
+														bs
+													)
+												);
+											}),
+											128
+										)),
+									]),
+								]),
+						  ]))
+						: f.value === "cards"
+						? (l(),
+						  c("div", qs, [
+								(l(!0),
+								c(
+									O,
+									null,
+									B(t(ce), (o) => {
+										var M, z;
+										return (
+											l(),
+											c(
+												"div",
+												{
+													key: o.name,
+													class: H([
+														"rcard",
+														C.value.has(o.name) ? "unread" : "",
+													]),
+													onClick: (E) => te(o.name),
+												},
+												[
+													e("div", Ls, [
+														e("span", Ts, "#" + i(o.name), 1),
+														n(X, { status: o.status }, null, 8, [
+															"status",
+														]),
+													]),
+													e("div", As, i(o.subject), 1),
+													e("div", Ms, [
+														e("span", Ns, [
+															n(
+																t(y),
+																{
+																	name:
+																		t(he)[o.data_type] ||
+																		"file",
+																	style: {
+																		width: "12px",
+																		height: "12px",
+																	},
+																},
+																null,
+																8,
+																["name"]
+															),
+															w(" " + i(o.data_type), 1),
+														]),
+														n(pe, { priority: o.priority }, null, 8, [
+															"priority",
+														]),
+													]),
+													e("div", js, [
+														n(
+															le,
+															{
+																deadline: o.res_due_at,
+																now: j.value,
+																"window-h":
+																	(z =
+																		(M = t(K)[o.priority]) ==
+																		null
+																			? void 0
+																			: M.resH) != null
+																		? z
+																		: 48,
+																state: o.res_state,
+															},
+															null,
+															8,
+															[
+																"deadline",
+																"now",
+																"window-h",
+																"state",
+															]
+														),
+													]),
+													e("div", Is, [
+														e("div", Hs, [
+															n(
+																Y,
+																{
+																	name:
+																		o.customer_name ||
+																		o.customer,
+																	role: "customer",
+																	size: 20,
+																},
+																null,
+																8,
+																["name"]
+															),
+															e("span", Os, i(o.customer_name), 1),
+														]),
+													]),
+												],
+												10,
+												Ds
+											)
+										);
+									}),
+									128
+								)),
+						  ]))
+						: (l(),
+						  c("div", zs, [
+								e("div", Ps, [
+									(l(),
+									c(
+										O,
+										null,
+										B(L, (o) => {
+											var M, z, E;
+											return e("div", { key: o, class: "col" }, [
+												e("div", Us, [
+													n(X, { status: o }, null, 8, ["status"]),
+													e(
+														"span",
+														Bs,
+														i(
+															(z =
+																(M = t(re)[o]) == null
+																	? void 0
+																	: M.length) != null
+																? z
+																: 0
+														),
+														1
+													),
+												]),
+												e("div", Fs, [
+													(l(!0),
+													c(
+														O,
+														null,
+														B(t(re)[o], (u) => {
+															var A, v;
+															return (
+																l(),
+																c(
+																	"div",
+																	{
+																		key: u.name,
+																		class: H([
+																			"kcard",
+																			C.value.has(u.name)
+																				? "unread"
+																				: "",
+																		]),
+																		onClick: (U) => te(u.name),
+																	},
+																	[
+																		e("div", Vs, [
+																			e(
+																				"span",
+																				Ks,
+																				"#" + i(u.name),
+																				1
+																			),
+																			n(
+																				pe,
+																				{
+																					priority:
+																						u.priority,
+																				},
+																				null,
+																				8,
+																				["priority"]
+																			),
+																		]),
+																		e(
+																			"div",
+																			Ys,
+																			i(u.subject),
+																			1
+																		),
+																		e("div", Ws, [
+																			n(
+																				le,
+																				{
+																					deadline:
+																						u.res_due_at,
+																					now: j.value,
+																					"window-h":
+																						(v =
+																							(A =
+																								t(
+																									K
+																								)[
+																									u
+																										.priority
+																								]) ==
+																							null
+																								? void 0
+																								: A.resH) !=
+																						null
+																							? v
+																							: 48,
+																					state: u.res_state,
+																				},
+																				null,
+																				8,
+																				[
+																					"deadline",
+																					"now",
+																					"window-h",
+																					"state",
+																				]
+																			),
+																		]),
+																		e("div", Xs, [
+																			e("div", Gs, [
+																				n(
+																					Y,
+																					{
+																						name:
+																							u.customer_name ||
+																							u.customer,
+																						role: "customer",
+																						size: 20,
+																					},
+																					null,
+																					8,
+																					["name"]
+																				),
+																				e(
+																					"span",
+																					Js,
+																					i(
+																						u.customer_name
+																					),
+																					1
+																				),
+																			]),
+																			n(
+																				Y,
+																				{
+																					name:
+																						u.assignee_name ||
+																						u.assignee ||
+																						"?",
+																					role: "staff",
+																					size: 20,
+																				},
+																				null,
+																				8,
+																				["name"]
+																			),
+																		]),
+																	],
+																	10,
+																	Es
+																)
+															);
+														}),
+														128
+													)),
+													((E = t(re)[o]) == null ? void 0 : E.length)
+														? T("", !0)
+														: (l(), c("div", Zs, " No requests ")),
+												]),
+											]);
+										}),
+										64
+									)),
+								]),
+						  ])),
+					t(be) && f.value !== "kanban"
+						? (l(),
+						  c("div", Qs, [
+								e(
+									"button",
+									{
+										class: "btn",
+										onClick: b[7] || (b[7] = (o) => (N.value += a)),
+									},
+									[
+										eo,
+										e(
+											"span",
+											to,
+											" (" + i(t(G).length - N.value) + " remaining) ",
+											1
+										),
+									]
+								),
+						  ]))
+						: T("", !0),
+					q.value
+						? (l(),
+						  fe(Ut, {
+								key: 6,
+								onClose: b[8] || (b[8] = (o) => (q.value = !1)),
+								onCreated: me,
+						  }))
+						: T("", !0),
+				])
+			);
+		},
+	},
+	oo = {
+		props: { ext: { type: String, default: "doc" } },
+		setup(d) {
+			const h = d,
+				_ = ["xlsx", "csv", "pdf", "zip", "doc"],
+				p = R(() => {
+					const a = (h.ext || "doc").toLowerCase();
+					return _.includes(a) ? a : "doc";
+				}),
+				r = R(() => p.value.slice(0, 4).toUpperCase());
+			return (a, g) => (l(), c("span", { class: H(["fileicon", t(p)]) }, i(t(r)), 3));
+		},
+	},
+	no = { key: 0, class: "detail" },
+	ao = { class: "detail-main" },
+	lo = { class: "detail-head" },
+	io = { class: "subj" },
+	co = { class: "sub" },
+	ro = { class: "id" },
+	uo = e("span", { class: "dot-sep" }, null, -1),
+	_o = e("span", { class: "dot-sep" }, null, -1),
+	ho = e("span", { class: "dot-sep" }, null, -1),
+	po = { class: "descblock" },
+	vo = { class: "dl" },
+	mo = { class: "pill", "data-tone": "slate", style: { gap: "6px" } },
+	fo = e("div", { class: "section-label" }, "Data & attachments", -1),
+	yo = { class: "attach-grid" },
+	bo = { key: 0, style: { "font-size": "13px", color: "var(--ink-4)", "margin-bottom": "4px" } },
+	go = ["href"],
+	$o = { class: "fmeta" },
+	ko = { class: "fn" },
+	wo = { class: "fs" },
+	xo = { class: "by" },
+	Co = { class: "big" },
+	Ro = { class: "sm" },
+	So = e("div", { class: "section-label", style: { "margin-top": "28px" } }, "Activity", -1),
+	qo = { class: "timeline" },
+	Do = { class: "msg-av" },
+	Lo = { class: "bubble" },
+	To = { class: "bhead" },
+	Ao = { class: "nm" },
+	Mo = { class: "when" },
+	No = { class: "btext" },
+	jo = { key: 1, class: "tl-item" },
+	Io = ["data-tone"],
+	Ho = { class: "tl-event" },
+	Oo = ["innerHTML"],
+	zo = { class: "when" },
+	Po = { class: "composer" },
+	Uo = { key: 0, class: "reply-trigger" },
+	Bo = w(" Reply "),
+	Fo = { key: 1, class: "composer-box" },
+	Eo = ["placeholder", "onKeydown"],
+	Vo = { class: "composer-bar" },
+	Ko = e("span", { class: "grow" }, null, -1),
+	Yo = { class: "as" },
+	Wo = w("Posting as "),
+	Xo = { style: { color: "var(--ink-2)" } },
+	Go = ["disabled"],
+	Jo = w("Send "),
+	Zo = { class: "rail" },
+	Qo = { class: "rail-card" },
+	en = e("h3", null, "Status", -1),
+	tn = { key: 0, class: "menu" },
+	sn = ["onClick"],
+	on = { key: 1, style: { padding: "4px 0" } },
+	nn = { class: "rail-card" },
+	an = e("h3", null, "SLA tracking", -1),
+	ln = { key: 0, class: "sla-hold-badge" },
+	cn = w(" Clock paused \u2014 under review "),
+	rn = { class: "slahero" },
+	dn = { class: "slatrack" },
+	un = { class: "lh" },
+	_n = { class: "nm" },
+	hn = w("First response"),
+	pn = ["data-tone"],
+	vn = { key: 0, class: "sla-meta" },
+	mn = { class: "slatrack" },
+	fn = { class: "lh" },
+	yn = { class: "nm" },
+	bn = w("Resolution"),
+	gn = ["data-tone"],
+	$n = { key: 0, class: "sla-meta" },
+	kn = { class: "rail-card" },
+	wn = e("h3", null, "Details", -1),
+	xn = { class: "field" },
+	Cn = e("span", { class: "k" }, "Priority", -1),
+	Rn = { class: "v" },
+	Sn = { class: "field" },
+	qn = e("span", { class: "k" }, "Data type", -1),
+	Dn = { class: "v" },
+	Ln = { class: "field" },
+	Tn = e("span", { class: "k" }, "Owner", -1),
+	An = { class: "v" },
+	Mn = { class: "field" },
+	Nn = e("span", { class: "k" }, "Customer", -1),
+	jn = { class: "v" },
+	In = { class: "field" },
+	Hn = e("span", { class: "k" }, "Created", -1),
+	On = { class: "v" },
+	zn = {
+		key: 1,
+		style: {
+			display: "flex",
+			"align-items": "center",
+			"justify-content": "center",
+			flex: "1",
+			height: "100%",
+		},
+	},
+	Pn = e(
+		"div",
+		{
+			style: {
+				width: "24px",
+				height: "24px",
+				border: "2px solid var(--accent)",
+				"border-top-color": "transparent",
+				"border-radius": "99px",
+				animation: "spin 0.7s linear infinite",
+			},
+		},
+		null,
+		-1
+	),
+	Un = [Pn],
+	Bn = {
+		props: { id: { type: String, required: !0 }, role: { type: String, default: "staff" } },
+		emits: ["set-title"],
+		setup(d, { emit: h }) {
+			var o, M, z, E;
+			const _ = d,
+				p = Ae("toast", () => {}),
+				r = S(Date.now()),
+				a = S(""),
+				g = S(!1),
+				f = S(!1),
+				m = S(!1),
+				k = S(null),
+				$ = S(null),
+				N = S(null),
+				q = S(null),
+				j = ["Open", "In Review", "Needs Revision", "Resolved"],
+				C = setInterval(() => {
+					r.value = Date.now();
+				}, 1e3);
+			ke(() => clearInterval(C)),
+				$e(() => {
+					document.addEventListener("mousedown", (u) => {
+						q.value && !q.value.contains(u.target) && (m.value = !1);
+					}),
+						_.role === "staff" &&
+							ae({ url: "onboardpro.api.mark_seen", params: { docname: _.id } });
+				});
+			const s = Xe({ doctype: "Implementation Request", name: _.id, auto: !0 });
+			ne(
+				() => {
+					var u;
+					return (u = s.doc) == null ? void 0 : u.subject;
+				},
+				(u) => {
+					u && h("set-title", u);
+				}
+			);
+			const D = S([]);
+			function I() {
+				return V(this, null, function* () {
+					D.value = yield ae({
+						url: "onboardpro.api.get_activity",
+						params: { docname: _.id },
+					});
+				});
+			}
+			I();
+			const L = we({
+					doctype: "File",
+					fields: [
+						"name",
+						"file_name",
+						"file_url",
+						"file_size",
+						"creation",
+						"attached_to_name",
+					],
+					filters: [
+						["attached_to_doctype", "=", "Implementation Request"],
+						["attached_to_name", "=", _.id],
+					],
+					orderBy: "creation asc",
+					auto: !0,
+				}),
+				F = R(() => {
+					var u;
+					return (u = L.data) != null ? u : [];
+				}),
+				Q =
+					((M = (o = window.frappe) == null ? void 0 : o.session) == null
+						? void 0
+						: M.user) || "",
+				ve =
+					((E = (z = window.frappe) == null ? void 0 : z.session) == null
+						? void 0
+						: E.user_fullname) || Q,
+				ie = R(() =>
+					D.value.map((u) =>
+						Te(J({}, u), { isStaff: !!u.is_staff, isSelf: u.owner === Q })
+					)
+				);
+			ne(
+				() => ie.value.length,
+				() =>
+					V(this, null, function* () {
+						yield Ie(), k.value && (k.value.scrollTop = k.value.scrollHeight);
+					})
+			);
+			const W = R(() => {
+				var u, A;
+				return K[(A = (u = s.doc) == null ? void 0 : u.priority) != null ? A : "High"];
+			});
+			function G(u, A) {
+				var U;
+				if (u === "Fulfilled") return "green";
+				if (u === "Failed") return "red";
+				if (!A) return "blue";
+				const { tone: v } = Se(P(A), r.value, W.value.resH);
+				return (U = Ue[v]) != null ? U : "blue";
+			}
+			function ce(u, A, v) {
+				if (A === "Fulfilled") return "100%";
+				if (!u || !v) return "40%";
+				const { pct: U } = Se(P(u), r.value, v);
+				return Math.min(100, Math.max(4, U * 100)) + "%";
+			}
+			function be() {
+				return V(this, null, function* () {
+					var u;
+					(f.value = !0), yield Ie(), (u = $.value) == null || u.focus();
+				});
+			}
+			function ee() {
+				return V(this, null, function* () {
+					const u = a.value.trim();
+					if (!(!u || g.value)) {
+						g.value = !0;
+						try {
+							yield ae({
+								url: "onboardpro.api.add_comment",
+								params: { docname: _.id, content: u },
+							}),
+								(a.value = ""),
+								(f.value = !1),
+								$.value && ($.value.style.height = "auto"),
+								yield I();
+						} finally {
+							g.value = !1;
+						}
+					}
+				});
+			}
+			function re() {
+				const u = $.value;
+				u &&
+					((u.style.height = "auto"),
+					(u.style.height = Math.min(160, u.scrollHeight) + "px"));
+			}
+			function te(u) {
+				return V(this, null, function* () {
+					(m.value = !1),
+						u !== s.doc.status &&
+							(yield s.setValue.submit({ status: u }),
+							p("Status \u2192 " + u),
+							yield I());
+				});
+			}
+			function me() {
+				var u;
+				(u = N.value) == null || u.click();
+			}
+			function x(u) {
+				return V(this, null, function* () {
+					var U, de, ue;
+					const A = (U = u.target.files) == null ? void 0 : U[0];
+					if (!A) return;
+					const v = new FormData();
+					v.append("file", A),
+						v.append("doctype", "Implementation Request"),
+						v.append("docname", _.id),
+						yield fetch("/api/method/upload_file", {
+							method: "POST",
+							body: v,
+							headers: {
+								"X-Frappe-CSRF-Token":
+									(ue = (de = window.frappe) == null ? void 0 : de.csrf_token) !=
+									null
+										? ue
+										: "",
+							},
+						}),
+						L.reload(),
+						p("File attached");
+				});
+			}
+			function b(u) {
+				return (u || "").split(".").pop() || "doc";
+			}
+			return (u, A) =>
+				t(s).doc
+					? (l(),
+					  c("div", no, [
+							e("div", ao, [
+								e("div", lo, [
+									e("div", io, i(t(s).doc.subject), 1),
+									e("div", co, [
+										e("span", ro, "#" + i(t(s).doc.name), 1),
+										uo,
+										n(X, { status: t(s).doc.status }, null, 8, ["status"]),
+										_o,
+										e(
+											"span",
+											null,
+											"Opened " + i(t(_e)(t(P)(t(s).doc.creation), r.value)),
+											1
+										),
+										ho,
+										e(
+											"span",
+											null,
+											i(t(s).doc.customer_name || t(s).doc.customer),
+											1
+										),
+									]),
+								]),
+								e(
+									"div",
+									{ ref_key: "scrollEl", ref: k, class: "detail-scroll" },
+									[
+										e("div", po, [
+											e(
+												"p",
+												null,
+												i(
+													t(s).doc.description ||
+														"No description provided."
+												),
+												1
+											),
+											e("div", vo, [
+												e("span", mo, [
+													n(
+														t(y),
+														{
+															name:
+																t(he)[t(s).doc.data_type] ||
+																"file",
+															style: {
+																width: "12px",
+																height: "12px",
+															},
+														},
+														null,
+														8,
+														["name"]
+													),
+													w(" " + i(t(s).doc.data_type), 1),
+												]),
+												n(pe, { priority: t(s).doc.priority }, null, 8, [
+													"priority",
+												]),
+											]),
+										]),
+										fo,
+										e("div", yo, [
+											t(F).length
+												? T("", !0)
+												: (l(), c("div", bo, " No files yet. ")),
+											(l(!0),
+											c(
+												O,
+												null,
+												B(
+													t(F),
+													(v) => (
+														l(),
+														c(
+															"div",
+															{ key: v.name, class: "attach-row" },
+															[
+																e(
+																	"a",
+																	{
+																		class: "attach",
+																		href: v.file_url,
+																		target: "_blank",
+																	},
+																	[
+																		n(
+																			oo,
+																			{
+																				ext: b(
+																					v.file_name
+																				),
+																			},
+																			null,
+																			8,
+																			["ext"]
+																		),
+																		e("div", $o, [
+																			e(
+																				"div",
+																				ko,
+																				i(v.file_name),
+																				1
+																			),
+																			e(
+																				"div",
+																				wo,
+																				i(
+																					v.file_size
+																						? (
+																								v.file_size /
+																								1024
+																						  ).toFixed(
+																								0
+																						  ) + " KB"
+																						: ""
+																				) +
+																					" \xB7 " +
+																					i(
+																						v.attached_to_name
+																					),
+																				1
+																			),
+																		]),
+																	],
+																	8,
+																	go
+																),
+																e(
+																	"span",
+																	xo,
+																	i(
+																		t(_e)(
+																			t(P)(v.creation),
+																			r.value
+																		)
+																	),
+																	1
+																),
+															]
+														)
+													)
+												),
+												128
+											)),
+											t(s).doc.status !== "Resolved"
+												? (l(),
+												  c(
+														"div",
+														{ key: 1, class: "dropzone", onClick: me },
+														[
+															n(t(y), { name: "upload" }),
+															e(
+																"div",
+																Co,
+																i(
+																	d.role === "customer"
+																		? "Upload your data here"
+																		: "Attach a file"
+																),
+																1
+															),
+															e(
+																"div",
+																Ro,
+																i(
+																	d.role === "customer"
+																		? "Drag a file or click to browse \u2014 XLSX, CSV, PDF, ZIP"
+																		: "Drag & drop or click to browse"
+																),
+																1
+															),
+														]
+												  ))
+												: T("", !0),
+											e(
+												"input",
+												{
+													ref_key: "fileInput",
+													ref: N,
+													type: "file",
+													style: { display: "none" },
+													onChange: x,
+												},
+												null,
+												544
+											),
+										]),
+										So,
+										e("div", qo, [
+											(l(!0),
+											c(
+												O,
+												null,
+												B(
+													t(ie),
+													(v, U) => (
+														l(),
+														c(
+															O,
+															{ key: U },
+															[
+																v.kind === "msg"
+																	? (l(),
+																	  c(
+																			"div",
+																			{
+																				key: 0,
+																				class: H([
+																					"msg",
+																					v.isSelf
+																						? "self"
+																						: "",
+																				]),
+																			},
+																			[
+																				e("div", Do, [
+																					n(
+																						Y,
+																						{
+																							name:
+																								v.owner_name ||
+																								v.owner,
+																							role: v.isStaff
+																								? "staff"
+																								: "customer",
+																							size: 28,
+																						},
+																						null,
+																						8,
+																						[
+																							"name",
+																							"role",
+																						]
+																					),
+																				]),
+																				e("div", Lo, [
+																					e("div", To, [
+																						e(
+																							"span",
+																							Ao,
+																							i(
+																								v.owner_name ||
+																									v.owner
+																							),
+																							1
+																						),
+																						e(
+																							"span",
+																							{
+																								class: H(
+																									[
+																										"tag",
+																										v.isStaff
+																											? "staff"
+																											: "customer",
+																									]
+																								),
+																							},
+																							i(
+																								v.isStaff
+																									? "User"
+																									: "Customer"
+																							),
+																							3
+																						),
+																						e(
+																							"span",
+																							Mo,
+																							i(
+																								t(
+																									_e
+																								)(
+																									t(
+																										P
+																									)(
+																										v.creation
+																									),
+																									r.value
+																								)
+																							),
+																							1
+																						),
+																					]),
+																					e(
+																						"div",
+																						No,
+																						i(
+																							v.content
+																						),
+																						1
+																					),
+																				]),
+																			],
+																			2
+																	  ))
+																	: (l(),
+																	  c("div", jo, [
+																			e(
+																				"div",
+																				{
+																					class: "tl-node",
+																					"data-tone":
+																						v.tone ||
+																						void 0,
+																				},
+																				[
+																					n(
+																						t(y),
+																						{
+																							name: v.icon,
+																							style: {
+																								width: "13px",
+																								height: "13px",
+																							},
+																						},
+																						null,
+																						8,
+																						["name"]
+																					),
+																				],
+																				8,
+																				Io
+																			),
+																			e("div", Ho, [
+																				e(
+																					"span",
+																					{
+																						innerHTML:
+																							v.html,
+																					},
+																					null,
+																					8,
+																					Oo
+																				),
+																				e(
+																					"span",
+																					zo,
+																					i(
+																						t(_e)(
+																							t(P)(
+																								v.creation
+																							),
+																							r.value
+																						)
+																					),
+																					1
+																				),
+																			]),
+																	  ])),
+															],
+															64
+														)
+													)
+												),
+												128
+											)),
+											T("", !0),
+										]),
+									],
+									512
+								),
+								e("div", Po, [
+									f.value
+										? (l(),
+										  c("div", Fo, [
+												oe(
+													e(
+														"textarea",
+														{
+															ref_key: "taRef",
+															ref: $,
+															"onUpdate:modelValue":
+																A[0] ||
+																(A[0] = (v) => (a.value = v)),
+															placeholder:
+																d.role === "customer"
+																	? "Reply to Risto\u2026"
+																	: "Reply to " +
+																	  (t(s).doc.customer_name ||
+																			"customer") +
+																	  "\u2026",
+															onInput: re,
+															onKeydown: [
+																Ce(je(ee, ["ctrl", "prevent"]), [
+																	"enter",
+																]),
+																Ce(je(ee, ["meta", "prevent"]), [
+																	"enter",
+																]),
+																A[1] ||
+																	(A[1] = Ce(
+																		(v) => (f.value = !1),
+																		["esc"]
+																	)),
+															],
+														},
+														null,
+														40,
+														Eo
+													),
+													[[ye, a.value]]
+												),
+												e("div", Vo, [
+													e(
+														"button",
+														{
+															class: "iconbtn",
+															title: "Attach file",
+															onClick: me,
+														},
+														[n(t(y), { name: "paperclip" })]
+													),
+													Ko,
+													e("span", Yo, [Wo, e("b", Xo, i(t(ve)), 1)]),
+													e(
+														"button",
+														{
+															class: "btn sm",
+															onClick:
+																A[2] ||
+																(A[2] = (v) => (f.value = !1)),
+														},
+														"Cancel"
+													),
+													e(
+														"button",
+														{
+															class: "btn primary sm",
+															disabled: !a.value.trim() || g.value,
+															onClick: ee,
+														},
+														[
+															n(t(y), {
+																name: "send",
+																style: {
+																	width: "14px",
+																	height: "14px",
+																},
+															}),
+															Jo,
+														],
+														8,
+														Go
+													),
+												]),
+										  ]))
+										: (l(),
+										  c("div", Uo, [
+												e(
+													"button",
+													{ class: "btn reply-btn", onClick: be },
+													[
+														n(t(y), {
+															name: "corner-up-left",
+															style: {
+																width: "15px",
+																height: "15px",
+															},
+														}),
+														Bo,
+													]
+												),
+										  ])),
+								]),
+							]),
+							e("aside", Zo, [
+								e("div", Qo, [
+									en,
+									d.role === "staff"
+										? (l(),
+										  c(
+												"div",
+												{
+													key: 0,
+													class: "statussel",
+													ref_key: "statusRef",
+													ref: q,
+												},
+												[
+													e(
+														"button",
+														{
+															onClick:
+																A[3] ||
+																(A[3] = (v) =>
+																	(m.value = !m.value)),
+														},
+														[
+															n(
+																X,
+																{ status: t(s).doc.status },
+																null,
+																8,
+																["status"]
+															),
+															n(t(y), {
+																name: "chevron-down",
+																class: "chev",
+																style: {
+																	width: "16px",
+																	height: "16px",
+																},
+															}),
+														]
+													),
+													m.value
+														? (l(),
+														  c("div", tn, [
+																(l(),
+																c(
+																	O,
+																	null,
+																	B(j, (v) =>
+																		e(
+																			"button",
+																			{
+																				key: v,
+																				onClick: (U) =>
+																					te(v),
+																			},
+																			[
+																				n(
+																					X,
+																					{ status: v },
+																					null,
+																					8,
+																					["status"]
+																				),
+																				v ===
+																				t(s).doc.status
+																					? (l(),
+																					  fe(t(y), {
+																							key: 0,
+																							name: "check",
+																							class: "check",
+																							style: {
+																								width: "15px",
+																								height: "15px",
+																							},
+																					  }))
+																					: T("", !0),
+																			],
+																			8,
+																			sn
+																		)
+																	),
+																	64
+																)),
+														  ]))
+														: T("", !0),
+												],
+												512
+										  ))
+										: (l(),
+										  c("div", on, [
+												n(X, { status: t(s).doc.status }, null, 8, [
+													"status",
+												]),
+										  ])),
+								]),
+								e("div", nn, [
+									an,
+									t(s).doc.on_hold_since
+										? (l(),
+										  c("div", ln, [
+												n(t(y), {
+													name: "pause-circle",
+													style: { width: "13px", height: "13px" },
+												}),
+												cn,
+										  ]))
+										: T("", !0),
+									e("div", rn, [
+										e("div", dn, [
+											e("div", un, [
+												e("span", _n, [n(t(y), { name: "clock" }), hn]),
+												n(
+													le,
+													{
+														deadline: t(s).doc.fr_due_at,
+														now: r.value,
+														"window-h": t(W).frH,
+														state: t(s).doc.fr_state,
+													},
+													null,
+													8,
+													["deadline", "now", "window-h", "state"]
+												),
+											]),
+											e(
+												"div",
+												{
+													class: "slabar",
+													"data-tone": G(
+														t(s).doc.fr_state,
+														t(s).doc.fr_due_at
+													),
+												},
+												[
+													e(
+														"i",
+														{
+															style: se({
+																width: ce(
+																	t(s).doc.fr_due_at,
+																	t(s).doc.fr_state,
+																	t(W).frH
+																),
+															}),
+														},
+														null,
+														4
+													),
+												],
+												8,
+												pn
+											),
+											t(s).doc.first_responded_on
+												? (l(),
+												  c("div", vn, [
+														n(t(y), {
+															name: "check",
+															style: {
+																width: "11px",
+																height: "11px",
+															},
+														}),
+														w(
+															" Responded " +
+																i(
+																	t(_e)(
+																		t(P)(
+																			t(s).doc
+																				.first_responded_on
+																		),
+																		r.value
+																	)
+																),
+															1
+														),
+												  ]))
+												: T("", !0),
+										]),
+										e("div", mn, [
+											e("div", fn, [
+												e("span", yn, [n(t(y), { name: "clock" }), bn]),
+												n(
+													le,
+													{
+														deadline: t(s).doc.res_due_at,
+														now: r.value,
+														"window-h": t(W).resH,
+														state: t(s).doc.res_state,
+													},
+													null,
+													8,
+													["deadline", "now", "window-h", "state"]
+												),
+											]),
+											e(
+												"div",
+												{
+													class: "slabar",
+													"data-tone": G(
+														t(s).doc.res_state,
+														t(s).doc.res_due_at
+													),
+												},
+												[
+													e(
+														"i",
+														{
+															style: se({
+																width: ce(
+																	t(s).doc.res_due_at,
+																	t(s).doc.res_state,
+																	t(W).resH
+																),
+															}),
+														},
+														null,
+														4
+													),
+												],
+												8,
+												gn
+											),
+											(t(s).doc.total_hold_time || 0) >= 60
+												? (l(),
+												  c("div", $n, [
+														n(t(y), {
+															name: "pause",
+															style: {
+																width: "11px",
+																height: "11px",
+															},
+														}),
+														w(
+															" " +
+																i(
+																	Math.round(
+																		t(s).doc.total_hold_time /
+																			360
+																	) / 10
+																) +
+																"h paused (deadline extended) ",
+															1
+														),
+												  ]))
+												: T("", !0),
+										]),
+									]),
+								]),
+								e("div", kn, [
+									wn,
+									e("div", xn, [
+										Cn,
+										e("span", Rn, [
+											n(pe, { priority: t(s).doc.priority }, null, 8, [
+												"priority",
+											]),
+										]),
+									]),
+									e("div", Sn, [
+										qn,
+										e("span", Dn, [
+											n(
+												t(y),
+												{
+													name: t(he)[t(s).doc.data_type] || "file",
+													style: {
+														width: "15px",
+														height: "15px",
+														color: "var(--ink-3)",
+													},
+												},
+												null,
+												8,
+												["name"]
+											),
+											w(" " + i(t(s).doc.data_type), 1),
+										]),
+									]),
+									e("div", Ln, [
+										Tn,
+										e("span", An, [
+											n(
+												Y,
+												{
+													name:
+														t(s).doc.assignee_name ||
+														t(s).doc.assignee ||
+														"?",
+													role: "staff",
+													size: 20,
+												},
+												null,
+												8,
+												["name"]
+											),
+											w(
+												" " +
+													i(t(s).doc.assignee_name || t(s).doc.assignee),
+												1
+											),
+										]),
+									]),
+									e("div", Mn, [
+										Nn,
+										e("span", jn, [
+											n(
+												Y,
+												{
+													name:
+														t(s).doc.customer_name ||
+														t(s).doc.customer,
+													role: "customer",
+													size: 20,
+												},
+												null,
+												8,
+												["name"]
+											),
+											w(
+												" " +
+													i(t(s).doc.customer_name || t(s).doc.customer),
+												1
+											),
+										]),
+									]),
+									e("div", In, [
+										Hn,
+										e("span", On, i(t(nt)(t(P)(t(s).doc.creation))), 1),
+									]),
+								]),
+							]),
+					  ]))
+					: (l(), c("div", zn, Un));
+		},
+	},
+	Fn = { class: "pulse" },
+	En = e("div", { class: "h1", style: { "margin-bottom": "4px" } }, "SLA Pulse", -1),
+	Vn = { style: { color: "var(--ink-3)", "font-size": "13.5px", "margin-bottom": "22px" } },
+	Kn = { class: "stat-grid" },
+	Yn = { class: "stat" },
+	Wn = { class: "lbl" },
+	Xn = w("Open requests"),
+	Gn = { class: "num" },
+	Jn = { class: "sub2" },
+	Zn = ["data-tone"],
+	Qn = { class: "lbl" },
+	ea = w("SLA breached"),
+	ta = e("div", { class: "sub2" }, "Need attention now", -1),
+	sa = ["data-tone"],
+	oa = { class: "lbl" },
+	na = w("At risk (<8h)"),
+	aa = e("div", { class: "sub2" }, "Approaching deadline", -1),
+	la = { class: "stat", "data-tone": "green" },
+	ia = { class: "lbl" },
+	ca = w("Resolved"),
+	ra = { class: "num", style: { color: "var(--t-ink)" } },
+	da = e("div", { class: "sub2" }, "Data accepted", -1),
+	ua = e("div", { class: "section-label" }, "Watchlist \xB7 soonest deadlines", -1),
+	_a = { class: "tablewrap", style: { padding: "0 0 40px" } },
+	ha = { class: "tbl" },
+	pa = e("th", { style: { width: "80px" } }, "ID", -1),
+	va = e("th", null, "Request", -1),
+	ma = { key: 0, style: { width: "190px" } },
+	fa = e("th", { style: { width: "160px" } }, "Resolution SLA", -1),
+	ya = e("th", { style: { width: "150px" } }, "Status", -1),
+	ba = { key: 0 },
+	ga = ["colspan"],
+	$a = ["onClick"],
+	ka = { class: "id" },
+	wa = { class: "subj" },
+	xa = { key: 0 },
+	Ca = { class: "cust-cell" },
+	Ra = { class: "nm" },
+	Sa = { class: "co" },
+	qa = {
+		props: { role: { type: String, default: "staff" } },
+		setup(d) {
+			const h = d,
+				_ = R(() => h.role),
+				p = S(Date.now()),
+				r = setInterval(() => {
+					p.value = Date.now();
+				}, 1e3);
+			ke(() => clearInterval(r));
+			const a = we({
+					doctype: "Implementation Request",
+					fields: [
+						"name",
+						"subject",
+						"customer",
+						"customer_name",
+						"status",
+						"priority",
+						"res_state",
+						"res_due_at",
+					],
+					orderBy: "res_due_at asc",
+					pageLength: 200,
+					auto: !0,
+				}),
+				g = R(() => {
+					var q;
+					return (q = a.data) != null ? q : [];
+				}),
+				f = R(() => g.value.filter((q) => q.status !== "Resolved")),
+				m = R(() => g.value.filter((q) => q.status === "Resolved")),
+				k = R(() => f.value.filter((q) => P(q.res_due_at) < p.value)),
+				$ = R(() =>
+					f.value.filter((q) => {
+						const j = P(q.res_due_at) - p.value;
+						return j > 0 && j < 8 * 36e5;
+					})
+				),
+				N = R(() =>
+					[...k.value, ...$.value]
+						.sort((q, j) => P(q.res_due_at) - P(j.res_due_at))
+						.slice(0, 8)
+				);
+			return (q, j) => (
+				l(),
+				c("div", Fn, [
+					En,
+					e(
+						"div",
+						Vn,
+						i(
+							t(_) === "customer"
+								? "Live status of your open data requests."
+								: "Live health of every open data request."
+						),
+						1
+					),
+					e("div", Kn, [
+						e("div", Yn, [
+							e("div", Wn, [n(t(y), { name: "inbox" }), Xn]),
+							e("div", Gn, i(t(f).length), 1),
+							e(
+								"div",
+								Jn,
+								i(
+									t(_) === "customer"
+										? "Your active requests"
+										: "Across all customers"
+								),
+								1
+							),
+						]),
+						e(
+							"div",
+							{ class: "stat", "data-tone": t(k).length ? "red" : "green" },
+							[
+								e("div", Qn, [n(t(y), { name: "alert-triangle" }), ea]),
+								e(
+									"div",
+									{
+										class: "num",
+										style: se(t(k).length ? "color:var(--t-ink)" : ""),
+									},
+									i(t(k).length),
+									5
+								),
+								ta,
+							],
+							8,
+							Zn
+						),
+						e(
+							"div",
+							{ class: "stat", "data-tone": t($).length ? "amber" : "green" },
+							[
+								e("div", oa, [n(t(y), { name: "clock" }), na]),
+								e(
+									"div",
+									{
+										class: "num",
+										style: se(t($).length ? "color:var(--t-ink)" : ""),
+									},
+									i(t($).length),
+									5
+								),
+								aa,
+							],
+							8,
+							sa
+						),
+						e("div", la, [
+							e("div", ia, [n(t(y), { name: "check-circle" }), ca]),
+							e("div", ra, i(t(m).length), 1),
+							da,
+						]),
+					]),
+					ua,
+					e("div", _a, [
+						e("table", ha, [
+							e("thead", null, [
+								e("tr", null, [
+									pa,
+									va,
+									t(_) === "staff" ? (l(), c("th", ma, "Customer")) : T("", !0),
+									fa,
+									ya,
+								]),
+							]),
+							e("tbody", null, [
+								t(N).length
+									? T("", !0)
+									: (l(),
+									  c("tr", ba, [
+											e(
+												"td",
+												{
+													colspan: t(_) === "staff" ? 5 : 4,
+													style: {
+														"text-align": "center",
+														color: "var(--ink-4)",
+														height: "80px",
+													},
+												},
+												" All clear \u2014 nothing at risk. ",
+												8,
+												ga
+											),
+									  ])),
+								(l(!0),
+								c(
+									O,
+									null,
+									B(t(N), (C) => {
+										var s, D;
+										return (
+											l(),
+											c(
+												"tr",
+												{
+													key: C.name,
+													onClick: (I) =>
+														q.$router.push({
+															name: "RequestDetail",
+															params: { id: C.name },
+														}),
+												},
+												[
+													e("td", null, [e("span", ka, i(C.name), 1)]),
+													e("td", null, [e("div", wa, i(C.subject), 1)]),
+													t(_) === "staff"
+														? (l(),
+														  c("td", xa, [
+																e("div", Ca, [
+																	n(
+																		Y,
+																		{
+																			name:
+																				C.customer_name ||
+																				C.customer,
+																			role: "customer",
+																			size: 28,
+																		},
+																		null,
+																		8,
+																		["name"]
+																	),
+																	e("div", null, [
+																		e(
+																			"div",
+																			Ra,
+																			i(C.customer_name),
+																			1
+																		),
+																		e(
+																			"div",
+																			Sa,
+																			i(C.customer),
+																			1
+																		),
+																	]),
+																]),
+														  ]))
+														: T("", !0),
+													e("td", null, [
+														n(
+															le,
+															{
+																deadline: C.res_due_at,
+																now: p.value,
+																"window-h":
+																	(D =
+																		(s = t(K)[C.priority]) ==
+																		null
+																			? void 0
+																			: s.resH) != null
+																		? D
+																		: 48,
+																state: C.res_state,
+															},
+															null,
+															8,
+															[
+																"deadline",
+																"now",
+																"window-h",
+																"state",
+															]
+														),
+													]),
+													e("td", null, [
+														n(X, { status: C.status }, null, 8, [
+															"status",
+														]),
+													]),
+												],
+												8,
+												$a
+											)
+										);
+									}),
+									128
+								)),
+							]),
+						]),
+					]),
+				])
+			);
+		},
+	};
+var Da = Ge({
+	history: Je("/onboardpro/"),
+	routes: [
+		{ path: "/", name: "Requests", component: so },
+		{ path: "/pulse", name: "Pulse", component: qa },
+		{ path: "/request/:id", name: "RequestDetail", component: Bn, props: !0 },
+	],
+});
+const La = { class: "brand" },
+	Ta = { class: "brand-mark" },
+	Aa = e(
+		"div",
+		null,
+		[
+			e("div", { class: "brand-name" }, "OnboardPro"),
+			e("div", { class: "brand-sub" }, "Implementation Portal"),
+		],
+		-1
+	),
+	Ma = { class: "nav" },
+	Na = e("div", { class: "nav-label" }, "Workspace", -1),
+	ja = ["onClick"],
+	Ia = w(" SLA Pulse "),
+	Ha = { key: 0, class: "nav-count", style: { color: "var(--t-solid)" }, "data-tone": "red" },
+	Oa = ["onClick"],
+	za = w(" Requests "),
+	Pa = { class: "nav-count" },
+	Ua = { class: "side-foot" },
+	Ba = { key: 0, class: "user-menu" },
+	Fa = w(" Helpdesk "),
+	Ea = w(" Log out "),
+	Va = { class: "user-card-info" },
+	Ka = { class: "user-card-name" },
+	Ya = { class: "user-card-role" },
+	Wa = {
+		props: {
+			openCount: { type: Number, default: 0 },
+			breachCount: { type: Number, default: 0 },
+			role: { type: String, default: "staff" },
+			userName: { type: String, default: "" },
+			open: { type: Boolean, default: !1 },
+		},
+		setup(d) {
+			const h = d,
+				_ = xe(),
+				p = S(!1),
+				r = `${window.location.protocol}//${window.location.hostname}/helpdesk`,
+				a = R(() => {
+					var f, m;
+					return (
+						h.userName ||
+						((m = (f = window.frappe) == null ? void 0 : f.session) == null
+							? void 0
+							: m.user_fullname) ||
+						"User"
+					);
+				});
+			function g() {
+				return V(this, null, function* () {
+					var f;
+					try {
+						yield fetch("/api/method/logout", {
+							method: "POST",
+							headers: {
+								"X-Frappe-CSRF-Token":
+									((f = window.frappe) == null ? void 0 : f.csrf_token) ||
+									"fetch",
+							},
+						});
+					} finally {
+						window.location.href = "/login";
+					}
+				});
+			}
+			return (f, m) => {
+				const k = He("router-link");
+				return (
+					l(),
+					c(
+						O,
+						null,
+						[
+							e(
+								"aside",
+								{ class: H(["side", d.open ? "open" : ""]) },
+								[
+									e("div", La, [e("div", Ta, [n(t(y), { name: "inbox" })]), Aa]),
+									e("nav", Ma, [
+										Na,
+										n(
+											k,
+											{ to: "/pulse", custom: "" },
+											{
+												default: Oe(({ navigate: $, isActive: N }) => [
+													e(
+														"button",
+														{
+															class: H([
+																"nav-item",
+																N ? "active" : "",
+															]),
+															onClick: $,
+														},
+														[
+															n(t(y), { name: "activity" }),
+															Ia,
+															d.breachCount > 0
+																? (l(),
+																  c(
+																		"span",
+																		Ha,
+																		i(d.breachCount),
+																		1
+																  ))
+																: T("", !0),
+														],
+														10,
+														ja
+													),
+												]),
+												_: 1,
+											}
+										),
+										n(
+											k,
+											{ to: "/", custom: "" },
+											{
+												default: Oe(({ navigate: $, isActive: N }) => [
+													e(
+														"button",
+														{
+															class: H([
+																"nav-item",
+																N && t(_).name !== "Pulse"
+																	? "active"
+																	: "",
+															]),
+															onClick: $,
+														},
+														[
+															n(t(y), { name: "inbox" }),
+															za,
+															e("span", Pa, i(d.openCount), 1),
+														],
+														10,
+														Oa
+													),
+												]),
+												_: 1,
+											}
+										),
+									]),
+									e("div", Ua, [
+										p.value
+											? (l(),
+											  c("div", Ba, [
+													e(
+														"a",
+														{
+															href: r,
+															target: "_blank",
+															rel: "noopener noreferrer",
+															class: "user-menu-item",
+															onClick:
+																m[0] ||
+																(m[0] = ($) => (p.value = !1)),
+														},
+														[n(t(y), { name: "headphones" }), Fa]
+													),
+													e(
+														"button",
+														{
+															class: "user-menu-item danger",
+															onClick: g,
+														},
+														[n(t(y), { name: "log-out" }), Ea]
+													),
+											  ]))
+											: T("", !0),
+										e(
+											"button",
+											{
+												class: "user-card",
+												onClick:
+													m[1] || (m[1] = ($) => (p.value = !p.value)),
+											},
+											[
+												n(
+													Y,
+													{ name: t(a), role: d.role, size: 32 },
+													null,
+													8,
+													["name", "role"]
+												),
+												e("div", Va, [
+													e("div", Ka, i(t(a)), 1),
+													e(
+														"div",
+														Ya,
+														i(
+															d.role === "staff"
+																? "User"
+																: "Customer"
+														),
+														1
+													),
+												]),
+												n(
+													t(y),
+													{
+														class: "user-card-caret",
+														name: p.value
+															? "chevron-up"
+															: "chevron-down",
+														style: { width: "14px", height: "14px" },
+													},
+													null,
+													8,
+													["name"]
+												),
+											]
+										),
+									]),
+								],
+								2
+							),
+							p.value
+								? (l(),
+								  c("div", {
+										key: 0,
+										class: "menu-scrim",
+										onClick: m[2] || (m[2] = ($) => (p.value = !1)),
+								  }))
+								: T("", !0),
+						],
+						64
+					)
+				);
+			};
+		},
+	},
+	Xa = { key: 0, class: "auth-loading" },
+	Ga = e("div", { class: "auth-spinner" }, null, -1),
+	Ja = [Ga],
+	Za = { key: 1, class: "app" },
+	Qa = { class: "main" },
+	el = { class: "topbar" },
+	tl = { class: "crumb" },
+	sl = { class: "here" },
+	ol = e("span", { class: "here" }, "SLA Pulse", -1),
+	nl = e("span", { class: "grow" }, null, -1),
+	al = w("Close "),
+	ll = { class: "viewport" },
+	il = { class: "toasts" },
+	cl = {
+		setup(d) {
+			const h = xe(),
+				_ = Ne(),
+				p = S(!0),
+				r = S("staff"),
+				a = S(""),
+				g = S(""),
+				f = S(0),
+				m = S(0),
+				k = S([]),
+				$ = S(!1);
+			ne(h, () => {
+				$.value = !1;
+			}),
+				$e(() =>
+					V(this, null, function* () {
+						try {
+							const C = yield ae({ url: "onboardpro.api.get_session_role" });
+							(r.value = C.role), (a.value = C.full_name), (p.value = !1);
+						} catch (C) {
+							N();
+						}
+					})
+				);
+			function N() {
+				const C = encodeURIComponent(window.location.pathname || "/onboardpro");
+				window.location.href = `/login?redirect-to=${C}`;
+			}
+			function q({ open: C, breach: s }) {
+				(f.value = C), (m.value = s);
+			}
+			function j(C) {
+				const s = Math.random();
+				k.value.push({ id: s, msg: C }),
+					setTimeout(() => {
+						k.value = k.value.filter((D) => D.id !== s);
+					}, 2600);
+			}
+			return (
+				ze("toast", j),
+				ze("role", r),
+				(C, s) => {
+					const D = He("router-view");
+					return p.value
+						? (l(), c("div", Xa, Ja))
+						: (l(),
+						  c("div", Za, [
+								n(
+									Wa,
+									{
+										"open-count": f.value,
+										"breach-count": m.value,
+										role: r.value,
+										"user-name": a.value,
+										open: $.value,
+									},
+									null,
+									8,
+									["open-count", "breach-count", "role", "user-name", "open"]
+								),
+								$.value
+									? (l(),
+									  c("div", {
+											key: 0,
+											class: "mob-sidebar-scrim",
+											onClick: s[0] || (s[0] = (I) => ($.value = !1)),
+									  }))
+									: T("", !0),
+								e("div", Qa, [
+									e("div", el, [
+										e(
+											"button",
+											{
+												class: "mob-menu-btn",
+												onClick:
+													s[1] || (s[1] = (I) => ($.value = !$.value)),
+											},
+											[n(t(y), { name: "menu" })]
+										),
+										e("div", tl, [
+											e(
+												"span",
+												{
+													class: "root",
+													onClick:
+														s[2] || (s[2] = (I) => t(_).push("/")),
+												},
+												i(
+													r.value === "customer"
+														? "My requests"
+														: "Requests"
+												),
+												1
+											),
+											t(h).name === "RequestDetail"
+												? (l(),
+												  c(
+														O,
+														{ key: 0 },
+														[
+															n(t(y), {
+																name: "chevron-right",
+																style: {
+																	width: "15px",
+																	height: "15px",
+																	color: "var(--ink-4)",
+																	flex: "none",
+																},
+															}),
+															e(
+																"span",
+																sl,
+																i(g.value || t(h).params.id),
+																1
+															),
+														],
+														64
+												  ))
+												: t(h).name === "Pulse"
+												? (l(),
+												  c(
+														O,
+														{ key: 1 },
+														[
+															n(t(y), {
+																name: "chevron-right",
+																style: {
+																	width: "15px",
+																	height: "15px",
+																	color: "var(--ink-4)",
+																	flex: "none",
+																},
+															}),
+															ol,
+														],
+														64
+												  ))
+												: T("", !0),
+										]),
+										nl,
+										t(h).name === "RequestDetail"
+											? (l(),
+											  c(
+													"button",
+													{
+														key: 0,
+														class: "btn",
+														onClick:
+															s[3] || (s[3] = (I) => t(_).push("/")),
+													},
+													[
+														n(t(y), {
+															name: "x",
+															style: {
+																width: "14px",
+																height: "14px",
+															},
+														}),
+														al,
+													]
+											  ))
+											: T("", !0),
+									]),
+									e("div", ll, [
+										n(
+											D,
+											{
+												role: r.value,
+												onRequestsLoaded: q,
+												onSetTitle: s[4] || (s[4] = (I) => (g.value = I)),
+											},
+											null,
+											8,
+											["role"]
+										),
+									]),
+								]),
+								e("div", il, [
+									(l(!0),
+									c(
+										O,
+										null,
+										B(
+											k.value,
+											(I) => (
+												l(),
+												c("div", { key: I.id, class: "toast" }, [
+													n(t(y), {
+														name: "check-circle",
+														class: "tk",
+														style: { width: "16px", height: "16px" },
+													}),
+													w(" " + i(I.msg), 1),
+												])
+											)
+										),
+										128
+									)),
+								]),
+						  ]));
+				}
+			);
+		},
+	};
+const qe = Ze(cl);
+Qe("resourceFetcher", ae);
+qe.use(Da);
+[et, tt, y, st].forEach((d) => qe.component(d.name, d));
+qe.mount("#app");
