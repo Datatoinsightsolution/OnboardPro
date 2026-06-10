@@ -11,11 +11,16 @@
 			:breach-count="breachCount"
 			:role="role"
 			:user-name="userName"
+			:open="sidebarOpen"
 		/>
+		<div v-if="sidebarOpen" class="mob-sidebar-scrim" @click="sidebarOpen = false" />
 
 		<div class="main">
 			<!-- Topbar -->
 			<div class="topbar">
+				<button class="mob-menu-btn" @click="sidebarOpen = !sidebarOpen">
+					<FeatherIcon name="menu" />
+				</button>
 				<div class="crumb">
 					<span class="root" @click="router.push('/')">
 						{{ role === 'customer' ? 'My requests' : 'Requests' }}
@@ -66,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, provide, onMounted } from 'vue'
+import { ref, watch, provide, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { frappeRequest, FeatherIcon } from 'frappe-ui'
 import AppSidebar from '@/components/AppSidebar.vue'
@@ -81,6 +86,11 @@ const pageTitle = ref('')
 const openCount = ref(0)
 const breachCount = ref(0)
 const toasts = ref([])
+const sidebarOpen = ref(false)
+
+watch(route, () => {
+	sidebarOpen.value = false
+})
 
 onMounted(async () => {
 	try {

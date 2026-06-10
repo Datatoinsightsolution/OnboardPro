@@ -1,4 +1,4 @@
-var Be = Object.defineProperty,
+var Fe = Object.defineProperty,
 	Ee = Object.defineProperties;
 var Ve = Object.getOwnPropertyDescriptors;
 var De = Object.getOwnPropertySymbols;
@@ -6,7 +6,7 @@ var Ke = Object.prototype.hasOwnProperty,
 	Ye = Object.prototype.propertyIsEnumerable;
 var Le = (d, h, _) =>
 		h in d
-			? Be(d, h, { enumerable: !0, configurable: !0, writable: !0, value: _ })
+			? Fe(d, h, { enumerable: !0, configurable: !0, writable: !0, value: _ })
 			: (d[h] = _),
 	J = (d, h) => {
 		for (var _ in h || (h = {})) Ke.call(h, _) && Le(d, _, h[_]);
@@ -16,53 +16,53 @@ var Le = (d, h, _) =>
 	Te = (d, h) => Ee(d, Ve(h));
 var V = (d, h, _) =>
 	new Promise((p, r) => {
-		var n = (m) => {
+		var a = (m) => {
 				try {
 					f(_.next(m));
-				} catch ($) {
-					r($);
+				} catch (k) {
+					r(k);
 				}
 			},
 			g = (m) => {
 				try {
 					f(_.throw(m));
-				} catch ($) {
-					r($);
+				} catch (k) {
+					r(k);
 				}
 			},
-			f = (m) => (m.done ? p(m.value) : Promise.resolve(m.value).then(n, g));
+			f = (m) => (m.done ? p(m.value) : Promise.resolve(m.value).then(a, g));
 		f((_ = _.apply(d, h)).next());
 	});
 import {
 	c as R,
-	o as a,
+	o as l,
 	a as c,
-	b as k,
-	t as l,
+	b as w,
+	t as i,
 	n as H,
 	u as t,
 	d as e,
-	F as I,
-	r as U,
+	F as O,
+	r as B,
 	e as se,
 	i as Ae,
-	f as q,
+	f as S,
 	g as ge,
 	h as fe,
-	j as o,
+	j as n,
 	_ as y,
 	w as oe,
 	v as ye,
-	k as M,
+	k as T,
 	l as Me,
 	T as We,
-	m as ue,
+	m as ne,
 	p as $e,
 	q as ke,
 	s as we,
 	x as xe,
 	y as Ne,
-	z as ne,
+	z as ae,
 	A as Xe,
 	B as Ce,
 	C as je,
@@ -70,8 +70,8 @@ import {
 	E as Ge,
 	G as Je,
 	H as He,
-	I as ze,
-	J as Oe,
+	I as Oe,
+	J as ze,
 	K as Ze,
 	L as Qe,
 	M as et,
@@ -83,36 +83,36 @@ const ot = function () {
 	if (h && h.supports && h.supports("modulepreload")) return;
 	for (const r of document.querySelectorAll('link[rel="modulepreload"]')) p(r);
 	new MutationObserver((r) => {
-		for (const n of r)
-			if (n.type === "childList")
-				for (const g of n.addedNodes)
+		for (const a of r)
+			if (a.type === "childList")
+				for (const g of a.addedNodes)
 					g.tagName === "LINK" && g.rel === "modulepreload" && p(g);
 	}).observe(document, { childList: !0, subtree: !0 });
 	function _(r) {
-		const n = {};
+		const a = {};
 		return (
-			r.integrity && (n.integrity = r.integrity),
-			r.referrerpolicy && (n.referrerPolicy = r.referrerpolicy),
+			r.integrity && (a.integrity = r.integrity),
+			r.referrerpolicy && (a.referrerPolicy = r.referrerpolicy),
 			r.crossorigin === "use-credentials"
-				? (n.credentials = "include")
+				? (a.credentials = "include")
 				: r.crossorigin === "anonymous"
-				? (n.credentials = "omit")
-				: (n.credentials = "same-origin"),
-			n
+				? (a.credentials = "omit")
+				: (a.credentials = "same-origin"),
+			a
 		);
 	}
 	function p(r) {
 		if (r.ep) return;
 		r.ep = !0;
-		const n = _(r);
-		fetch(r.href, n);
+		const a = _(r);
+		fetch(r.href, a);
 	}
 };
 ot();
 const Z = 36e5,
 	Pe = 24 * Z,
 	Re = 6e4,
-	O = (d) => (d ? new Date(d).getTime() : 0);
+	P = (d) => (d ? new Date(d).getTime() : 0);
 function _e(d, h) {
 	const _ = h - d;
 	if (_ < Re) return "just now";
@@ -133,21 +133,21 @@ function nt(d) {
 function Se(d, h, _) {
 	const p = d - h,
 		r = p <= 0,
-		n = Math.abs(p),
-		g = Math.floor(n / Z),
-		f = Math.floor((n % Z) / Re);
+		a = Math.abs(p),
+		g = Math.floor(a / Z),
+		f = Math.floor((a % Z) / Re);
 	let m;
 	g >= 48
 		? (m = Math.round(g / 24) + "d")
 		: g >= 1
 		? (m = g + "h " + String(f).padStart(2, "0") + "m")
 		: (m = f + "m");
-	const $ = r ? "Breached " + m : m + " left",
-		w = r ? "\u2212" + m : m;
-	let j = "ok";
-	r ? (j = "breach") : p < 4 * Z && (j = "warn");
-	const D = _ ? Math.min(1.4, 1 - p / (_ * Z)) : 0;
-	return { ms: p, breached: r, label: $, short: w, tone: j, pct: D };
+	const k = r ? "Breached " + m : m + " left",
+		$ = r ? "\u2212" + m : m;
+	let N = "ok";
+	r ? (N = "breach") : p < 4 * Z && (N = "warn");
+	const q = _ ? Math.min(1.4, 1 - p / (_ * Z)) : 0;
+	return { ms: p, breached: r, label: k, short: $, tone: N, pct: q };
 }
 const Ue = { ok: "green", warn: "amber", breach: "red" };
 function at(d) {
@@ -159,7 +159,7 @@ function at(d) {
 		.slice(0, 2)
 		.toUpperCase();
 }
-const Fe = {
+const Be = {
 		Open: { tone: "blue", group: "open", desc: "Raised \u2014 awaiting action" },
 		"In Review": { tone: "violet", group: "open", desc: "Risto reviewing submission" },
 		"Needs Revision": { tone: "red", group: "open", desc: "Sent back to customer" },
@@ -185,21 +185,21 @@ const Fe = {
 		setup(d) {
 			const h = d,
 				_ = R(() => {
-					var r, n;
-					return (n = (r = Fe[h.status]) == null ? void 0 : r.tone) != null
-						? n
+					var r, a;
+					return (a = (r = Be[h.status]) == null ? void 0 : r.tone) != null
+						? a
 						: "slate";
 				}),
 				p = R(() => {
 					var r;
-					return ((r = Fe[h.status]) == null ? void 0 : r.group) === "closed";
+					return ((r = Be[h.status]) == null ? void 0 : r.group) === "closed";
 				});
-			return (r, n) => (
-				a(),
+			return (r, a) => (
+				l(),
 				c(
 					"span",
 					{ class: H(["statuspill", t(p) ? "closed" : ""]), "data-tone": t(_) },
-					[it, k(l(d.status), 1)],
+					[it, w(i(d.status), 1)],
 					10,
 					lt
 				)
@@ -213,23 +213,23 @@ const Fe = {
 		setup(d) {
 			const h = d,
 				_ = R(() => {
-					var n;
-					return (n = K[h.priority]) != null ? n : K.Medium;
+					var a;
+					return (a = K[h.priority]) != null ? a : K.Medium;
 				}),
 				p = R(() => _.value.tone),
 				r = R(() => 4 - _.value.rank);
-			return (n, g) => (
-				a(),
+			return (a, g) => (
+				l(),
 				c(
 					"span",
 					{ class: "prio", "data-tone": t(p) },
 					[
 						e("span", rt, [
-							(a(),
+							(l(),
 							c(
-								I,
+								O,
 								null,
-								U(4, (f) =>
+								B(4, (f) =>
 									e(
 										"i",
 										{
@@ -244,7 +244,7 @@ const Fe = {
 								64
 							)),
 						]),
-						k(" " + l(d.priority), 1),
+						w(" " + i(d.priority), 1),
 					],
 					8,
 					ct
@@ -254,7 +254,7 @@ const Fe = {
 	},
 	dt = ["data-tone"],
 	ut = e("span", { class: "heart" }, null, -1),
-	ae = {
+	le = {
 		props: {
 			deadline: { type: [Number, String], default: null },
 			now: { type: Number, required: !0 },
@@ -264,15 +264,15 @@ const Fe = {
 		setup(d) {
 			const h = d,
 				_ = R(() => {
-					var n;
+					var a;
 					if (h.state === "Fulfilled") return { tone: "ok", label: "Fulfilled" };
 					if (h.state === "Failed") return { tone: "breach", label: "Failed" };
 					if (h.state === "Paused") return { tone: "ok", label: "Paused" };
 					const r =
 						typeof h.deadline == "string"
-							? O(h.deadline)
-							: (n = h.deadline) != null
-							? n
+							? P(h.deadline)
+							: (a = h.deadline) != null
+							? a
 							: 0;
 					return Se(r, h.now, h.windowH);
 				}),
@@ -280,12 +280,12 @@ const Fe = {
 					var r;
 					return (r = Ue[_.value.tone]) != null ? r : "slate";
 				});
-			return (r, n) => (
-				a(),
+			return (r, a) => (
+				l(),
 				c(
 					"span",
 					{ class: "slachip", "data-tone": t(p) },
-					[ut, k(l(t(_).label), 1)],
+					[ut, w(i(t(_).label), 1)],
 					8,
 					dt
 				)
@@ -303,11 +303,11 @@ const Fe = {
 			const h = d,
 				_ = R(() => (h.role === "staff" ? "staff" : "customer"));
 			return (p, r) => (
-				a(),
+				l(),
 				c(
 					"div",
 					{ class: H(["av", t(_), "av-sz-" + d.size]), title: d.name },
-					l(t(at)(d.name)),
+					i(t(at)(d.name)),
 					11,
 					_t
 				)
@@ -341,7 +341,7 @@ const Fe = {
 	yt = e(
 		"label",
 		{ class: "flabel", style: { "margin-bottom": "0" } },
-		[k("Subject "), e("span", { "data-tone": "red", style: { color: "var(--t-ink)" } }, "*")],
+		[w("Subject "), e("span", { "data-tone": "red", style: { color: "var(--t-ink)" } }, "*")],
 		-1
 	),
 	bt = {
@@ -361,9 +361,9 @@ const Fe = {
 	Lt = { key: 0, class: "slacalc", style: { "margin-top": "12px" } },
 	Tt = { class: "ic" },
 	At = { class: "txt" },
-	Mt = k(" Business-hours SLA \u2014 first response within "),
-	Nt = k(", resolution within "),
-	jt = k(" of working time. "),
+	Mt = w(" Business-hours SLA \u2014 first response within "),
+	Nt = w(", resolution within "),
+	jt = w(" of working time. "),
 	It = e("label", { class: "flabel" }, "Instructions to customer", -1),
 	Ht = e(
 		"div",
@@ -371,16 +371,16 @@ const Fe = {
 		" The customer sees this in the request, along with any template you attach after creating it. ",
 		-1
 	),
-	zt = { class: "so-foot" },
-	Ot = { class: "grow", style: { "font-size": "12px", color: "var(--ink-3)" } },
+	Ot = { class: "so-foot" },
+	zt = { class: "grow", style: { "font-size": "12px", color: "var(--ink-3)" } },
 	Pt = ["disabled"],
 	Ut = {
 		emits: ["close", "created"],
 		setup(d, { emit: h }) {
-			var L, C;
+			var j, C;
 			const _ = Ae("toast", () => {}),
 				p =
-					((C = (L = window.frappe) == null ? void 0 : L.session) == null
+					((C = (j = window.frappe) == null ? void 0 : j.session) == null
 						? void 0
 						: C.user_fullname) || "Staff",
 				r = [
@@ -390,59 +390,59 @@ const Fe = {
 					"Reconciliation",
 					"Documents",
 				],
-				n = q({
+				a = S({
 					subject: "",
 					customer: "",
 					data_type: "Master Data",
 					priority: "High",
 					description: "",
 				}),
-				g = q(!1),
+				g = S(!1),
 				f = ge({
 					url: "onboardpro.api.search_customers",
 					params: { query: "", limit: 500 },
 					auto: !0,
 				}),
 				m = ge({ url: "onboardpro.api.get_sla_config", auto: !0 }),
-				$ = R(() => {
-					var i, S;
-					return (S = ((i = m.data) != null ? i : {})[n.value.priority]) != null
-						? S
+				k = R(() => {
+					var s, D;
+					return (D = ((s = m.data) != null ? s : {})[a.value.priority]) != null
+						? D
 						: null;
 				}),
-				w = R(() => n.value.subject.trim().length > 2 && !!n.value.customer),
-				j = ge({
+				$ = R(() => a.value.subject.trim().length > 2 && !!a.value.customer),
+				N = ge({
 					url: "frappe.client.insert",
-					onSuccess(i) {
-						(g.value = !1), _("Request " + i.name + " raised"), h("created", i.name);
+					onSuccess(s) {
+						(g.value = !1), _("Request " + s.name + " raised"), h("created", s.name);
 					},
 					onError() {
 						g.value = !1;
 					},
 				});
-			function D() {
-				!w.value ||
+			function q() {
+				!$.value ||
 					((g.value = !0),
-					j.submit({
+					N.submit({
 						doc: {
 							doctype: "Implementation Request",
-							subject: n.value.subject.trim(),
-							customer: n.value.customer,
-							data_type: n.value.data_type,
-							priority: n.value.priority,
-							description: n.value.description.trim(),
+							subject: a.value.subject.trim(),
+							customer: a.value.customer,
+							data_type: a.value.data_type,
+							priority: a.value.priority,
+							description: a.value.description.trim(),
 							status: "Open",
 						},
 					}));
 			}
-			return (i, S) => {
-				var B;
+			return (s, D) => {
+				var I;
 				return (
-					a(),
+					l(),
 					fe(We, { to: "body" }, [
 						e("div", {
 							class: "scrim",
-							onClick: S[0] || (S[0] = (T) => i.$emit("close")),
+							onClick: D[0] || (D[0] = (L) => s.$emit("close")),
 						}),
 						e("div", ht, [
 							e("div", pt, [
@@ -451,9 +451,9 @@ const Fe = {
 									"button",
 									{
 										class: "iconbtn",
-										onClick: S[1] || (S[1] = (T) => i.$emit("close")),
+										onClick: D[1] || (D[1] = (L) => s.$emit("close")),
 									},
-									[o(t(y), { name: "x" })]
+									[n(t(y), { name: "x" })]
 								),
 							]),
 							e("div", mt, [
@@ -467,13 +467,13 @@ const Fe = {
 													{ "font-size": "11px" },
 													{
 														color:
-															n.value.subject.length > 120
+															a.value.subject.length > 120
 																? "oklch(0.50 0.18 25)"
 																: "var(--ink-4)",
 													},
 												]),
 											},
-											l(n.value.subject.length) + "/140 ",
+											i(a.value.subject.length) + "/140 ",
 											5
 										),
 									]),
@@ -482,7 +482,7 @@ const Fe = {
 											"input",
 											{
 												"onUpdate:modelValue":
-													S[2] || (S[2] = (T) => (n.value.subject = T)),
+													D[2] || (D[2] = (L) => (a.value.subject = L)),
 												class: "finput",
 												autofocus: "",
 												maxlength: "140",
@@ -492,18 +492,18 @@ const Fe = {
 											null,
 											512
 										),
-										[[ye, n.value.subject]]
+										[[ye, a.value.subject]]
 									),
-									n.value.subject.length > 120
-										? (a(),
+									a.value.subject.length > 120
+										? (l(),
 										  c(
 												"div",
 												bt,
-												l(140 - n.value.subject.length) +
+												i(140 - a.value.subject.length) +
 													" characters remaining \u2014 keep subjects concise. ",
 												1
 										  ))
-										: M("", !0),
+										: T("", !0),
 								]),
 								e("div", null, [
 									gt,
@@ -512,23 +512,23 @@ const Fe = {
 											"select",
 											{
 												"onUpdate:modelValue":
-													S[3] || (S[3] = (T) => (n.value.customer = T)),
+													D[3] || (D[3] = (L) => (a.value.customer = L)),
 												class: "finput",
 											},
 											[
 												$t,
-												(a(!0),
+												(l(!0),
 												c(
-													I,
+													O,
 													null,
-													U(
-														(B = t(f).data) != null ? B : [],
-														(T) => (
-															a(),
+													B(
+														(I = t(f).data) != null ? I : [],
+														(L) => (
+															l(),
 															c(
 																"option",
-																{ key: T.name, value: T.name },
-																l(T.customer_name || T.name),
+																{ key: L.name, value: L.name },
+																i(L.customer_name || L.name),
 																9,
 																kt
 															)
@@ -539,33 +539,33 @@ const Fe = {
 											],
 											512
 										),
-										[[Me, n.value.customer]]
+										[[Me, a.value.customer]]
 									),
 								]),
 								e("div", null, [
 									wt,
 									e("div", xt, [
-										(a(),
+										(l(),
 										c(
-											I,
+											O,
 											null,
-											U(r, (T) =>
+											B(r, (L) =>
 												e(
 													"button",
 													{
-														key: T,
+														key: L,
 														type: "button",
 														class: H([
 															"chip",
-															n.value.data_type === T ? "on" : "",
+															a.value.data_type === L ? "on" : "",
 														]),
-														onClick: (F) => (n.value.data_type = T),
+														onClick: (F) => (a.value.data_type = L),
 													},
 													[
-														o(
+														n(
 															t(y),
 															{
-																name: t(he)[T],
+																name: t(he)[L],
 																style: {
 																	width: "15px",
 																	height: "15px",
@@ -575,7 +575,7 @@ const Fe = {
 															8,
 															["name"]
 														),
-														k(" " + l(T), 1),
+														w(" " + i(L), 1),
 													],
 													10,
 													Ct
@@ -588,14 +588,14 @@ const Fe = {
 								e("div", null, [
 									Rt,
 									e("div", St, [
-										(a(!0),
+										(l(!0),
 										c(
-											I,
+											O,
 											null,
-											U(
+											B(
 												t(K),
-												(T, F) => (
-													a(),
+												(L, F) => (
+													l(),
 													c(
 														"button",
 														{
@@ -603,12 +603,12 @@ const Fe = {
 															type: "button",
 															class: H([
 																"chip",
-																n.value.priority === F ? "on" : "",
+																a.value.priority === F ? "on" : "",
 															]),
-															"data-tone": T.tone,
-															onClick: (Q) => (n.value.priority = F),
+															"data-tone": L.tone,
+															onClick: (Q) => (a.value.priority = F),
 														},
-														[Dt, k(l(F), 1)],
+														[Dt, w(i(F), 1)],
 														10,
 														qt
 													)
@@ -617,29 +617,29 @@ const Fe = {
 											128
 										)),
 									]),
-									t($)
-										? (a(),
+									t(k)
+										? (l(),
 										  c("div", Lt, [
-												e("div", Tt, [o(t(y), { name: "clock" })]),
+												e("div", Tt, [n(t(y), { name: "clock" })]),
 												e("div", At, [
 													Mt,
-													e("b", null, l(t($).frH) + "h", 1),
+													e("b", null, i(t(k).frH) + "h", 1),
 													Nt,
 													e(
 														"b",
 														null,
-														l(
-															t($).resH >= 48
-																? Math.round(t($).resH / 24) +
+														i(
+															t(k).resH >= 48
+																? Math.round(t(k).resH / 24) +
 																		" days"
-																: t($).resH + "h"
+																: t(k).resH + "h"
 														),
 														1
 													),
 													jt,
 												]),
 										  ]))
-										: M("", !0),
+										: T("", !0),
 								]),
 								e("div", null, [
 									It,
@@ -648,8 +648,8 @@ const Fe = {
 											"textarea",
 											{
 												"onUpdate:modelValue":
-													S[4] ||
-													(S[4] = (T) => (n.value.description = T)),
+													D[4] ||
+													(D[4] = (L) => (a.value.description = L)),
 												class: "finput fta",
 												placeholder:
 													"Describe exactly what data is needed, format, cut-off dates\u2026",
@@ -657,18 +657,18 @@ const Fe = {
 											null,
 											512
 										),
-										[[ye, n.value.description]]
+										[[ye, a.value.description]]
 									),
 									Ht,
 								]),
 							]),
-							e("div", zt, [
-								e("span", Ot, "Assigned to you \xB7 " + l(t(p)), 1),
+							e("div", Ot, [
+								e("span", zt, "Assigned to you \xB7 " + i(t(p)), 1),
 								e(
 									"button",
 									{
 										class: "btn",
-										onClick: S[5] || (S[5] = (T) => i.$emit("close")),
+										onClick: D[5] || (D[5] = (L) => s.$emit("close")),
 									},
 									"Cancel"
 								),
@@ -676,15 +676,15 @@ const Fe = {
 									"button",
 									{
 										class: "btn primary",
-										disabled: !t(w) || g.value,
-										onClick: D,
+										disabled: !t($) || g.value,
+										onClick: q,
 									},
 									[
-										o(t(y), {
+										n(t(y), {
 											name: "plus",
 											style: { width: "14px", height: "14px" },
 										}),
-										k(" " + l(g.value ? "Raising\u2026" : "Raise request"), 1),
+										w(" " + i(g.value ? "Raising\u2026" : "Raise request"), 1),
 									],
 									8,
 									Pt
@@ -696,8 +696,8 @@ const Fe = {
 			};
 		},
 	};
-const Ft = { class: "subhead" },
-	Bt = { class: "h1" },
+const Bt = { class: "subhead" },
+	Ft = { class: "h1" },
 	Et = { class: "tabs" },
 	Vt = ["onClick"],
 	Kt = ["data-tone"],
@@ -711,7 +711,7 @@ const Ft = { class: "subhead" },
 	es = [Jt, Zt, Qt],
 	ts = ["title"],
 	ss = { class: "seg-mini" },
-	os = k("New request "),
+	os = w("New request "),
 	ns = { key: 0, style: { "text-align": "center", padding: "80px 20px" } },
 	as = e(
 		"div",
@@ -761,12 +761,12 @@ const Ft = { class: "subhead" },
 	js = { style: { "margin-top": "auto" } },
 	Is = { class: "foot" },
 	Hs = { class: "cust-cell" },
-	zs = { class: "co", style: { "font-weight": "550", color: "var(--ink-2)" } },
-	Os = { key: 4, style: { "overflow-x": "auto" } },
+	Os = { class: "co", style: { "font-weight": "550", color: "var(--ink-2)" } },
+	zs = { key: 4, style: { "overflow-x": "auto" } },
 	Ps = { class: "board" },
 	Us = { class: "col-head" },
-	Fs = { class: "cnt" },
-	Bs = { class: "col-body" },
+	Bs = { class: "cnt" },
+	Fs = { class: "col-body" },
 	Es = ["onClick"],
 	Vs = { class: "row" },
 	Ks = { style: { "font-family": "var(--mono)", "font-size": "11px", color: "var(--ink-4)" } },
@@ -788,7 +788,7 @@ const Ft = { class: "subhead" },
 		},
 	},
 	Qs = { key: 5, class: "load-more" },
-	eo = k(" Load more "),
+	eo = w(" Load more "),
 	to = { style: { color: "var(--ink-4)", "font-weight": "400" } },
 	so = {
 		props: { role: { type: String, default: "staff" } },
@@ -797,20 +797,20 @@ const Ft = { class: "subhead" },
 			const _ = d,
 				p = xe(),
 				r = Ne(),
-				n = 20,
-				g = q(p.query.tab || "all"),
-				f = q(p.query.layout || "table"),
-				m = q(p.query.q || ""),
-				$ = q(p.query.sort || "creation"),
-				w = q(p.query.dir || "desc"),
-				j = q(n),
-				D = q(!1),
-				L = q(Date.now()),
-				C = q(new Set());
-			ue([g, m, $, w, f], () => {
-				j.value = n;
+				a = 20,
+				g = S(p.query.tab || "all"),
+				f = S(p.query.layout || "table"),
+				m = S(p.query.q || ""),
+				k = S(p.query.sort || "creation"),
+				$ = S(p.query.dir || "desc"),
+				N = S(a),
+				q = S(!1),
+				j = S(Date.now()),
+				C = S(new Set());
+			ne([g, m, k, $, f], () => {
+				N.value = a;
 			}),
-				ue([g, f, $, w, m], () => {
+				ne([g, f, k, $, m], () => {
 					r.replace({
 						query: J(
 							J(
@@ -819,34 +819,34 @@ const Ft = { class: "subhead" },
 										J({}, f.value !== "table" && { layout: f.value }),
 										g.value !== "all" && { tab: g.value }
 									),
-									$.value !== "creation" && { sort: $.value }
+									k.value !== "creation" && { sort: k.value }
 								),
-								w.value !== "desc" && { dir: w.value }
+								$.value !== "desc" && { dir: $.value }
 							),
 							m.value.trim() && { q: m.value }
 						),
 					});
 				});
-			function i() {
+			function s() {
 				return V(this, null, function* () {
 					if (_.role !== "staff") return;
-					const x = yield ne({ url: "onboardpro.api.get_unread_requests" });
+					const x = yield ae({ url: "onboardpro.api.get_unread_requests" });
 					C.value = new Set(x);
 				});
 			}
-			$e(i);
-			const S = setInterval(() => {
-				L.value = Date.now();
+			$e(s);
+			const D = setInterval(() => {
+				j.value = Date.now();
 			}, 1e3);
-			ke(() => clearInterval(S));
-			const B = [
+			ke(() => clearInterval(D));
+			const I = [
 					{ key: "all", label: "All" },
 					{ key: "In Review", label: "In Review" },
 					{ key: "Needs Revision", label: "Needs Revision" },
 					{ key: "Resolved", label: "Resolved" },
 					{ key: "breached", label: "Breached" },
 				],
-				T = ["Open", "In Review", "Needs Revision", "Resolved"],
+				L = ["Open", "In Review", "Needs Revision", "Resolved"],
 				F = we({
 					doctype: "Implementation Request",
 					fields: [
@@ -878,15 +878,15 @@ const Ft = { class: "subhead" },
 				return b === "all"
 					? !0
 					: b === "breached"
-					? x.status !== "Resolved" && O(x.res_due_at) < L.value
+					? x.status !== "Resolved" && P(x.res_due_at) < j.value
 					: x.status === b;
 			}
-			const le = R(() => {
+			const ie = R(() => {
 					let x = Q.value;
 					if (m.value.trim()) {
 						const b = m.value.toLowerCase();
-						x = x.filter((s) =>
-							(s.subject + s.customer_name + s.name + s.data_type)
+						x = x.filter((o) =>
+							(o.subject + o.customer_name + o.name + o.data_type)
 								.toLowerCase()
 								.includes(b)
 						);
@@ -894,46 +894,46 @@ const Ft = { class: "subhead" },
 					return x;
 				}),
 				W = R(() => {
-					const x = w.value === "asc" ? 1 : -1,
-						b = $.value;
-					return [...le.value].sort((s, N) => {
-						var u, A, v, P, re, de;
+					const x = $.value === "asc" ? 1 : -1,
+						b = k.value;
+					return [...ie.value].sort((o, M) => {
+						var u, A, v, U, de, ue;
 						const z =
 								b === "priority"
-									? (A = (u = K[s.priority]) == null ? void 0 : u.rank) != null
+									? (A = (u = K[o.priority]) == null ? void 0 : u.rank) != null
 										? A
 										: 99
-									: (v = s[b]) != null
+									: (v = o[b]) != null
 									? v
 									: "",
 							E =
 								b === "priority"
-									? (re = (P = K[N.priority]) == null ? void 0 : P.rank) != null
-										? re
+									? (de = (U = K[M.priority]) == null ? void 0 : U.rank) != null
+										? de
 										: 99
-									: (de = N[b]) != null
-									? de
+									: (ue = M[b]) != null
+									? ue
 									: "";
 						return z < E ? -x : z > E ? x : 0;
 					});
 				}),
 				G = R(() => W.value.filter((x) => ve(x, g.value))),
-				ie = R(() => G.value.slice(0, j.value)),
-				be = R(() => j.value < G.value.length),
+				ce = R(() => G.value.slice(0, N.value)),
+				be = R(() => N.value < G.value.length),
 				ee = R(() => {
-					const x = le.value,
+					const x = ie.value,
 						b = { all: x.length };
 					return (
-						B.slice(1).forEach((s) => {
-							b[s.key] = x.filter((N) => ve(N, s.key)).length;
+						I.slice(1).forEach((o) => {
+							b[o.key] = x.filter((M) => ve(M, o.key)).length;
 						}),
 						b
 					);
 				}),
-				ce = R(() => {
+				re = R(() => {
 					const x = {};
 					return (
-						T.forEach((b) => {
+						L.forEach((b) => {
 							x[b] = [];
 						}),
 						W.value.forEach((b) => {
@@ -942,14 +942,14 @@ const Ft = { class: "subhead" },
 						x
 					);
 				});
-			ue(
+			ne(
 				Q,
 				(x) => {
-					const b = x.filter((N) => N.status !== "Resolved").length,
-						s = x.filter(
-							(N) => N.status !== "Resolved" && O(N.res_due_at) < L.value
+					const b = x.filter((M) => M.status !== "Resolved").length,
+						o = x.filter(
+							(M) => M.status !== "Resolved" && P(M.res_due_at) < j.value
 						).length;
-					h("requests-loaded", { open: b, breach: s });
+					h("requests-loaded", { open: b, breach: o });
 				},
 				{ immediate: !0 }
 			);
@@ -957,35 +957,35 @@ const Ft = { class: "subhead" },
 				r.push({ name: "RequestDetail", params: { id: x } });
 			}
 			function me(x) {
-				(D.value = !1), F.reload(), i(), te(x);
+				(q.value = !1), F.reload(), s(), te(x);
 			}
 			return (x, b) => (
-				a(),
+				l(),
 				c("div", null, [
-					e("div", Ft, [
+					e("div", Bt, [
 						e(
 							"div",
-							Bt,
-							l(d.role === "customer" ? "Your data requests" : "Requests"),
+							Ft,
+							i(d.role === "customer" ? "Your data requests" : "Requests"),
 							1
 						),
 						e("div", Et, [
-							(a(),
+							(l(),
 							c(
-								I,
+								O,
 								null,
-								U(B, (s) => {
-									var N;
+								B(I, (o) => {
+									var M;
 									return e(
 										"button",
 										{
-											key: s.key,
-											class: H(["tab", g.value === s.key ? "on" : ""]),
-											onClick: (z) => (g.value = s.key),
+											key: o.key,
+											class: H(["tab", g.value === o.key ? "on" : ""]),
+											onClick: (z) => (g.value = o.key),
 										},
 										[
-											s.key === "breached" && t(ee)[s.key] > 0
-												? (a(),
+											o.key === "breached" && t(ee)[o.key] > 0
+												? (l(),
 												  fe(t(y), {
 														key: 0,
 														name: "alert-triangle",
@@ -996,16 +996,16 @@ const Ft = { class: "subhead" },
 														},
 														"data-tone": "red",
 												  }))
-												: M("", !0),
-											k(" " + l(s.label) + " ", 1),
+												: T("", !0),
+											w(" " + i(o.label) + " ", 1),
 											e(
 												"span",
 												{
 													class: "cnt",
 													"data-tone":
-														s.key === "breached" ? "red" : "slate",
+														o.key === "breached" ? "red" : "slate",
 												},
-												l((N = t(ee)[s.key]) != null ? N : 0),
+												i((M = t(ee)[o.key]) != null ? M : 0),
 												9,
 												Kt
 											),
@@ -1020,13 +1020,13 @@ const Ft = { class: "subhead" },
 					]),
 					e("div", Yt, [
 						e("label", Wt, [
-							o(t(y), { name: "search" }),
+							n(t(y), { name: "search" }),
 							oe(
 								e(
 									"input",
 									{
 										"onUpdate:modelValue":
-											b[0] || (b[0] = (s) => (m.value = s)),
+											b[0] || (b[0] = (o) => (m.value = o)),
 										placeholder: "Search by subject, customer, ID\u2026",
 									},
 									null,
@@ -1042,29 +1042,29 @@ const Ft = { class: "subhead" },
 									"select",
 									{
 										"onUpdate:modelValue":
-											b[1] || (b[1] = (s) => ($.value = s)),
+											b[1] || (b[1] = (o) => (k.value = o)),
 										class: "sort-sel",
 									},
 									es,
 									512
 								),
-								[[Me, $.value]]
+								[[Me, k.value]]
 							),
 							e(
 								"button",
 								{
 									class: "sort-dir",
-									title: w.value === "desc" ? "Descending" : "Ascending",
+									title: $.value === "desc" ? "Descending" : "Ascending",
 									onClick:
 										b[2] ||
-										(b[2] = (s) =>
-											(w.value = w.value === "desc" ? "asc" : "desc")),
+										(b[2] = (o) =>
+											($.value = $.value === "desc" ? "asc" : "desc")),
 								},
 								[
-									o(
+									n(
 										t(y),
 										{
-											name: w.value === "desc" ? "arrow-down" : "arrow-up",
+											name: $.value === "desc" ? "arrow-down" : "arrow-up",
 											style: { width: "14px", height: "14px" },
 										},
 										null,
@@ -1082,9 +1082,9 @@ const Ft = { class: "subhead" },
 								{
 									class: H(f.value === "table" ? "on" : ""),
 									title: "Table",
-									onClick: b[3] || (b[3] = (s) => (f.value = "table")),
+									onClick: b[3] || (b[3] = (o) => (f.value = "table")),
 								},
-								[o(t(y), { name: "list" })],
+								[n(t(y), { name: "list" })],
 								2
 							),
 							e(
@@ -1092,9 +1092,9 @@ const Ft = { class: "subhead" },
 								{
 									class: H(f.value === "cards" ? "on" : ""),
 									title: "Cards",
-									onClick: b[4] || (b[4] = (s) => (f.value = "cards")),
+									onClick: b[4] || (b[4] = (o) => (f.value = "cards")),
 								},
-								[o(t(y), { name: "grid" })],
+								[n(t(y), { name: "grid" })],
 								2
 							),
 							e(
@@ -1102,37 +1102,37 @@ const Ft = { class: "subhead" },
 								{
 									class: H(f.value === "kanban" ? "on" : ""),
 									title: "Board",
-									onClick: b[5] || (b[5] = (s) => (f.value = "kanban")),
+									onClick: b[5] || (b[5] = (o) => (f.value = "kanban")),
 								},
-								[o(t(y), { name: "columns" })],
+								[n(t(y), { name: "columns" })],
 								2
 							),
 						]),
 						d.role === "staff"
-							? (a(),
+							? (l(),
 							  c(
 									"button",
 									{
 										key: 0,
 										class: "btn primary",
-										onClick: b[6] || (b[6] = (s) => (D.value = !0)),
+										onClick: b[6] || (b[6] = (o) => (q.value = !0)),
 									},
 									[
-										o(t(y), {
+										n(t(y), {
 											name: "plus",
 											style: { width: "15px", height: "15px" },
 										}),
 										os,
 									]
 							  ))
-							: M("", !0),
+							: T("", !0),
 					]),
 					t(F).list.loading
-						? (a(), c("div", ns, ls))
+						? (l(), c("div", ns, ls))
 						: t(G).length === 0
-						? (a(), c("div", is, [o(t(y), { name: "inbox" }), cs, rs]))
+						? (l(), c("div", is, [n(t(y), { name: "inbox" }), cs, rs]))
 						: f.value === "table"
-						? (a(),
+						? (l(),
 						  c("div", ds, [
 								e("table", us, [
 									e("thead", null, [
@@ -1144,47 +1144,47 @@ const Ft = { class: "subhead" },
 											ms,
 											fs,
 											d.role === "staff"
-												? (a(), c("th", ys, "Owner"))
-												: M("", !0),
+												? (l(), c("th", ys, "Owner"))
+												: T("", !0),
 										]),
 									]),
 									e("tbody", null, [
-										(a(!0),
+										(l(!0),
 										c(
-											I,
+											O,
 											null,
-											U(t(ie), (s) => {
-												var N, z;
+											B(t(ce), (o) => {
+												var M, z;
 												return (
-													a(),
+													l(),
 													c(
 														"tr",
 														{
-															key: s.name,
+															key: o.name,
 															class: H({
-																unread: C.value.has(s.name),
+																unread: C.value.has(o.name),
 															}),
-															onClick: (E) => te(s.name),
+															onClick: (E) => te(o.name),
 														},
 														[
 															e("td", null, [
-																e("span", gs, l(s.name), 1),
+																e("span", gs, i(o.name), 1),
 															]),
 															e(
 																"td",
 																{
 																	class: "req-cell",
-																	title: s.subject,
+																	title: o.subject,
 																},
 																[
-																	e("div", ks, l(s.subject), 1),
+																	e("div", ks, i(o.subject), 1),
 																	e("div", ws, [
-																		o(
+																		n(
 																			t(y),
 																			{
 																				name:
 																					t(he)[
-																						s.data_type
+																						o.data_type
 																					] || "file",
 																				style: {
 																					width: "13px",
@@ -1196,7 +1196,7 @@ const Ft = { class: "subhead" },
 																			8,
 																			["name"]
 																		),
-																		k(" " + l(s.data_type), 1),
+																		w(" " + i(o.data_type), 1),
 																	]),
 																],
 																8,
@@ -1204,12 +1204,12 @@ const Ft = { class: "subhead" },
 															),
 															e("td", null, [
 																e("div", xs, [
-																	o(
+																	n(
 																		Y,
 																		{
 																			name:
-																				s.customer_name ||
-																				s.customer,
+																				o.customer_name ||
+																				o.customer,
 																			role: "customer",
 																			size: 28,
 																		},
@@ -1221,45 +1221,45 @@ const Ft = { class: "subhead" },
 																		e(
 																			"div",
 																			Cs,
-																			l(s.customer_name),
+																			i(o.customer_name),
 																			1
 																		),
 																		e(
 																			"div",
 																			Rs,
-																			l(s.customer),
+																			i(o.customer),
 																			1
 																		),
 																	]),
 																]),
 															]),
 															e("td", null, [
-																o(
+																n(
 																	pe,
-																	{ priority: s.priority },
+																	{ priority: o.priority },
 																	null,
 																	8,
 																	["priority"]
 																),
 															]),
 															e("td", null, [
-																o(
-																	ae,
+																n(
+																	le,
 																	{
-																		deadline: s.res_due_at,
-																		now: L.value,
+																		deadline: o.res_due_at,
+																		now: j.value,
 																		"window-h":
 																			(z =
-																				(N =
+																				(M =
 																					t(K)[
-																						s.priority
+																						o.priority
 																					]) == null
 																					? void 0
-																					: N.resH) !=
+																					: M.resH) !=
 																			null
 																				? z
 																				: 48,
-																		state: s.res_state,
+																		state: o.res_state,
 																	},
 																	null,
 																	8,
@@ -1272,23 +1272,23 @@ const Ft = { class: "subhead" },
 																),
 															]),
 															e("td", null, [
-																o(
+																n(
 																	X,
-																	{ status: s.status },
+																	{ status: o.status },
 																	null,
 																	8,
 																	["status"]
 																),
 															]),
 															d.role === "staff"
-																? (a(),
+																? (l(),
 																  c("td", Ss, [
-																		o(
+																		n(
 																			Y,
 																			{
 																				name:
-																					s.assignee_name ||
-																					s.assignee ||
+																					o.assignee_name ||
+																					o.assignee ||
 																					"?",
 																				role: "staff",
 																				size: 28,
@@ -1298,7 +1298,7 @@ const Ft = { class: "subhead" },
 																			["name"]
 																		),
 																  ]))
-																: M("", !0),
+																: T("", !0),
 														],
 														10,
 														bs
@@ -1311,41 +1311,41 @@ const Ft = { class: "subhead" },
 								]),
 						  ]))
 						: f.value === "cards"
-						? (a(),
+						? (l(),
 						  c("div", qs, [
-								(a(!0),
+								(l(!0),
 								c(
-									I,
+									O,
 									null,
-									U(t(ie), (s) => {
-										var N, z;
+									B(t(ce), (o) => {
+										var M, z;
 										return (
-											a(),
+											l(),
 											c(
 												"div",
 												{
-													key: s.name,
+													key: o.name,
 													class: H([
 														"rcard",
-														C.value.has(s.name) ? "unread" : "",
+														C.value.has(o.name) ? "unread" : "",
 													]),
-													onClick: (E) => te(s.name),
+													onClick: (E) => te(o.name),
 												},
 												[
 													e("div", Ls, [
-														e("span", Ts, "#" + l(s.name), 1),
-														o(X, { status: s.status }, null, 8, [
+														e("span", Ts, "#" + i(o.name), 1),
+														n(X, { status: o.status }, null, 8, [
 															"status",
 														]),
 													]),
-													e("div", As, l(s.subject), 1),
+													e("div", As, i(o.subject), 1),
 													e("div", Ms, [
 														e("span", Ns, [
-															o(
+															n(
 																t(y),
 																{
 																	name:
-																		t(he)[s.data_type] ||
+																		t(he)[o.data_type] ||
 																		"file",
 																	style: {
 																		width: "12px",
@@ -1356,27 +1356,27 @@ const Ft = { class: "subhead" },
 																8,
 																["name"]
 															),
-															k(" " + l(s.data_type), 1),
+															w(" " + i(o.data_type), 1),
 														]),
-														o(pe, { priority: s.priority }, null, 8, [
+														n(pe, { priority: o.priority }, null, 8, [
 															"priority",
 														]),
 													]),
 													e("div", js, [
-														o(
-															ae,
+														n(
+															le,
 															{
-																deadline: s.res_due_at,
-																now: L.value,
+																deadline: o.res_due_at,
+																now: j.value,
 																"window-h":
 																	(z =
-																		(N = t(K)[s.priority]) ==
+																		(M = t(K)[o.priority]) ==
 																		null
 																			? void 0
-																			: N.resH) != null
+																			: M.resH) != null
 																		? z
 																		: 48,
-																state: s.res_state,
+																state: o.res_state,
 															},
 															null,
 															8,
@@ -1390,12 +1390,12 @@ const Ft = { class: "subhead" },
 													]),
 													e("div", Is, [
 														e("div", Hs, [
-															o(
+															n(
 																Y,
 																{
 																	name:
-																		s.customer_name ||
-																		s.customer,
+																		o.customer_name ||
+																		o.customer,
 																	role: "customer",
 																	size: 20,
 																},
@@ -1403,7 +1403,7 @@ const Ft = { class: "subhead" },
 																8,
 																["name"]
 															),
-															e("span", zs, l(s.customer_name), 1),
+															e("span", Os, i(o.customer_name), 1),
 														]),
 													]),
 												],
@@ -1415,41 +1415,41 @@ const Ft = { class: "subhead" },
 									128
 								)),
 						  ]))
-						: (a(),
-						  c("div", Os, [
+						: (l(),
+						  c("div", zs, [
 								e("div", Ps, [
-									(a(),
+									(l(),
 									c(
-										I,
+										O,
 										null,
-										U(T, (s) => {
-											var N, z, E;
-											return e("div", { key: s, class: "col" }, [
+										B(L, (o) => {
+											var M, z, E;
+											return e("div", { key: o, class: "col" }, [
 												e("div", Us, [
-													o(X, { status: s }, null, 8, ["status"]),
+													n(X, { status: o }, null, 8, ["status"]),
 													e(
 														"span",
-														Fs,
-														l(
+														Bs,
+														i(
 															(z =
-																(N = t(ce)[s]) == null
+																(M = t(re)[o]) == null
 																	? void 0
-																	: N.length) != null
+																	: M.length) != null
 																? z
 																: 0
 														),
 														1
 													),
 												]),
-												e("div", Bs, [
-													(a(!0),
+												e("div", Fs, [
+													(l(!0),
 													c(
-														I,
+														O,
 														null,
-														U(t(ce)[s], (u) => {
+														B(t(re)[o], (u) => {
 															var A, v;
 															return (
-																a(),
+																l(),
 																c(
 																	"div",
 																	{
@@ -1460,17 +1460,17 @@ const Ft = { class: "subhead" },
 																				? "unread"
 																				: "",
 																		]),
-																		onClick: (P) => te(u.name),
+																		onClick: (U) => te(u.name),
 																	},
 																	[
 																		e("div", Vs, [
 																			e(
 																				"span",
 																				Ks,
-																				"#" + l(u.name),
+																				"#" + i(u.name),
 																				1
 																			),
-																			o(
+																			n(
 																				pe,
 																				{
 																					priority:
@@ -1484,16 +1484,16 @@ const Ft = { class: "subhead" },
 																		e(
 																			"div",
 																			Ys,
-																			l(u.subject),
+																			i(u.subject),
 																			1
 																		),
 																		e("div", Ws, [
-																			o(
-																				ae,
+																			n(
+																				le,
 																				{
 																					deadline:
 																						u.res_due_at,
-																					now: L.value,
+																					now: j.value,
 																					"window-h":
 																						(v =
 																							(A =
@@ -1523,7 +1523,7 @@ const Ft = { class: "subhead" },
 																		]),
 																		e("div", Xs, [
 																			e("div", Gs, [
-																				o(
+																				n(
 																					Y,
 																					{
 																						name:
@@ -1539,13 +1539,13 @@ const Ft = { class: "subhead" },
 																				e(
 																					"span",
 																					Js,
-																					l(
+																					i(
 																						u.customer_name
 																					),
 																					1
 																				),
 																			]),
-																			o(
+																			n(
 																				Y,
 																				{
 																					name:
@@ -1568,9 +1568,9 @@ const Ft = { class: "subhead" },
 														}),
 														128
 													)),
-													((E = t(ce)[s]) == null ? void 0 : E.length)
-														? M("", !0)
-														: (a(), c("div", Zs, " No requests ")),
+													((E = t(re)[o]) == null ? void 0 : E.length)
+														? T("", !0)
+														: (l(), c("div", Zs, " No requests ")),
 												]),
 											]);
 										}),
@@ -1579,34 +1579,34 @@ const Ft = { class: "subhead" },
 								]),
 						  ])),
 					t(be) && f.value !== "kanban"
-						? (a(),
+						? (l(),
 						  c("div", Qs, [
 								e(
 									"button",
 									{
 										class: "btn",
-										onClick: b[7] || (b[7] = (s) => (j.value += n)),
+										onClick: b[7] || (b[7] = (o) => (N.value += a)),
 									},
 									[
 										eo,
 										e(
 											"span",
 											to,
-											" (" + l(t(G).length - j.value) + " remaining) ",
+											" (" + i(t(G).length - N.value) + " remaining) ",
 											1
 										),
 									]
 								),
 						  ]))
-						: M("", !0),
-					D.value
-						? (a(),
+						: T("", !0),
+					q.value
+						? (l(),
 						  fe(Ut, {
 								key: 6,
-								onClose: b[8] || (b[8] = (s) => (D.value = !1)),
+								onClose: b[8] || (b[8] = (o) => (q.value = !1)),
 								onCreated: me,
 						  }))
-						: M("", !0),
+						: T("", !0),
 				])
 			);
 		},
@@ -1617,11 +1617,11 @@ const Ft = { class: "subhead" },
 			const h = d,
 				_ = ["xlsx", "csv", "pdf", "zip", "doc"],
 				p = R(() => {
-					const n = (h.ext || "doc").toLowerCase();
-					return _.includes(n) ? n : "doc";
+					const a = (h.ext || "doc").toLowerCase();
+					return _.includes(a) ? a : "doc";
 				}),
 				r = R(() => p.value.slice(0, 4).toUpperCase());
-			return (n, g) => (a(), c("span", { class: H(["fileicon", t(p)]) }, l(t(r)), 3));
+			return (a, g) => (l(), c("span", { class: H(["fileicon", t(p)]) }, i(t(r)), 3));
 		},
 	},
 	no = { key: 0, class: "detail" },
@@ -1657,20 +1657,20 @@ const Ft = { class: "subhead" },
 	jo = { key: 1, class: "tl-item" },
 	Io = ["data-tone"],
 	Ho = { class: "tl-event" },
-	zo = ["innerHTML"],
-	Oo = { class: "when" },
+	Oo = ["innerHTML"],
+	zo = { class: "when" },
 	Po = { class: "composer" },
 	Uo = { key: 0, class: "reply-trigger" },
-	Fo = k(" Reply "),
-	Bo = { key: 1, class: "composer-box" },
+	Bo = w(" Reply "),
+	Fo = { key: 1, class: "composer-box" },
 	Eo = ["placeholder", "onKeydown"],
 	Vo = { class: "composer-bar" },
 	Ko = e("span", { class: "grow" }, null, -1),
 	Yo = { class: "as" },
-	Wo = k("Posting as "),
+	Wo = w("Posting as "),
 	Xo = { style: { color: "var(--ink-2)" } },
 	Go = ["disabled"],
-	Jo = k("Send "),
+	Jo = w("Send "),
 	Zo = { class: "rail" },
 	Qo = { class: "rail-card" },
 	en = e("h3", null, "Status", -1),
@@ -1680,18 +1680,18 @@ const Ft = { class: "subhead" },
 	nn = { class: "rail-card" },
 	an = e("h3", null, "SLA tracking", -1),
 	ln = { key: 0, class: "sla-hold-badge" },
-	cn = k(" Clock paused \u2014 under review "),
+	cn = w(" Clock paused \u2014 under review "),
 	rn = { class: "slahero" },
 	dn = { class: "slatrack" },
 	un = { class: "lh" },
 	_n = { class: "nm" },
-	hn = k("First response"),
+	hn = w("First response"),
 	pn = ["data-tone"],
 	vn = { key: 0, class: "sla-meta" },
 	mn = { class: "slatrack" },
 	fn = { class: "lh" },
 	yn = { class: "nm" },
-	bn = k("Resolution"),
+	bn = w("Resolution"),
 	gn = ["data-tone"],
 	$n = { key: 0, class: "sla-meta" },
 	kn = { class: "rail-card" },
@@ -1710,8 +1710,8 @@ const Ft = { class: "subhead" },
 	jn = { class: "v" },
 	In = { class: "field" },
 	Hn = e("span", { class: "k" }, "Created", -1),
-	zn = { class: "v" },
-	On = {
+	On = { class: "v" },
+	zn = {
 		key: 1,
 		style: {
 			display: "flex",
@@ -1737,55 +1737,55 @@ const Ft = { class: "subhead" },
 		-1
 	),
 	Un = [Pn],
-	Fn = {
+	Bn = {
 		props: { id: { type: String, required: !0 }, role: { type: String, default: "staff" } },
 		emits: ["set-title"],
 		setup(d, { emit: h }) {
-			var s, N, z, E;
+			var o, M, z, E;
 			const _ = d,
 				p = Ae("toast", () => {}),
-				r = q(Date.now()),
-				n = q(""),
-				g = q(!1),
-				f = q(!1),
-				m = q(!1),
-				$ = q(null),
-				w = q(null),
-				j = q(null),
-				D = q(null),
-				L = ["Open", "In Review", "Needs Revision", "Resolved"],
+				r = S(Date.now()),
+				a = S(""),
+				g = S(!1),
+				f = S(!1),
+				m = S(!1),
+				k = S(null),
+				$ = S(null),
+				N = S(null),
+				q = S(null),
+				j = ["Open", "In Review", "Needs Revision", "Resolved"],
 				C = setInterval(() => {
 					r.value = Date.now();
 				}, 1e3);
 			ke(() => clearInterval(C)),
 				$e(() => {
 					document.addEventListener("mousedown", (u) => {
-						D.value && !D.value.contains(u.target) && (m.value = !1);
+						q.value && !q.value.contains(u.target) && (m.value = !1);
 					}),
 						_.role === "staff" &&
-							ne({ url: "onboardpro.api.mark_seen", params: { docname: _.id } });
+							ae({ url: "onboardpro.api.mark_seen", params: { docname: _.id } });
 				});
-			const i = Xe({ doctype: "Implementation Request", name: _.id, auto: !0 });
-			ue(
+			const s = Xe({ doctype: "Implementation Request", name: _.id, auto: !0 });
+			ne(
 				() => {
 					var u;
-					return (u = i.doc) == null ? void 0 : u.subject;
+					return (u = s.doc) == null ? void 0 : u.subject;
 				},
 				(u) => {
 					u && h("set-title", u);
 				}
 			);
-			const S = q([]);
-			function B() {
+			const D = S([]);
+			function I() {
 				return V(this, null, function* () {
-					S.value = yield ne({
+					D.value = yield ae({
 						url: "onboardpro.api.get_activity",
 						params: { docname: _.id },
 					});
 				});
 			}
-			B();
-			const T = we({
+			I();
+			const L = we({
 					doctype: "File",
 					fields: [
 						"name",
@@ -1804,74 +1804,74 @@ const Ft = { class: "subhead" },
 				}),
 				F = R(() => {
 					var u;
-					return (u = T.data) != null ? u : [];
+					return (u = L.data) != null ? u : [];
 				}),
 				Q =
-					((N = (s = window.frappe) == null ? void 0 : s.session) == null
+					((M = (o = window.frappe) == null ? void 0 : o.session) == null
 						? void 0
-						: N.user) || "",
+						: M.user) || "",
 				ve =
 					((E = (z = window.frappe) == null ? void 0 : z.session) == null
 						? void 0
 						: E.user_fullname) || Q,
-				le = R(() =>
-					S.value.map((u) =>
+				ie = R(() =>
+					D.value.map((u) =>
 						Te(J({}, u), { isStaff: !!u.is_staff, isSelf: u.owner === Q })
 					)
 				);
-			ue(
-				() => le.value.length,
+			ne(
+				() => ie.value.length,
 				() =>
 					V(this, null, function* () {
-						yield Ie(), $.value && ($.value.scrollTop = $.value.scrollHeight);
+						yield Ie(), k.value && (k.value.scrollTop = k.value.scrollHeight);
 					})
 			);
 			const W = R(() => {
 				var u, A;
-				return K[(A = (u = i.doc) == null ? void 0 : u.priority) != null ? A : "High"];
+				return K[(A = (u = s.doc) == null ? void 0 : u.priority) != null ? A : "High"];
 			});
 			function G(u, A) {
-				var P;
+				var U;
 				if (u === "Fulfilled") return "green";
 				if (u === "Failed") return "red";
 				if (!A) return "blue";
-				const { tone: v } = Se(O(A), r.value, W.value.resH);
-				return (P = Ue[v]) != null ? P : "blue";
+				const { tone: v } = Se(P(A), r.value, W.value.resH);
+				return (U = Ue[v]) != null ? U : "blue";
 			}
-			function ie(u, A, v) {
+			function ce(u, A, v) {
 				if (A === "Fulfilled") return "100%";
 				if (!u || !v) return "40%";
-				const { pct: P } = Se(O(u), r.value, v);
-				return Math.min(100, Math.max(4, P * 100)) + "%";
+				const { pct: U } = Se(P(u), r.value, v);
+				return Math.min(100, Math.max(4, U * 100)) + "%";
 			}
 			function be() {
 				return V(this, null, function* () {
 					var u;
-					(f.value = !0), yield Ie(), (u = w.value) == null || u.focus();
+					(f.value = !0), yield Ie(), (u = $.value) == null || u.focus();
 				});
 			}
 			function ee() {
 				return V(this, null, function* () {
-					const u = n.value.trim();
+					const u = a.value.trim();
 					if (!(!u || g.value)) {
 						g.value = !0;
 						try {
-							yield ne({
+							yield ae({
 								url: "onboardpro.api.add_comment",
 								params: { docname: _.id, content: u },
 							}),
-								(n.value = ""),
+								(a.value = ""),
 								(f.value = !1),
-								w.value && (w.value.style.height = "auto"),
-								yield B();
+								$.value && ($.value.style.height = "auto"),
+								yield I();
 						} finally {
 							g.value = !1;
 						}
 					}
 				});
 			}
-			function ce() {
-				const u = w.value;
+			function re() {
+				const u = $.value;
 				u &&
 					((u.style.height = "auto"),
 					(u.style.height = Math.min(160, u.scrollHeight) + "px"));
@@ -1879,20 +1879,20 @@ const Ft = { class: "subhead" },
 			function te(u) {
 				return V(this, null, function* () {
 					(m.value = !1),
-						u !== i.doc.status &&
-							(yield i.setValue.submit({ status: u }),
+						u !== s.doc.status &&
+							(yield s.setValue.submit({ status: u }),
 							p("Status \u2192 " + u),
-							yield B());
+							yield I());
 				});
 			}
 			function me() {
 				var u;
-				(u = j.value) == null || u.click();
+				(u = N.value) == null || u.click();
 			}
 			function x(u) {
 				return V(this, null, function* () {
-					var P, re, de;
-					const A = (P = u.target.files) == null ? void 0 : P[0];
+					var U, de, ue;
+					const A = (U = u.target.files) == null ? void 0 : U[0];
 					if (!A) return;
 					const v = new FormData();
 					v.append("file", A),
@@ -1903,13 +1903,13 @@ const Ft = { class: "subhead" },
 							body: v,
 							headers: {
 								"X-Frappe-CSRF-Token":
-									(de = (re = window.frappe) == null ? void 0 : re.csrf_token) !=
+									(ue = (de = window.frappe) == null ? void 0 : de.csrf_token) !=
 									null
-										? de
+										? ue
 										: "",
 							},
 						}),
-						T.reload(),
+						L.reload(),
 						p("File attached");
 				});
 			}
@@ -1917,53 +1917,53 @@ const Ft = { class: "subhead" },
 				return (u || "").split(".").pop() || "doc";
 			}
 			return (u, A) =>
-				t(i).doc
-					? (a(),
+				t(s).doc
+					? (l(),
 					  c("div", no, [
 							e("div", ao, [
 								e("div", lo, [
-									e("div", io, l(t(i).doc.subject), 1),
+									e("div", io, i(t(s).doc.subject), 1),
 									e("div", co, [
-										e("span", ro, "#" + l(t(i).doc.name), 1),
+										e("span", ro, "#" + i(t(s).doc.name), 1),
 										uo,
-										o(X, { status: t(i).doc.status }, null, 8, ["status"]),
+										n(X, { status: t(s).doc.status }, null, 8, ["status"]),
 										_o,
 										e(
 											"span",
 											null,
-											"Opened " + l(t(_e)(t(O)(t(i).doc.creation), r.value)),
+											"Opened " + i(t(_e)(t(P)(t(s).doc.creation), r.value)),
 											1
 										),
 										ho,
 										e(
 											"span",
 											null,
-											l(t(i).doc.customer_name || t(i).doc.customer),
+											i(t(s).doc.customer_name || t(s).doc.customer),
 											1
 										),
 									]),
 								]),
 								e(
 									"div",
-									{ ref_key: "scrollEl", ref: $, class: "detail-scroll" },
+									{ ref_key: "scrollEl", ref: k, class: "detail-scroll" },
 									[
 										e("div", po, [
 											e(
 												"p",
 												null,
-												l(
-													t(i).doc.description ||
+												i(
+													t(s).doc.description ||
 														"No description provided."
 												),
 												1
 											),
 											e("div", vo, [
 												e("span", mo, [
-													o(
+													n(
 														t(y),
 														{
 															name:
-																t(he)[t(i).doc.data_type] ||
+																t(he)[t(s).doc.data_type] ||
 																"file",
 															style: {
 																width: "12px",
@@ -1974,9 +1974,9 @@ const Ft = { class: "subhead" },
 														8,
 														["name"]
 													),
-													k(" " + l(t(i).doc.data_type), 1),
+													w(" " + i(t(s).doc.data_type), 1),
 												]),
-												o(pe, { priority: t(i).doc.priority }, null, 8, [
+												n(pe, { priority: t(s).doc.priority }, null, 8, [
 													"priority",
 												]),
 											]),
@@ -1984,16 +1984,16 @@ const Ft = { class: "subhead" },
 										fo,
 										e("div", yo, [
 											t(F).length
-												? M("", !0)
-												: (a(), c("div", bo, " No files yet. ")),
-											(a(!0),
+												? T("", !0)
+												: (l(), c("div", bo, " No files yet. ")),
+											(l(!0),
 											c(
-												I,
+												O,
 												null,
-												U(
+												B(
 													t(F),
 													(v) => (
-														a(),
+														l(),
 														c(
 															"div",
 															{ key: v.name, class: "attach-row" },
@@ -2006,7 +2006,7 @@ const Ft = { class: "subhead" },
 																		target: "_blank",
 																	},
 																	[
-																		o(
+																		n(
 																			oo,
 																			{
 																				ext: b(
@@ -2021,13 +2021,13 @@ const Ft = { class: "subhead" },
 																			e(
 																				"div",
 																				ko,
-																				l(v.file_name),
+																				i(v.file_name),
 																				1
 																			),
 																			e(
 																				"div",
 																				wo,
-																				l(
+																				i(
 																					v.file_size
 																						? (
 																								v.file_size /
@@ -2038,7 +2038,7 @@ const Ft = { class: "subhead" },
 																						: ""
 																				) +
 																					" \xB7 " +
-																					l(
+																					i(
 																						v.attached_to_name
 																					),
 																				1
@@ -2051,9 +2051,9 @@ const Ft = { class: "subhead" },
 																e(
 																	"span",
 																	xo,
-																	l(
+																	i(
 																		t(_e)(
-																			t(O)(v.creation),
+																			t(P)(v.creation),
 																			r.value
 																		)
 																	),
@@ -2065,17 +2065,17 @@ const Ft = { class: "subhead" },
 												),
 												128
 											)),
-											t(i).doc.status !== "Resolved"
-												? (a(),
+											t(s).doc.status !== "Resolved"
+												? (l(),
 												  c(
 														"div",
 														{ key: 1, class: "dropzone", onClick: me },
 														[
-															o(t(y), { name: "upload" }),
+															n(t(y), { name: "upload" }),
 															e(
 																"div",
 																Co,
-																l(
+																i(
 																	d.role === "customer"
 																		? "Upload your data here"
 																		: "Attach a file"
@@ -2085,7 +2085,7 @@ const Ft = { class: "subhead" },
 															e(
 																"div",
 																Ro,
-																l(
+																i(
 																	d.role === "customer"
 																		? "Drag a file or click to browse \u2014 XLSX, CSV, PDF, ZIP"
 																		: "Drag & drop or click to browse"
@@ -2094,12 +2094,12 @@ const Ft = { class: "subhead" },
 															),
 														]
 												  ))
-												: M("", !0),
+												: T("", !0),
 											e(
 												"input",
 												{
 													ref_key: "fileInput",
-													ref: j,
+													ref: N,
 													type: "file",
 													style: { display: "none" },
 													onChange: x,
@@ -2110,20 +2110,20 @@ const Ft = { class: "subhead" },
 										]),
 										So,
 										e("div", qo, [
-											(a(!0),
+											(l(!0),
 											c(
-												I,
+												O,
 												null,
-												U(
-													t(le),
-													(v, P) => (
-														a(),
+												B(
+													t(ie),
+													(v, U) => (
+														l(),
 														c(
-															I,
-															{ key: P },
+															O,
+															{ key: U },
 															[
 																v.kind === "msg"
-																	? (a(),
+																	? (l(),
 																	  c(
 																			"div",
 																			{
@@ -2137,7 +2137,7 @@ const Ft = { class: "subhead" },
 																			},
 																			[
 																				e("div", Do, [
-																					o(
+																					n(
 																						Y,
 																						{
 																							name:
@@ -2161,7 +2161,7 @@ const Ft = { class: "subhead" },
 																						e(
 																							"span",
 																							Ao,
-																							l(
+																							i(
 																								v.owner_name ||
 																									v.owner
 																							),
@@ -2179,7 +2179,7 @@ const Ft = { class: "subhead" },
 																									]
 																								),
 																							},
-																							l(
+																							i(
 																								v.isStaff
 																									? "User"
 																									: "Customer"
@@ -2189,12 +2189,12 @@ const Ft = { class: "subhead" },
 																						e(
 																							"span",
 																							Mo,
-																							l(
+																							i(
 																								t(
 																									_e
 																								)(
 																									t(
-																										O
+																										P
 																									)(
 																										v.creation
 																									),
@@ -2207,7 +2207,7 @@ const Ft = { class: "subhead" },
 																					e(
 																						"div",
 																						No,
-																						l(
+																						i(
 																							v.content
 																						),
 																						1
@@ -2216,7 +2216,7 @@ const Ft = { class: "subhead" },
 																			],
 																			2
 																	  ))
-																	: (a(),
+																	: (l(),
 																	  c("div", jo, [
 																			e(
 																				"div",
@@ -2227,7 +2227,7 @@ const Ft = { class: "subhead" },
 																						void 0,
 																				},
 																				[
-																					o(
+																					n(
 																						t(y),
 																						{
 																							name: v.icon,
@@ -2253,14 +2253,14 @@ const Ft = { class: "subhead" },
 																					},
 																					null,
 																					8,
-																					zo
+																					Oo
 																				),
 																				e(
 																					"span",
-																					Oo,
-																					l(
+																					zo,
+																					i(
 																						t(_e)(
-																							t(O)(
+																							t(P)(
 																								v.creation
 																							),
 																							r.value
@@ -2277,32 +2277,32 @@ const Ft = { class: "subhead" },
 												),
 												128
 											)),
-											M("", !0),
+											T("", !0),
 										]),
 									],
 									512
 								),
 								e("div", Po, [
 									f.value
-										? (a(),
-										  c("div", Bo, [
+										? (l(),
+										  c("div", Fo, [
 												oe(
 													e(
 														"textarea",
 														{
 															ref_key: "taRef",
-															ref: w,
+															ref: $,
 															"onUpdate:modelValue":
 																A[0] ||
-																(A[0] = (v) => (n.value = v)),
+																(A[0] = (v) => (a.value = v)),
 															placeholder:
 																d.role === "customer"
 																	? "Reply to Risto\u2026"
 																	: "Reply to " +
-																	  (t(i).doc.customer_name ||
+																	  (t(s).doc.customer_name ||
 																			"customer") +
 																	  "\u2026",
-															onInput: ce,
+															onInput: re,
 															onKeydown: [
 																Ce(je(ee, ["ctrl", "prevent"]), [
 																	"enter",
@@ -2321,7 +2321,7 @@ const Ft = { class: "subhead" },
 														40,
 														Eo
 													),
-													[[ye, n.value]]
+													[[ye, a.value]]
 												),
 												e("div", Vo, [
 													e(
@@ -2331,10 +2331,10 @@ const Ft = { class: "subhead" },
 															title: "Attach file",
 															onClick: me,
 														},
-														[o(t(y), { name: "paperclip" })]
+														[n(t(y), { name: "paperclip" })]
 													),
 													Ko,
-													e("span", Yo, [Wo, e("b", Xo, l(t(ve)), 1)]),
+													e("span", Yo, [Wo, e("b", Xo, i(t(ve)), 1)]),
 													e(
 														"button",
 														{
@@ -2349,11 +2349,11 @@ const Ft = { class: "subhead" },
 														"button",
 														{
 															class: "btn primary sm",
-															disabled: !n.value.trim() || g.value,
+															disabled: !a.value.trim() || g.value,
 															onClick: ee,
 														},
 														[
-															o(t(y), {
+															n(t(y), {
 																name: "send",
 																style: {
 																	width: "14px",
@@ -2367,20 +2367,20 @@ const Ft = { class: "subhead" },
 													),
 												]),
 										  ]))
-										: (a(),
+										: (l(),
 										  c("div", Uo, [
 												e(
 													"button",
 													{ class: "btn reply-btn", onClick: be },
 													[
-														o(t(y), {
+														n(t(y), {
 															name: "corner-up-left",
 															style: {
 																width: "15px",
 																height: "15px",
 															},
 														}),
-														Fo,
+														Bo,
 													]
 												),
 										  ])),
@@ -2390,14 +2390,14 @@ const Ft = { class: "subhead" },
 								e("div", Qo, [
 									en,
 									d.role === "staff"
-										? (a(),
+										? (l(),
 										  c(
 												"div",
 												{
 													key: 0,
 													class: "statussel",
 													ref_key: "statusRef",
-													ref: D,
+													ref: q,
 												},
 												[
 													e(
@@ -2409,14 +2409,14 @@ const Ft = { class: "subhead" },
 																	(m.value = !m.value)),
 														},
 														[
-															o(
+															n(
 																X,
-																{ status: t(i).doc.status },
+																{ status: t(s).doc.status },
 																null,
 																8,
 																["status"]
 															),
-															o(t(y), {
+															n(t(y), {
 																name: "chevron-down",
 																class: "chev",
 																style: {
@@ -2427,22 +2427,22 @@ const Ft = { class: "subhead" },
 														]
 													),
 													m.value
-														? (a(),
+														? (l(),
 														  c("div", tn, [
-																(a(),
+																(l(),
 																c(
-																	I,
+																	O,
 																	null,
-																	U(L, (v) =>
+																	B(j, (v) =>
 																		e(
 																			"button",
 																			{
 																				key: v,
-																				onClick: (P) =>
+																				onClick: (U) =>
 																					te(v),
 																			},
 																			[
-																				o(
+																				n(
 																					X,
 																					{ status: v },
 																					null,
@@ -2450,8 +2450,8 @@ const Ft = { class: "subhead" },
 																					["status"]
 																				),
 																				v ===
-																				t(i).doc.status
-																					? (a(),
+																				t(s).doc.status
+																					? (l(),
 																					  fe(t(y), {
 																							key: 0,
 																							name: "check",
@@ -2461,7 +2461,7 @@ const Ft = { class: "subhead" },
 																								height: "15px",
 																							},
 																					  }))
-																					: M("", !0),
+																					: T("", !0),
 																			],
 																			8,
 																			sn
@@ -2470,40 +2470,40 @@ const Ft = { class: "subhead" },
 																	64
 																)),
 														  ]))
-														: M("", !0),
+														: T("", !0),
 												],
 												512
 										  ))
-										: (a(),
+										: (l(),
 										  c("div", on, [
-												o(X, { status: t(i).doc.status }, null, 8, [
+												n(X, { status: t(s).doc.status }, null, 8, [
 													"status",
 												]),
 										  ])),
 								]),
 								e("div", nn, [
 									an,
-									t(i).doc.on_hold_since
-										? (a(),
+									t(s).doc.on_hold_since
+										? (l(),
 										  c("div", ln, [
-												o(t(y), {
+												n(t(y), {
 													name: "pause-circle",
 													style: { width: "13px", height: "13px" },
 												}),
 												cn,
 										  ]))
-										: M("", !0),
+										: T("", !0),
 									e("div", rn, [
 										e("div", dn, [
 											e("div", un, [
-												e("span", _n, [o(t(y), { name: "clock" }), hn]),
-												o(
-													ae,
+												e("span", _n, [n(t(y), { name: "clock" }), hn]),
+												n(
+													le,
 													{
-														deadline: t(i).doc.fr_due_at,
+														deadline: t(s).doc.fr_due_at,
 														now: r.value,
 														"window-h": t(W).frH,
-														state: t(i).doc.fr_state,
+														state: t(s).doc.fr_state,
 													},
 													null,
 													8,
@@ -2515,8 +2515,8 @@ const Ft = { class: "subhead" },
 												{
 													class: "slabar",
 													"data-tone": G(
-														t(i).doc.fr_state,
-														t(i).doc.fr_due_at
+														t(s).doc.fr_state,
+														t(s).doc.fr_due_at
 													),
 												},
 												[
@@ -2524,9 +2524,9 @@ const Ft = { class: "subhead" },
 														"i",
 														{
 															style: se({
-																width: ie(
-																	t(i).doc.fr_due_at,
-																	t(i).doc.fr_state,
+																width: ce(
+																	t(s).doc.fr_due_at,
+																	t(s).doc.fr_state,
 																	t(W).frH
 																),
 															}),
@@ -2538,22 +2538,22 @@ const Ft = { class: "subhead" },
 												8,
 												pn
 											),
-											t(i).doc.first_responded_on
-												? (a(),
+											t(s).doc.first_responded_on
+												? (l(),
 												  c("div", vn, [
-														o(t(y), {
+														n(t(y), {
 															name: "check",
 															style: {
 																width: "11px",
 																height: "11px",
 															},
 														}),
-														k(
+														w(
 															" Responded " +
-																l(
+																i(
 																	t(_e)(
-																		t(O)(
-																			t(i).doc
+																		t(P)(
+																			t(s).doc
 																				.first_responded_on
 																		),
 																		r.value
@@ -2562,18 +2562,18 @@ const Ft = { class: "subhead" },
 															1
 														),
 												  ]))
-												: M("", !0),
+												: T("", !0),
 										]),
 										e("div", mn, [
 											e("div", fn, [
-												e("span", yn, [o(t(y), { name: "clock" }), bn]),
-												o(
-													ae,
+												e("span", yn, [n(t(y), { name: "clock" }), bn]),
+												n(
+													le,
 													{
-														deadline: t(i).doc.res_due_at,
+														deadline: t(s).doc.res_due_at,
 														now: r.value,
 														"window-h": t(W).resH,
-														state: t(i).doc.res_state,
+														state: t(s).doc.res_state,
 													},
 													null,
 													8,
@@ -2585,8 +2585,8 @@ const Ft = { class: "subhead" },
 												{
 													class: "slabar",
 													"data-tone": G(
-														t(i).doc.res_state,
-														t(i).doc.res_due_at
+														t(s).doc.res_state,
+														t(s).doc.res_due_at
 													),
 												},
 												[
@@ -2594,9 +2594,9 @@ const Ft = { class: "subhead" },
 														"i",
 														{
 															style: se({
-																width: ie(
-																	t(i).doc.res_due_at,
-																	t(i).doc.res_state,
+																width: ce(
+																	t(s).doc.res_due_at,
+																	t(s).doc.res_state,
 																	t(W).resH
 																),
 															}),
@@ -2608,21 +2608,21 @@ const Ft = { class: "subhead" },
 												8,
 												gn
 											),
-											(t(i).doc.total_hold_time || 0) >= 60
-												? (a(),
+											(t(s).doc.total_hold_time || 0) >= 60
+												? (l(),
 												  c("div", $n, [
-														o(t(y), {
+														n(t(y), {
 															name: "pause",
 															style: {
 																width: "11px",
 																height: "11px",
 															},
 														}),
-														k(
+														w(
 															" " +
-																l(
+																i(
 																	Math.round(
-																		t(i).doc.total_hold_time /
+																		t(s).doc.total_hold_time /
 																			360
 																	) / 10
 																) +
@@ -2630,7 +2630,7 @@ const Ft = { class: "subhead" },
 															1
 														),
 												  ]))
-												: M("", !0),
+												: T("", !0),
 										]),
 									]),
 								]),
@@ -2639,7 +2639,7 @@ const Ft = { class: "subhead" },
 									e("div", xn, [
 										Cn,
 										e("span", Rn, [
-											o(pe, { priority: t(i).doc.priority }, null, 8, [
+											n(pe, { priority: t(s).doc.priority }, null, 8, [
 												"priority",
 											]),
 										]),
@@ -2647,10 +2647,10 @@ const Ft = { class: "subhead" },
 									e("div", Sn, [
 										qn,
 										e("span", Dn, [
-											o(
+											n(
 												t(y),
 												{
-													name: t(he)[t(i).doc.data_type] || "file",
+													name: t(he)[t(s).doc.data_type] || "file",
 													style: {
 														width: "15px",
 														height: "15px",
@@ -2661,18 +2661,18 @@ const Ft = { class: "subhead" },
 												8,
 												["name"]
 											),
-											k(" " + l(t(i).doc.data_type), 1),
+											w(" " + i(t(s).doc.data_type), 1),
 										]),
 									]),
 									e("div", Ln, [
 										Tn,
 										e("span", An, [
-											o(
+											n(
 												Y,
 												{
 													name:
-														t(i).doc.assignee_name ||
-														t(i).doc.assignee ||
+														t(s).doc.assignee_name ||
+														t(s).doc.assignee ||
 														"?",
 													role: "staff",
 													size: 20,
@@ -2681,9 +2681,9 @@ const Ft = { class: "subhead" },
 												8,
 												["name"]
 											),
-											k(
+											w(
 												" " +
-													l(t(i).doc.assignee_name || t(i).doc.assignee),
+													i(t(s).doc.assignee_name || t(s).doc.assignee),
 												1
 											),
 										]),
@@ -2691,12 +2691,12 @@ const Ft = { class: "subhead" },
 									e("div", Mn, [
 										Nn,
 										e("span", jn, [
-											o(
+											n(
 												Y,
 												{
 													name:
-														t(i).doc.customer_name ||
-														t(i).doc.customer,
+														t(s).doc.customer_name ||
+														t(s).doc.customer,
 													role: "customer",
 													size: 20,
 												},
@@ -2704,43 +2704,43 @@ const Ft = { class: "subhead" },
 												8,
 												["name"]
 											),
-											k(
+											w(
 												" " +
-													l(t(i).doc.customer_name || t(i).doc.customer),
+													i(t(s).doc.customer_name || t(s).doc.customer),
 												1
 											),
 										]),
 									]),
 									e("div", In, [
 										Hn,
-										e("span", zn, l(t(nt)(t(O)(t(i).doc.creation))), 1),
+										e("span", On, i(t(nt)(t(P)(t(s).doc.creation))), 1),
 									]),
 								]),
 							]),
 					  ]))
-					: (a(), c("div", On, Un));
+					: (l(), c("div", zn, Un));
 		},
 	},
-	Bn = { class: "pulse" },
+	Fn = { class: "pulse" },
 	En = e("div", { class: "h1", style: { "margin-bottom": "4px" } }, "SLA Pulse", -1),
 	Vn = { style: { color: "var(--ink-3)", "font-size": "13.5px", "margin-bottom": "22px" } },
 	Kn = { class: "stat-grid" },
 	Yn = { class: "stat" },
 	Wn = { class: "lbl" },
-	Xn = k("Open requests"),
+	Xn = w("Open requests"),
 	Gn = { class: "num" },
 	Jn = { class: "sub2" },
 	Zn = ["data-tone"],
 	Qn = { class: "lbl" },
-	ea = k("SLA breached"),
+	ea = w("SLA breached"),
 	ta = e("div", { class: "sub2" }, "Need attention now", -1),
 	sa = ["data-tone"],
 	oa = { class: "lbl" },
-	na = k("At risk (<8h)"),
+	na = w("At risk (<8h)"),
 	aa = e("div", { class: "sub2" }, "Approaching deadline", -1),
 	la = { class: "stat", "data-tone": "green" },
 	ia = { class: "lbl" },
-	ca = k("Resolved"),
+	ca = w("Resolved"),
 	ra = { class: "num", style: { color: "var(--t-ink)" } },
 	da = e("div", { class: "sub2" }, "Data accepted", -1),
 	ua = e("div", { class: "section-label" }, "Watchlist \xB7 soonest deadlines", -1),
@@ -2765,12 +2765,12 @@ const Ft = { class: "subhead" },
 		setup(d) {
 			const h = d,
 				_ = R(() => h.role),
-				p = q(Date.now()),
+				p = S(Date.now()),
 				r = setInterval(() => {
 					p.value = Date.now();
 				}, 1e3);
 			ke(() => clearInterval(r));
-			const n = we({
+			const a = we({
 					doctype: "Implementation Request",
 					fields: [
 						"name",
@@ -2787,31 +2787,31 @@ const Ft = { class: "subhead" },
 					auto: !0,
 				}),
 				g = R(() => {
-					var D;
-					return (D = n.data) != null ? D : [];
+					var q;
+					return (q = a.data) != null ? q : [];
 				}),
-				f = R(() => g.value.filter((D) => D.status !== "Resolved")),
-				m = R(() => g.value.filter((D) => D.status === "Resolved")),
-				$ = R(() => f.value.filter((D) => O(D.res_due_at) < p.value)),
-				w = R(() =>
-					f.value.filter((D) => {
-						const L = O(D.res_due_at) - p.value;
-						return L > 0 && L < 8 * 36e5;
+				f = R(() => g.value.filter((q) => q.status !== "Resolved")),
+				m = R(() => g.value.filter((q) => q.status === "Resolved")),
+				k = R(() => f.value.filter((q) => P(q.res_due_at) < p.value)),
+				$ = R(() =>
+					f.value.filter((q) => {
+						const j = P(q.res_due_at) - p.value;
+						return j > 0 && j < 8 * 36e5;
 					})
 				),
-				j = R(() =>
-					[...$.value, ...w.value]
-						.sort((D, L) => O(D.res_due_at) - O(L.res_due_at))
+				N = R(() =>
+					[...k.value, ...$.value]
+						.sort((q, j) => P(q.res_due_at) - P(j.res_due_at))
 						.slice(0, 8)
 				);
-			return (D, L) => (
-				a(),
-				c("div", Bn, [
+			return (q, j) => (
+				l(),
+				c("div", Fn, [
 					En,
 					e(
 						"div",
 						Vn,
-						l(
+						i(
 							t(_) === "customer"
 								? "Live status of your open data requests."
 								: "Live health of every open data request."
@@ -2820,12 +2820,12 @@ const Ft = { class: "subhead" },
 					),
 					e("div", Kn, [
 						e("div", Yn, [
-							e("div", Wn, [o(t(y), { name: "inbox" }), Xn]),
-							e("div", Gn, l(t(f).length), 1),
+							e("div", Wn, [n(t(y), { name: "inbox" }), Xn]),
+							e("div", Gn, i(t(f).length), 1),
 							e(
 								"div",
 								Jn,
-								l(
+								i(
 									t(_) === "customer"
 										? "Your active requests"
 										: "Across all customers"
@@ -2835,16 +2835,16 @@ const Ft = { class: "subhead" },
 						]),
 						e(
 							"div",
-							{ class: "stat", "data-tone": t($).length ? "red" : "green" },
+							{ class: "stat", "data-tone": t(k).length ? "red" : "green" },
 							[
-								e("div", Qn, [o(t(y), { name: "alert-triangle" }), ea]),
+								e("div", Qn, [n(t(y), { name: "alert-triangle" }), ea]),
 								e(
 									"div",
 									{
 										class: "num",
-										style: se(t($).length ? "color:var(--t-ink)" : ""),
+										style: se(t(k).length ? "color:var(--t-ink)" : ""),
 									},
-									l(t($).length),
+									i(t(k).length),
 									5
 								),
 								ta,
@@ -2854,16 +2854,16 @@ const Ft = { class: "subhead" },
 						),
 						e(
 							"div",
-							{ class: "stat", "data-tone": t(w).length ? "amber" : "green" },
+							{ class: "stat", "data-tone": t($).length ? "amber" : "green" },
 							[
-								e("div", oa, [o(t(y), { name: "clock" }), na]),
+								e("div", oa, [n(t(y), { name: "clock" }), na]),
 								e(
 									"div",
 									{
 										class: "num",
-										style: se(t(w).length ? "color:var(--t-ink)" : ""),
+										style: se(t($).length ? "color:var(--t-ink)" : ""),
 									},
-									l(t(w).length),
+									i(t($).length),
 									5
 								),
 								aa,
@@ -2872,8 +2872,8 @@ const Ft = { class: "subhead" },
 							sa
 						),
 						e("div", la, [
-							e("div", ia, [o(t(y), { name: "check-circle" }), ca]),
-							e("div", ra, l(t(m).length), 1),
+							e("div", ia, [n(t(y), { name: "check-circle" }), ca]),
+							e("div", ra, i(t(m).length), 1),
 							da,
 						]),
 					]),
@@ -2884,15 +2884,15 @@ const Ft = { class: "subhead" },
 								e("tr", null, [
 									pa,
 									va,
-									t(_) === "staff" ? (a(), c("th", ma, "Customer")) : M("", !0),
+									t(_) === "staff" ? (l(), c("th", ma, "Customer")) : T("", !0),
 									fa,
 									ya,
 								]),
 							]),
 							e("tbody", null, [
-								t(j).length
-									? M("", !0)
-									: (a(),
+								t(N).length
+									? T("", !0)
+									: (l(),
 									  c("tr", ba, [
 											e(
 												"td",
@@ -2909,32 +2909,32 @@ const Ft = { class: "subhead" },
 												ga
 											),
 									  ])),
-								(a(!0),
+								(l(!0),
 								c(
-									I,
+									O,
 									null,
-									U(t(j), (C) => {
-										var i, S;
+									B(t(N), (C) => {
+										var s, D;
 										return (
-											a(),
+											l(),
 											c(
 												"tr",
 												{
 													key: C.name,
-													onClick: (B) =>
-														D.$router.push({
+													onClick: (I) =>
+														q.$router.push({
 															name: "RequestDetail",
 															params: { id: C.name },
 														}),
 												},
 												[
-													e("td", null, [e("span", ka, l(C.name), 1)]),
-													e("td", null, [e("div", wa, l(C.subject), 1)]),
+													e("td", null, [e("span", ka, i(C.name), 1)]),
+													e("td", null, [e("div", wa, i(C.subject), 1)]),
 													t(_) === "staff"
-														? (a(),
+														? (l(),
 														  c("td", xa, [
 																e("div", Ca, [
-																	o(
+																	n(
 																		Y,
 																		{
 																			name:
@@ -2951,32 +2951,32 @@ const Ft = { class: "subhead" },
 																		e(
 																			"div",
 																			Ra,
-																			l(C.customer_name),
+																			i(C.customer_name),
 																			1
 																		),
 																		e(
 																			"div",
 																			Sa,
-																			l(C.customer),
+																			i(C.customer),
 																			1
 																		),
 																	]),
 																]),
 														  ]))
-														: M("", !0),
+														: T("", !0),
 													e("td", null, [
-														o(
-															ae,
+														n(
+															le,
 															{
 																deadline: C.res_due_at,
 																now: p.value,
 																"window-h":
-																	(S =
-																		(i = t(K)[C.priority]) ==
+																	(D =
+																		(s = t(K)[C.priority]) ==
 																		null
 																			? void 0
-																			: i.resH) != null
-																		? S
+																			: s.resH) != null
+																		? D
 																		: 48,
 																state: C.res_state,
 															},
@@ -2991,7 +2991,7 @@ const Ft = { class: "subhead" },
 														),
 													]),
 													e("td", null, [
-														o(X, { status: C.status }, null, 8, [
+														n(X, { status: C.status }, null, 8, [
 															"status",
 														]),
 													]),
@@ -3015,13 +3015,12 @@ var Da = Ge({
 	routes: [
 		{ path: "/", name: "Requests", component: so },
 		{ path: "/pulse", name: "Pulse", component: qa },
-		{ path: "/request/:id", name: "RequestDetail", component: Fn, props: !0 },
+		{ path: "/request/:id", name: "RequestDetail", component: Bn, props: !0 },
 	],
 });
-const La = { class: "side" },
-	Ta = { class: "brand" },
-	Aa = { class: "brand-mark" },
-	Ma = e(
+const La = { class: "brand" },
+	Ta = { class: "brand-mark" },
+	Aa = e(
 		"div",
 		null,
 		[
@@ -3030,34 +3029,35 @@ const La = { class: "side" },
 		],
 		-1
 	),
-	Na = { class: "nav" },
-	ja = e("div", { class: "nav-label" }, "Workspace", -1),
-	Ia = ["onClick"],
-	Ha = k(" SLA Pulse "),
-	za = { key: 0, class: "nav-count", style: { color: "var(--t-solid)" }, "data-tone": "red" },
+	Ma = { class: "nav" },
+	Na = e("div", { class: "nav-label" }, "Workspace", -1),
+	ja = ["onClick"],
+	Ia = w(" SLA Pulse "),
+	Ha = { key: 0, class: "nav-count", style: { color: "var(--t-solid)" }, "data-tone": "red" },
 	Oa = ["onClick"],
-	Pa = k(" Requests "),
-	Ua = { class: "nav-count" },
-	Fa = { class: "side-foot" },
+	za = w(" Requests "),
+	Pa = { class: "nav-count" },
+	Ua = { class: "side-foot" },
 	Ba = { key: 0, class: "user-menu" },
-	Ea = k(" Helpdesk "),
-	Va = k(" Log out "),
-	Ka = { class: "user-card-info" },
-	Ya = { class: "user-card-name" },
-	Wa = { class: "user-card-role" },
-	Xa = {
+	Fa = w(" Helpdesk "),
+	Ea = w(" Log out "),
+	Va = { class: "user-card-info" },
+	Ka = { class: "user-card-name" },
+	Ya = { class: "user-card-role" },
+	Wa = {
 		props: {
 			openCount: { type: Number, default: 0 },
 			breachCount: { type: Number, default: 0 },
 			role: { type: String, default: "staff" },
 			userName: { type: String, default: "" },
+			open: { type: Boolean, default: !1 },
 		},
 		setup(d) {
 			const h = d,
 				_ = xe(),
-				p = q(!1),
+				p = S(!1),
 				r = `${window.location.protocol}//${window.location.hostname}/helpdesk`,
-				n = R(() => {
+				a = R(() => {
 					var f, m;
 					return (
 						h.userName ||
@@ -3085,138 +3085,165 @@ const La = { class: "side" },
 				});
 			}
 			return (f, m) => {
-				const $ = He("router-link");
+				const k = He("router-link");
 				return (
-					a(),
+					l(),
 					c(
-						I,
+						O,
 						null,
 						[
-							e("aside", La, [
-								e("div", Ta, [e("div", Aa, [o(t(y), { name: "inbox" })]), Ma]),
-								e("nav", Na, [
-									ja,
-									o(
-										$,
-										{ to: "/pulse", custom: "" },
-										{
-											default: ze(({ navigate: w, isActive: j }) => [
-												e(
-													"button",
+							e(
+								"aside",
+								{ class: H(["side", d.open ? "open" : ""]) },
+								[
+									e("div", La, [e("div", Ta, [n(t(y), { name: "inbox" })]), Aa]),
+									e("nav", Ma, [
+										Na,
+										n(
+											k,
+											{ to: "/pulse", custom: "" },
+											{
+												default: Oe(({ navigate: $, isActive: N }) => [
+													e(
+														"button",
+														{
+															class: H([
+																"nav-item",
+																N ? "active" : "",
+															]),
+															onClick: $,
+														},
+														[
+															n(t(y), { name: "activity" }),
+															Ia,
+															d.breachCount > 0
+																? (l(),
+																  c(
+																		"span",
+																		Ha,
+																		i(d.breachCount),
+																		1
+																  ))
+																: T("", !0),
+														],
+														10,
+														ja
+													),
+												]),
+												_: 1,
+											}
+										),
+										n(
+											k,
+											{ to: "/", custom: "" },
+											{
+												default: Oe(({ navigate: $, isActive: N }) => [
+													e(
+														"button",
+														{
+															class: H([
+																"nav-item",
+																N && t(_).name !== "Pulse"
+																	? "active"
+																	: "",
+															]),
+															onClick: $,
+														},
+														[
+															n(t(y), { name: "inbox" }),
+															za,
+															e("span", Pa, i(d.openCount), 1),
+														],
+														10,
+														Oa
+													),
+												]),
+												_: 1,
+											}
+										),
+									]),
+									e("div", Ua, [
+										p.value
+											? (l(),
+											  c("div", Ba, [
+													e(
+														"a",
+														{
+															href: r,
+															target: "_blank",
+															rel: "noopener noreferrer",
+															class: "user-menu-item",
+															onClick:
+																m[0] ||
+																(m[0] = ($) => (p.value = !1)),
+														},
+														[n(t(y), { name: "headphones" }), Fa]
+													),
+													e(
+														"button",
+														{
+															class: "user-menu-item danger",
+															onClick: g,
+														},
+														[n(t(y), { name: "log-out" }), Ea]
+													),
+											  ]))
+											: T("", !0),
+										e(
+											"button",
+											{
+												class: "user-card",
+												onClick:
+													m[1] || (m[1] = ($) => (p.value = !p.value)),
+											},
+											[
+												n(
+													Y,
+													{ name: t(a), role: d.role, size: 32 },
+													null,
+													8,
+													["name", "role"]
+												),
+												e("div", Va, [
+													e("div", Ka, i(t(a)), 1),
+													e(
+														"div",
+														Ya,
+														i(
+															d.role === "staff"
+																? "User"
+																: "Customer"
+														),
+														1
+													),
+												]),
+												n(
+													t(y),
 													{
-														class: H(["nav-item", j ? "active" : ""]),
-														onClick: w,
+														class: "user-card-caret",
+														name: p.value
+															? "chevron-up"
+															: "chevron-down",
+														style: { width: "14px", height: "14px" },
 													},
-													[
-														o(t(y), { name: "activity" }),
-														Ha,
-														d.breachCount > 0
-															? (a(),
-															  c("span", za, l(d.breachCount), 1))
-															: M("", !0),
-													],
-													10,
-													Ia
+													null,
+													8,
+													["name"]
 												),
-											]),
-											_: 1,
-										}
-									),
-									o(
-										$,
-										{ to: "/", custom: "" },
-										{
-											default: ze(({ navigate: w, isActive: j }) => [
-												e(
-													"button",
-													{
-														class: H([
-															"nav-item",
-															j && t(_).name !== "Pulse"
-																? "active"
-																: "",
-														]),
-														onClick: w,
-													},
-													[
-														o(t(y), { name: "inbox" }),
-														Pa,
-														e("span", Ua, l(d.openCount), 1),
-													],
-													10,
-													Oa
-												),
-											]),
-											_: 1,
-										}
-									),
-								]),
-								e("div", Fa, [
-									p.value
-										? (a(),
-										  c("div", Ba, [
-												e(
-													"a",
-													{
-														href: r,
-														target: "_blank",
-														rel: "noopener noreferrer",
-														class: "user-menu-item",
-														onClick:
-															m[0] || (m[0] = (w) => (p.value = !1)),
-													},
-													[o(t(y), { name: "headphones" }), Ea]
-												),
-												e(
-													"button",
-													{ class: "user-menu-item danger", onClick: g },
-													[o(t(y), { name: "log-out" }), Va]
-												),
-										  ]))
-										: M("", !0),
-									e(
-										"button",
-										{
-											class: "user-card",
-											onClick: m[1] || (m[1] = (w) => (p.value = !p.value)),
-										},
-										[
-											o(Y, { name: t(n), role: d.role, size: 32 }, null, 8, [
-												"name",
-												"role",
-											]),
-											e("div", Ka, [
-												e("div", Ya, l(t(n)), 1),
-												e(
-													"div",
-													Wa,
-													l(d.role === "staff" ? "User" : "Customer"),
-													1
-												),
-											]),
-											o(
-												t(y),
-												{
-													class: "user-card-caret",
-													name: p.value ? "chevron-up" : "chevron-down",
-													style: { width: "14px", height: "14px" },
-												},
-												null,
-												8,
-												["name"]
-											),
-										]
-									),
-								]),
-							]),
+											]
+										),
+									]),
+								],
+								2
+							),
 							p.value
-								? (a(),
+								? (l(),
 								  c("div", {
 										key: 0,
 										class: "menu-scrim",
-										onClick: m[2] || (m[2] = (w) => (p.value = !1)),
+										onClick: m[2] || (m[2] = ($) => (p.value = !1)),
 								  }))
-								: M("", !0),
+								: T("", !0),
 						],
 						64
 					)
@@ -3224,90 +3251,108 @@ const La = { class: "side" },
 			};
 		},
 	},
-	Ga = { key: 0, class: "auth-loading" },
-	Ja = e("div", { class: "auth-spinner" }, null, -1),
-	Za = [Ja],
-	Qa = { key: 1, class: "app" },
-	el = { class: "main" },
-	tl = { class: "topbar" },
-	sl = { class: "crumb" },
-	ol = { class: "here" },
-	nl = e("span", { class: "here" }, "SLA Pulse", -1),
-	al = e("span", { class: "grow" }, null, -1),
-	ll = k("Close "),
-	il = { class: "viewport" },
-	cl = { class: "toasts" },
-	rl = {
+	Xa = { key: 0, class: "auth-loading" },
+	Ga = e("div", { class: "auth-spinner" }, null, -1),
+	Ja = [Ga],
+	Za = { key: 1, class: "app" },
+	Qa = { class: "main" },
+	el = { class: "topbar" },
+	tl = { class: "crumb" },
+	sl = { class: "here" },
+	ol = e("span", { class: "here" }, "SLA Pulse", -1),
+	nl = e("span", { class: "grow" }, null, -1),
+	al = w("Close "),
+	ll = { class: "viewport" },
+	il = { class: "toasts" },
+	cl = {
 		setup(d) {
 			const h = xe(),
 				_ = Ne(),
-				p = q(!0),
-				r = q("staff"),
-				n = q(""),
-				g = q(""),
-				f = q(0),
-				m = q(0),
-				$ = q([]);
-			$e(() =>
-				V(this, null, function* () {
-					try {
-						const L = yield ne({ url: "onboardpro.api.get_session_role" });
-						if (L.role === "guest") {
-							w();
-							return;
+				p = S(!0),
+				r = S("staff"),
+				a = S(""),
+				g = S(""),
+				f = S(0),
+				m = S(0),
+				k = S([]),
+				$ = S(!1);
+			ne(h, () => {
+				$.value = !1;
+			}),
+				$e(() =>
+					V(this, null, function* () {
+						try {
+							const C = yield ae({ url: "onboardpro.api.get_session_role" });
+							(r.value = C.role), (a.value = C.full_name), (p.value = !1);
+						} catch (C) {
+							N();
 						}
-						(r.value = L.role), (n.value = L.full_name), (p.value = !1);
-					} catch (L) {
-						w();
-					}
-				})
-			);
-			function w() {
-				const L = encodeURIComponent(window.location.pathname || "/onboardpro");
-				window.location.href = `/login?redirect-to=${L}`;
+					})
+				);
+			function N() {
+				const C = encodeURIComponent(window.location.pathname || "/onboardpro");
+				window.location.href = `/login?redirect-to=${C}`;
 			}
-			function j({ open: L, breach: C }) {
-				(f.value = L), (m.value = C);
+			function q({ open: C, breach: s }) {
+				(f.value = C), (m.value = s);
 			}
-			function D(L) {
-				const C = Math.random();
-				$.value.push({ id: C, msg: L }),
+			function j(C) {
+				const s = Math.random();
+				k.value.push({ id: s, msg: C }),
 					setTimeout(() => {
-						$.value = $.value.filter((i) => i.id !== C);
+						k.value = k.value.filter((D) => D.id !== s);
 					}, 2600);
 			}
 			return (
-				Oe("toast", D),
-				Oe("role", r),
-				(L, C) => {
-					const i = He("router-view");
+				ze("toast", j),
+				ze("role", r),
+				(C, s) => {
+					const D = He("router-view");
 					return p.value
-						? (a(), c("div", Ga, Za))
-						: (a(),
-						  c("div", Qa, [
-								o(
-									Xa,
+						? (l(), c("div", Xa, Ja))
+						: (l(),
+						  c("div", Za, [
+								n(
+									Wa,
 									{
 										"open-count": f.value,
 										"breach-count": m.value,
 										role: r.value,
-										"user-name": n.value,
+										"user-name": a.value,
+										open: $.value,
 									},
 									null,
 									8,
-									["open-count", "breach-count", "role", "user-name"]
+									["open-count", "breach-count", "role", "user-name", "open"]
 								),
-								e("div", el, [
-									e("div", tl, [
-										e("div", sl, [
+								$.value
+									? (l(),
+									  c("div", {
+											key: 0,
+											class: "mob-sidebar-scrim",
+											onClick: s[0] || (s[0] = (I) => ($.value = !1)),
+									  }))
+									: T("", !0),
+								e("div", Qa, [
+									e("div", el, [
+										e(
+											"button",
+											{
+												class: "mob-menu-btn",
+												onClick:
+													s[1] || (s[1] = (I) => ($.value = !$.value)),
+											},
+											[n(t(y), { name: "menu" })]
+										),
+										e("div", tl, [
 											e(
 												"span",
 												{
 													class: "root",
 													onClick:
-														C[0] || (C[0] = (S) => t(_).push("/")),
+														s[2] || (s[2] = (I) => t(_).push("/")),
 												},
-												l(
+												i(
 													r.value === "customer"
 														? "My requests"
 														: "Requests"
@@ -3315,12 +3360,12 @@ const La = { class: "side" },
 												1
 											),
 											t(h).name === "RequestDetail"
-												? (a(),
+												? (l(),
 												  c(
-														I,
+														O,
 														{ key: 0 },
 														[
-															o(t(y), {
+															n(t(y), {
 																name: "chevron-right",
 																style: {
 																	width: "15px",
@@ -3331,20 +3376,20 @@ const La = { class: "side" },
 															}),
 															e(
 																"span",
-																ol,
-																l(g.value || t(h).params.id),
+																sl,
+																i(g.value || t(h).params.id),
 																1
 															),
 														],
 														64
 												  ))
 												: t(h).name === "Pulse"
-												? (a(),
+												? (l(),
 												  c(
-														I,
+														O,
 														{ key: 1 },
 														[
-															o(t(y), {
+															n(t(y), {
 																name: "chevron-right",
 																style: {
 																	width: "15px",
@@ -3353,43 +3398,43 @@ const La = { class: "side" },
 																	flex: "none",
 																},
 															}),
-															nl,
+															ol,
 														],
 														64
 												  ))
-												: M("", !0),
+												: T("", !0),
 										]),
-										al,
+										nl,
 										t(h).name === "RequestDetail"
-											? (a(),
+											? (l(),
 											  c(
 													"button",
 													{
 														key: 0,
 														class: "btn",
 														onClick:
-															C[1] || (C[1] = (S) => t(_).push("/")),
+															s[3] || (s[3] = (I) => t(_).push("/")),
 													},
 													[
-														o(t(y), {
+														n(t(y), {
 															name: "x",
 															style: {
 																width: "14px",
 																height: "14px",
 															},
 														}),
-														ll,
+														al,
 													]
 											  ))
-											: M("", !0),
+											: T("", !0),
 									]),
-									e("div", il, [
-										o(
-											i,
+									e("div", ll, [
+										n(
+											D,
 											{
 												role: r.value,
-												onRequestsLoaded: j,
-												onSetTitle: C[2] || (C[2] = (S) => (g.value = S)),
+												onRequestsLoaded: q,
+												onSetTitle: s[4] || (s[4] = (I) => (g.value = I)),
 											},
 											null,
 											8,
@@ -3397,22 +3442,22 @@ const La = { class: "side" },
 										),
 									]),
 								]),
-								e("div", cl, [
-									(a(!0),
+								e("div", il, [
+									(l(!0),
 									c(
-										I,
+										O,
 										null,
-										U(
-											$.value,
-											(S) => (
-												a(),
-												c("div", { key: S.id, class: "toast" }, [
-													o(t(y), {
+										B(
+											k.value,
+											(I) => (
+												l(),
+												c("div", { key: I.id, class: "toast" }, [
+													n(t(y), {
 														name: "check-circle",
 														class: "tk",
 														style: { width: "16px", height: "16px" },
 													}),
-													k(" " + l(S.msg), 1),
+													w(" " + i(I.msg), 1),
 												])
 											)
 										),
@@ -3424,8 +3469,8 @@ const La = { class: "side" },
 			);
 		},
 	};
-const qe = Ze(rl);
-Qe("resourceFetcher", ne);
+const qe = Ze(cl);
+Qe("resourceFetcher", ae);
 qe.use(Da);
 [et, tt, y, st].forEach((d) => qe.component(d.name, d));
 qe.mount("#app");
