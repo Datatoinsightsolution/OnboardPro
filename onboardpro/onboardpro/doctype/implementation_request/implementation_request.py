@@ -26,9 +26,7 @@ def _as_date(value):
 
 def get_manager_company(user):
 	"""Return the company `user` manages, or None if they aren't a Manager."""
-	return frappe.db.get_value(
-		"Onboardpro Customer", {"user": user, "designation": "Manager"}, "company"
-	)
+	return frappe.db.get_value("Onboardpro Customer", {"user": user, "designation": "Manager"}, "company")
 
 
 def get_company_customer_emails(company):

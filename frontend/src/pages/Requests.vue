@@ -27,7 +27,9 @@
 					{{ tab.label }}
 					<span
 						class="cnt"
-						:data-tone="tab.key === 'attention' && counts[tab.key] > 0 ? 'red' : 'slate'"
+						:data-tone="
+							tab.key === 'attention' && counts[tab.key] > 0 ? 'red' : 'slate'
+						"
 						>{{ counts[tab.key] ?? 0 }}</span
 					>
 				</button>
@@ -425,8 +427,8 @@ const sorted = computed(() => {
 		field === 'priority'
 			? PRIORITY_META[r.priority]?.rank ?? 99
 			: field === 'delivery_date'
-				? r.delivery_date ?? '9999-12-31'
-				: r[field] ?? ''
+			? r.delivery_date ?? '9999-12-31'
+			: r[field] ?? ''
 	return [...filtered.value].sort((a, b) => {
 		const va = key(a)
 		const vb = key(b)

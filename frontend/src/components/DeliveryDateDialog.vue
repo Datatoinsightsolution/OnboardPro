@@ -4,7 +4,9 @@
 		<div class="slideover" role="dialog" aria-modal="true">
 			<div class="so-head">
 				<div>
-					<div class="t">{{ isAmend ? 'Amend delivery date' : 'Commit delivery date' }}</div>
+					<div class="t">
+						{{ isAmend ? 'Amend delivery date' : 'Commit delivery date' }}
+					</div>
 					<div class="s">{{ request.subject }}</div>
 				</div>
 				<button class="iconbtn" @click="$emit('close')">
@@ -78,7 +80,8 @@
 				You are committing to deliver by <b>{{ fmtDay(date) }}</b
 				>. This cannot be changed once confirmed.
 				<template v-if="slipDays > 0">
-					It is {{ slipDays }} day{{ slipDays === 1 ? '' : 's' }} after the expected date.
+					It is {{ slipDays }} day{{ slipDays === 1 ? '' : 's' }} after the expected
+					date.
 				</template>
 			</template>
 		</ConfirmDialog>
@@ -99,7 +102,9 @@ defineEmits(['close', 'committed'])
 
 const isAmend = computed(() => !!props.request.delivery_date)
 const todayStr = dateKey()
-const date = ref(props.request.delivery_date ? String(props.request.delivery_date).slice(0, 10) : '')
+const date = ref(
+	props.request.delivery_date ? String(props.request.delivery_date).slice(0, 10) : ''
+)
 const confirming = ref(false)
 
 const slipDays = computed(() => {

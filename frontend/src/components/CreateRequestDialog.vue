@@ -74,7 +74,12 @@
 						Expected date
 						<span data-tone="red" style="color: var(--t-ink)">*</span>
 					</label>
-					<input v-model="form.expected_date" type="date" class="finput" :min="todayStr" />
+					<input
+						v-model="form.expected_date"
+						type="date"
+						class="finput"
+						:min="todayStr"
+					/>
 					<div class="fhint">
 						When you need this data by. The customer commits to their own delivery date
 						after seeing the request.
@@ -187,9 +192,7 @@ const customers = createResource({
 
 const isValid = computed(
 	() =>
-		form.value.subject.trim().length > 2 &&
-		!!form.value.customer &&
-		!!form.value.expected_date
+		form.value.subject.trim().length > 2 && !!form.value.customer && !!form.value.expected_date
 )
 
 const insertDoc = createResource({

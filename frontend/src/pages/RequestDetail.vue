@@ -229,7 +229,8 @@
 					<div class="lockrow">
 						<FeatherIcon name="lock" />
 						<span v-if="doc.doc.delivery_committed_on">
-							Committed {{ fmtAgo(toMs(doc.doc.delivery_committed_on), now) }} — locked
+							Committed {{ fmtAgo(toMs(doc.doc.delivery_committed_on), now) }} —
+							locked
 						</span>
 						<span v-else>Locked</span>
 					</div>
@@ -458,9 +459,7 @@ watch(
 
 // Only the request's own customer may commit — has_permission gives company Managers
 // read access but not write, so gating on `role` alone would offer them a 403 button.
-const canCommit = computed(
-	() => props.role === 'customer' && doc.doc?.customer_email === meEmail
-)
+const canCommit = computed(() => props.role === 'customer' && doc.doc?.customer_email === meEmail)
 
 async function commitDelivery(date) {
 	committing.value = true

@@ -122,10 +122,7 @@ def get_activity(docname: str):
 				new_txt = frappe.utils.escape_html(frappe.utils.formatdate(new_val)) or "—"
 				if old_val:
 					old_txt = frappe.utils.escape_html(frappe.utils.formatdate(old_val))
-					html = (
-						f"<b>{actor}</b> moved the delivery date from "
-						f"<b>{old_txt}</b> → <b>{new_txt}</b>"
-					)
+					html = f"<b>{actor}</b> moved the delivery date from <b>{old_txt}</b> → <b>{new_txt}</b>"
 					tone, icon = "amber", "edit-3"
 				else:
 					html = f"<b>{actor}</b> committed a delivery date of <b>{new_txt}</b>"
@@ -363,9 +360,7 @@ def get_company_hierarchy():
 	"""Return every company with its assigned customers, for the admin hierarchy screen."""
 	_require_staff()
 
-	companies = frappe.get_all(
-		"Onboardpro Company", fields=["name", "company_name"], order_by="company_name"
-	)
+	companies = frappe.get_all("Onboardpro Company", fields=["name", "company_name"], order_by="company_name")
 	members = frappe.get_all(
 		"Onboardpro Customer",
 		fields=["user", "customer_name", "company", "designation"],

@@ -59,7 +59,9 @@
 					<div class="sub2">
 						{{
 							d.avg_commitment_slip !== null
-								? `Committed dates run ${d.avg_commitment_slip > 0 ? '+' : ''}${d.avg_commitment_slip}d vs expected`
+								? `Committed dates run ${d.avg_commitment_slip > 0 ? '+' : ''}${
+										d.avg_commitment_slip
+								  }d vs expected`
 								: 'Still within the expected date'
 						}}
 					</div>
@@ -112,7 +114,9 @@
 						<tr
 							v-for="r in d.watchlist"
 							:key="r.name"
-							@click="$router.push({ name: 'RequestDetail', params: { id: r.name } })"
+							@click="
+								$router.push({ name: 'RequestDetail', params: { id: r.name } })
+							"
 						>
 							<td>
 								<span class="id">{{ r.name }}</span>

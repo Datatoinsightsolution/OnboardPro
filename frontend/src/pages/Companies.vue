@@ -73,12 +73,21 @@
 					<div class="role-label">{{ group === 'Manager' ? 'Managers' : 'Users' }}</div>
 					<div
 						v-if="!membersByRole(c, group).length"
-						style="font-size: 12px; color: var(--ink-4); font-style: italic; padding: 4px 0"
+						style="
+							font-size: 12px;
+							color: var(--ink-4);
+							font-style: italic;
+							padding: 4px 0;
+						"
 					>
 						No one assigned
 					</div>
 					<div v-for="m in membersByRole(c, group)" :key="m.user" class="member-row">
-						<RistoAvatar :name="m.customer_name || m.user" role="customer" :size="26" />
+						<RistoAvatar
+							:name="m.customer_name || m.user"
+							role="customer"
+							:size="26"
+						/>
 						<div class="member-info">
 							<div class="nm">{{ m.customer_name }}</div>
 							<div class="em">{{ m.user }}</div>
@@ -91,7 +100,11 @@
 							<option value="Manager">Manager</option>
 							<option value="User">User</option>
 						</select>
-						<button class="iconbtn" title="Remove from company" @click="removeMember(m)">
+						<button
+							class="iconbtn"
+							title="Remove from company"
+							@click="removeMember(m)"
+						>
 							<FeatherIcon name="x" style="width: 14px; height: 14px" />
 						</button>
 					</div>

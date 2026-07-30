@@ -23,7 +23,13 @@
 				</button>
 				<div class="crumb">
 					<span class="root" @click="router.push('/')">
-						{{ role === 'customer' ? (isManager ? 'Team requests' : 'My requests') : 'Requests' }}
+						{{
+							role === 'customer'
+								? isManager
+									? 'Team requests'
+									: 'My requests'
+								: 'Requests'
+						}}
 					</span>
 					<template v-if="route.name === 'RequestDetail'">
 						<FeatherIcon

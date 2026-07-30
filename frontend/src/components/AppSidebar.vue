@@ -46,7 +46,12 @@
 				</button>
 			</router-link>
 
-			<router-link v-if="role === 'staff'" to="/companies" custom v-slot="{ navigate, isActive }">
+			<router-link
+				v-if="role === 'staff'"
+				to="/companies"
+				custom
+				v-slot="{ navigate, isActive }"
+			>
 				<button :class="['nav-item', isActive ? 'active' : '']" @click="navigate">
 					<FeatherIcon name="git-branch" />
 					Companies

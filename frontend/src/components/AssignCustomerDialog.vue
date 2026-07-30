@@ -5,7 +5,9 @@
 			<div class="so-head">
 				<div>
 					<div class="t">Assign to {{ company.company_name }}</div>
-					<div class="s">Map an existing customer to this company and set their role</div>
+					<div class="s">
+						Map an existing customer to this company and set their role
+					</div>
 				</div>
 				<button class="iconbtn" @click="$emit('close')">
 					<FeatherIcon name="x" />
