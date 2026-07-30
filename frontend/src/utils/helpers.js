@@ -25,30 +25,73 @@ export function fmtDate(ms) {
 }
 
 /**
- * SLA countdown. Returns { ms, breached, label, short, tone, pct }
- * tone: "ok" | "warn" | "breach"
+ * Format a date-only 'YYYY-MM-DD' string.
+ * Deliberately NOT fmtDate(toMs(s)): new Date('2026-08-12') parses as UTC midnight, so
+ * toLocaleDateString() renders the 11th anywhere west of Greenwich. Splitting the string
+ * and building a local-midnight Date keeps the calendar day intact.
  */
-export function sla(deadlineMs, now, windowH) {
-	const left = deadlineMs - now
-	const breached = left <= 0
-	const a = Math.abs(left)
-	const h = Math.floor(a / H)
-	const m = Math.floor((a % H) / M)
-	let core
-	if (h >= 48) core = Math.round(h / 24) + 'd'
-	else if (h >= 1) core = h + 'h ' + String(m).padStart(2, '0') + 'm'
-	else core = m + 'm'
-	const label = breached ? 'Breached ' + core : core + ' left'
-	const short = breached ? '−' + core : core
-	let tone = 'ok'
-	if (breached) tone = 'breach'
-	else if (left < 4 * H) tone = 'warn'
-	const pct = windowH ? Math.min(1.4, 1 - left / (windowH * H)) : 0
-	return { ms: left, breached, label, short, tone, pct }
+export function fmtDay(s) {
+	if (!s) return '—'
+	const [y, m, d] = String(s).slice(0, 10).split('-').map(Number)
+	return new Date(y, m - 1, d).toLocaleDateString(undefined, {
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+	})
 }
 
-/** Map SLA tone → CSS data-tone attribute value */
-export const SLA_TONE_MAP = { ok: 'green', warn: 'amber', breach: 'red' }
+/** Local-calendar 'YYYY-MM-DD'. Never toISOString() — that shifts by the UTC offset. */
+export function dateKey(d = new Date()) {
+	const p = (n) => String(n).padStart(2, '0')
+	return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`
+}
+
+/** Whole days from `a` to `b`, both 'YYYY-MM-DD'. */
+export function dayDiff(b, a) {
+	const t = (s) => {
+		const [y, m, d] = String(s).slice(0, 10).split('-').map(Number)
+		return Date.UTC(y, m - 1, d)
+	}
+	return Math.round((t(b) - t(a)) / D)
+}
+
+/**
+ * Bucket a request against its committed delivery date.
+ * Mirrors _delivery_state() in onboardpro/api.py — keep the two in sync.
+ *
+ * Comparisons are lexicographic on 'YYYY-MM-DD', which is both correct and immune to
+ * the timezone shifts that Date-object comparison would introduce.
+ */
+export function deliveryState(r, today) {
+	if (!r?.delivery_date) {
+		// Resolved without a commitment (legacy rows) is settled, not a red flag.
+		if (r?.status === 'Resolved') return 'awaiting'
+		// Past the date staff needed the data by, and still no commitment.
+		const exp = r?.expected_date ? String(r.expected_date).slice(0, 10) : null
+		return exp && today > exp ? 'nocommit' : 'awaiting'
+	}
+	const due = String(r.delivery_date).slice(0, 10)
+	if (r.status === 'Resolved') {
+		const done = String(r.resolved_on || today).slice(0, 10)
+		return done > due ? 'late' : 'ontime'
+	}
+	return today > due ? 'overdue' : 'ontrack'
+}
+
+/**
+ * Open states that need chasing. Two different failures: "broke the promise" and
+ * "never made one". Mirrors ATTENTION_STATES in onboardpro/api.py.
+ */
+export const ATTENTION_STATES = ['overdue', 'nocommit']
+
+export const DELIVERY_META = {
+	awaiting: { label: 'Awaiting commitment', tone: 'slate', icon: 'help-circle' },
+	nocommit: { label: 'No commitment', tone: 'red', icon: 'user-x' },
+	ontrack: { label: 'On track', tone: 'blue', icon: 'calendar' },
+	overdue: { label: 'Overdue', tone: 'red', icon: 'alert-triangle' },
+	late: { label: 'Delivered late', tone: 'amber', icon: 'clock' },
+	ontime: { label: 'On time', tone: 'green', icon: 'check-circle' },
+}
 
 /** Generate 2-letter initials from a full name */
 export function initials(name) {
@@ -69,10 +112,10 @@ export const STATUS_META = {
 }
 
 export const PRIORITY_META = {
-	Urgent: { rank: 0, tone: 'red', frH: 4, resH: 24 },
-	High: { rank: 1, tone: 'amber', frH: 8, resH: 48 },
-	Medium: { rank: 2, tone: 'blue', frH: 24, resH: 96 },
-	Low: { rank: 3, tone: 'slate', frH: 48, resH: 168 },
+	Urgent: { rank: 0, tone: 'red' },
+	High: { rank: 1, tone: 'amber' },
+	Medium: { rank: 2, tone: 'blue' },
+	Low: { rank: 3, tone: 'slate' },
 }
 
 export const DATATYPE_ICON = {
@@ -81,11 +124,4 @@ export const DATATYPE_ICON = {
 	Configuration: 'sliders',
 	Reconciliation: 'git-merge',
 	Documents: 'file',
-}
-
-export const SLA_STATE_TONE = {
-	Fulfilled: 'green',
-	Failed: 'red',
-	'In Progress': 'blue',
-	Paused: 'slate',
 }

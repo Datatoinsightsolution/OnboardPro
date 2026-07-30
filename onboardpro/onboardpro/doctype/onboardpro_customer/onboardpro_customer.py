@@ -1,5 +1,5 @@
 from frappe.model.document import Document
 
 
-class SLAWorkingDay(Document):
+class OnboardproCustomer(Document):
 	pass

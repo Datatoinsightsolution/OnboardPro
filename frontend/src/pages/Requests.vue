@@ -2,7 +2,15 @@
 	<div>
 		<!-- Tabs + title -->
 		<div class="subhead">
-			<div class="h1">{{ role === 'customer' ? 'Your data requests' : 'Requests' }}</div>
+			<div class="h1">
+				{{
+					role === 'customer'
+						? isManager
+							? "Your team's data requests"
+							: 'Your data requests'
+						: 'Requests'
+				}}
+			</div>
 			<div class="tabs">
 				<button
 					v-for="tab in TABS"
@@ -11,15 +19,19 @@
 					@click="activeTab = tab.key"
 				>
 					<FeatherIcon
-						v-if="tab.key === 'breached' && counts[tab.key] > 0"
+						v-if="tab.key === 'attention' && counts[tab.key] > 0"
 						name="alert-triangle"
 						style="width: 13px; height: 13px; color: var(--t-solid)"
 						data-tone="red"
 					/>
 					{{ tab.label }}
-					<span class="cnt" :data-tone="tab.key === 'breached' ? 'red' : 'slate'">{{
-						counts[tab.key] ?? 0
-					}}</span>
+					<span
+						class="cnt"
+						:data-tone="
+							tab.key === 'attention' && counts[tab.key] > 0 ? 'red' : 'slate'
+						"
+						>{{ counts[tab.key] ?? 0 }}</span
+					>
 				</button>
 			</div>
 		</div>
@@ -38,6 +50,7 @@
 					<option value="creation">Created</option>
 					<option value="modified">Last updated</option>
 					<option value="priority">Priority</option>
+					<option value="delivery_date">Delivery date</option>
 				</select>
 				<button
 					class="sort-dir"
@@ -111,7 +124,7 @@
 							<th>Request</th>
 							<th style="width: 190px">Customer</th>
 							<th style="width: 110px">Priority</th>
-							<th style="width: 150px">SLA</th>
+							<th style="width: 175px">Delivery</th>
 							<th style="width: 150px">Status</th>
 							<th v-if="role === 'staff'" style="width: 48px">Owner</th>
 						</tr>
@@ -150,14 +163,7 @@
 								</div>
 							</td>
 							<td><PriorityBadge :priority="r.priority" /></td>
-							<td>
-								<SlaChip
-									:deadline="r.res_due_at"
-									:now="now"
-									:window-h="PRIORITY_META[r.priority]?.resH ?? 48"
-									:state="r.res_state"
-								/>
-							</td>
+							<td><DeliveryChip :request="r" :today="today" /></td>
 							<td><StatusBadge :status="r.status" /></td>
 							<td v-if="role === 'staff'">
 								<RistoAvatar
@@ -196,14 +202,7 @@
 						</span>
 						<PriorityBadge :priority="r.priority" />
 					</div>
-					<div style="margin-top: auto">
-						<SlaChip
-							:deadline="r.res_due_at"
-							:now="now"
-							:window-h="PRIORITY_META[r.priority]?.resH ?? 48"
-							:state="r.res_state"
-						/>
-					</div>
+					<div><DeliveryChip :request="r" :today="today" /></div>
 					<div class="foot">
 						<div class="cust-cell">
 							<RistoAvatar
@@ -249,12 +248,7 @@
 								</div>
 								<div class="subj">{{ r.subject }}</div>
 								<div class="row">
-									<SlaChip
-										:deadline="r.res_due_at"
-										:now="now"
-										:window-h="PRIORITY_META[r.priority]?.resH ?? 48"
-										:state="r.res_state"
-									/>
+									<DeliveryChip :request="r" :today="today" />
 								</div>
 								<div
 									class="row"
@@ -306,20 +300,32 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, inject, onMounted } from 'vue'
 import { createListResource, FeatherIcon, frappeRequest } from 'frappe-ui'
 import { useRoute, useRouter } from 'vue-router'
-import { PRIORITY_META, DATATYPE_ICON, toMs } from '@/utils/helpers'
+import {
+	PRIORITY_META,
+	DATATYPE_ICON,
+	deliveryState,
+	dateKey,
+	ATTENTION_STATES,
+} from '@/utils/helpers'
 import StatusBadge from '@/components/StatusBadge.vue'
 import PriorityBadge from '@/components/PriorityBadge.vue'
-import SlaChip from '@/components/SlaChip.vue'
+import DeliveryChip from '@/components/DeliveryChip.vue'
 import RistoAvatar from '@/components/RistoAvatar.vue'
 import CreateRequestDialog from '@/components/CreateRequestDialog.vue'
 
-const props = defineProps({ role: { type: String, default: 'staff' } })
+const props = defineProps({
+	role: { type: String, default: 'staff' },
+	isManager: { type: Boolean, default: false },
+})
 const emit = defineEmits(['requests-loaded'])
 const route = useRoute()
 const router = useRouter()
+// Server-authoritative date, so buckets don't drift with the browser's timezone.
+const serverToday = inject('serverToday', ref(dateKey()))
+const today = computed(() => serverToday.value)
 
 const BATCH = 20
 
@@ -327,11 +333,10 @@ const BATCH = 20
 const activeTab = ref(route.query.tab || 'all')
 const layout = ref(route.query.layout || 'table')
 const q = ref(route.query.q || '')
-const sortField = ref(route.query.sort || 'creation')
-const sortDir = ref(route.query.dir || 'desc')
+const sortField = ref(route.query.sort || 'modified')
+const sortDir = ref(route.query.dir || 'asc')
 const visible = ref(BATCH)
 const createOpen = ref(false)
-const now = ref(Date.now())
 const unreadSet = ref(new Set())
 
 // Collapse back to first batch whenever the effective row set changes
@@ -345,8 +350,8 @@ watch([activeTab, layout, sortField, sortDir, q], () => {
 		query: {
 			...(layout.value !== 'table' && { layout: layout.value }),
 			...(activeTab.value !== 'all' && { tab: activeTab.value }),
-			...(sortField.value !== 'creation' && { sort: sortField.value }),
-			...(sortDir.value !== 'desc' && { dir: sortDir.value }),
+			...(sortField.value !== 'modified' && { sort: sortField.value }),
+			...(sortDir.value !== 'asc' && { dir: sortDir.value }),
 			...(q.value.trim() && { q: q.value }),
 		},
 	})
@@ -360,17 +365,12 @@ async function refreshUnread() {
 
 onMounted(refreshUnread)
 
-const timer = setInterval(() => {
-	now.value = Date.now()
-}, 1000)
-onUnmounted(() => clearInterval(timer))
-
 const TABS = [
 	{ key: 'all', label: 'All' },
+	{ key: 'attention', label: 'Needs chasing' },
 	{ key: 'In Review', label: 'In Review' },
 	{ key: 'Needs Revision', label: 'Needs Revision' },
 	{ key: 'Resolved', label: 'Resolved' },
-	{ key: 'breached', label: 'Breached' },
 ]
 
 const BOARD_COLS = ['Open', 'In Review', 'Needs Revision', 'Resolved']
@@ -387,14 +387,13 @@ const requests = createListResource({
 		'data_type',
 		'assignee',
 		'assignee_name',
-		'fr_state',
-		'res_state',
-		'fr_due_at',
-		'res_due_at',
+		'expected_date',
+		'delivery_date',
+		'resolved_on',
 		'creation',
 		'modified',
 	],
-	orderBy: 'creation desc',
+	orderBy: 'modified asc',
 	pageLength: 100,
 	auto: true,
 })
@@ -403,7 +402,8 @@ const all = computed(() => requests.data ?? [])
 
 function matchTab(r, tab) {
 	if (tab === 'all') return true
-	if (tab === 'breached') return r.status !== 'Resolved' && toMs(r.res_due_at) < now.value
+	// Both red states: past a committed date, or past the expected date with no commitment.
+	if (tab === 'attention') return ATTENTION_STATES.includes(deliveryState(r, today.value))
 	return r.status === tab
 }
 
@@ -421,9 +421,17 @@ const filtered = computed(() => {
 const sorted = computed(() => {
 	const dir = sortDir.value === 'asc' ? 1 : -1
 	const field = sortField.value
+	// Uncommitted requests sort last on delivery date, not first — an empty string would
+	// float them to the top ascending, which reads as "due soonest".
+	const key = (r) =>
+		field === 'priority'
+			? PRIORITY_META[r.priority]?.rank ?? 99
+			: field === 'delivery_date'
+			? r.delivery_date ?? '9999-12-31'
+			: r[field] ?? ''
 	return [...filtered.value].sort((a, b) => {
-		const va = field === 'priority' ? PRIORITY_META[a.priority]?.rank ?? 99 : a[field] ?? ''
-		const vb = field === 'priority' ? PRIORITY_META[b.priority]?.rank ?? 99 : b[field] ?? ''
+		const va = key(a)
+		const vb = key(b)
 		return va < vb ? -dir : va > vb ? dir : 0
 	})
 })
@@ -456,11 +464,11 @@ const byCol = computed(() => {
 watch(
 	all,
 	(rs) => {
-		const open = rs.filter((r) => r.status !== 'Resolved').length
-		const breach = rs.filter(
-			(r) => r.status !== 'Resolved' && toMs(r.res_due_at) < now.value
-		).length
-		emit('requests-loaded', { open, breach })
+		emit('requests-loaded', {
+			open: rs.filter((r) => r.status !== 'Resolved').length,
+			overdue: rs.filter((r) => ATTENTION_STATES.includes(deliveryState(r, today.value)))
+				.length,
+		})
 	},
 	{ immediate: true }
 )

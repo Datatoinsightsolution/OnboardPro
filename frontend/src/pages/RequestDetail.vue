@@ -9,6 +9,8 @@
 					<span class="dot-sep"></span>
 					<StatusBadge :status="doc.doc.status" />
 					<span class="dot-sep"></span>
+					<DeliveryChip :request="doc.doc" :today="today" />
+					<span class="dot-sep"></span>
 					<span>Opened {{ fmtAgo(toMs(doc.doc.creation), now) }}</span>
 					<span class="dot-sep"></span>
 					<span>{{ doc.doc.customer_name || doc.doc.customer }}</span>
@@ -205,77 +207,75 @@
 				</div>
 			</div>
 
-			<!-- SLA tracking -->
+			<!-- Delivery -->
 			<div class="rail-card">
-				<h3>SLA tracking</h3>
+				<h3>Delivery</h3>
 
-				<!-- On-hold badge -->
-				<div v-if="doc.doc.on_hold_since" class="sla-hold-badge">
-					<FeatherIcon name="pause-circle" style="width: 13px; height: 13px" />
-					Clock paused — under review
+				<div class="field">
+					<span class="k">Expected</span>
+					<span class="v">{{ fmtDay(doc.doc.expected_date) }}</span>
 				</div>
 
-				<div class="slahero">
-					<div class="slatrack">
-						<div class="lh">
-							<span class="nm"><FeatherIcon name="clock" />First response</span>
-							<SlaChip
-								:deadline="doc.doc.fr_due_at"
-								:now="now"
-								:window-h="prioMeta.frH"
-								:state="doc.doc.fr_state"
-							/>
-						</div>
-						<div
-							class="slabar"
-							:data-tone="slaBarTone(doc.doc.fr_state, doc.doc.fr_due_at)"
-						>
-							<i
-								:style="{
-									width: slaBarPct(
-										doc.doc.fr_due_at,
-										doc.doc.fr_state,
-										prioMeta.frH
-									),
-								}"
-							></i>
-						</div>
-						<div v-if="doc.doc.first_responded_on" class="sla-meta">
-							<FeatherIcon name="check" style="width: 11px; height: 11px" />
-							Responded {{ fmtAgo(toMs(doc.doc.first_responded_on), now) }}
-						</div>
+				<template v-if="doc.doc.delivery_date">
+					<div class="field">
+						<span class="k">Delivery</span>
+						<span class="v">{{ fmtDay(doc.doc.delivery_date) }}</span>
 					</div>
+					<div class="field">
+						<span class="k">Status</span>
+						<span class="v"><DeliveryChip :request="doc.doc" :today="today" /></span>
+					</div>
+					<!-- Settled state reads as settled: a lock, not a disabled input -->
+					<div class="lockrow">
+						<FeatherIcon name="lock" />
+						<span v-if="doc.doc.delivery_committed_on">
+							Committed {{ fmtAgo(toMs(doc.doc.delivery_committed_on), now) }} —
+							locked
+						</span>
+						<span v-else>Locked</span>
+					</div>
+					<button
+						v-if="role === 'staff'"
+						class="btn sm"
+						style="margin-top: 10px"
+						@click="deliveryOpen = true"
+					>
+						<FeatherIcon name="edit-3" style="width: 13px; height: 13px" />Amend
+					</button>
+				</template>
 
-					<div class="slatrack">
-						<div class="lh">
-							<span class="nm"><FeatherIcon name="clock" />Resolution</span>
-							<SlaChip
-								:deadline="doc.doc.res_due_at"
-								:now="now"
-								:window-h="prioMeta.resH"
-								:state="doc.doc.res_state"
-							/>
-						</div>
-						<div
-							class="slabar"
-							:data-tone="slaBarTone(doc.doc.res_state, doc.doc.res_due_at)"
-						>
-							<i
-								:style="{
-									width: slaBarPct(
-										doc.doc.res_due_at,
-										doc.doc.res_state,
-										prioMeta.resH
-									),
-								}"
-							></i>
-						</div>
-						<div v-if="(doc.doc.total_hold_time || 0) >= 60" class="sla-meta">
-							<FeatherIcon name="pause" style="width: 11px; height: 11px" />
-							{{ Math.round(doc.doc.total_hold_time / 360) / 10 }}h paused (deadline
-							extended)
-						</div>
+				<template v-else>
+					<div class="field">
+						<span class="k">Delivery</span>
+						<span class="v"><DeliveryChip :request="doc.doc" :today="today" /></span>
 					</div>
+					<!-- Gate on the actual write permission, not the role: has_permission grants
+					     company Managers read-only, so a role check would show them a 403 button. -->
+					<template v-if="canCommit">
+						<button
+							class="btn primary sm"
+							style="margin-top: 10px"
+							@click="deliveryOpen = true"
+						>
+							<FeatherIcon name="calendar" style="width: 13px; height: 13px" />
+							Commit delivery date
+						</button>
+						<div class="fhint">You can only set this once.</div>
+					</template>
+					<button
+						v-else-if="role === 'staff'"
+						class="btn sm"
+						style="margin-top: 10px"
+						@click="deliveryOpen = true"
+					>
+						<FeatherIcon name="calendar" style="width: 13px; height: 13px" />
+						Set on behalf
+					</button>
+				</template>
+
+				<div v-if="doc.doc.resolved_on" class="field" style="margin-top: 10px">
+					<span class="k">Resolved</span>
+					<span class="v">{{ fmtDay(doc.doc.resolved_on) }}</span>
 				</div>
 			</div>
 
@@ -324,6 +324,14 @@
 				</div>
 			</div>
 		</aside>
+
+		<DeliveryDateDialog
+			v-if="deliveryOpen"
+			:request="doc.doc"
+			:busy="committing"
+			@close="deliveryOpen = false"
+			@committed="commitDelivery"
+		/>
 	</div>
 
 	<!-- Loading -->
@@ -346,19 +354,12 @@
 
 <script setup>
 import { ref, computed, watch, nextTick, inject, onMounted, onUnmounted } from 'vue'
-import { createDocumentResource, createListResource, FeatherIcon, frappeRequest } from 'frappe-ui'
-import {
-	fmtAgo,
-	fmtDate,
-	toMs,
-	sla,
-	PRIORITY_META,
-	DATATYPE_ICON,
-	SLA_TONE_MAP,
-} from '@/utils/helpers'
+import { createDocumentResource, FeatherIcon, frappeRequest } from 'frappe-ui'
+import { fmtAgo, fmtDate, fmtDay, toMs, dateKey, DATATYPE_ICON } from '@/utils/helpers'
 import StatusBadge from '@/components/StatusBadge.vue'
 import PriorityBadge from '@/components/PriorityBadge.vue'
-import SlaChip from '@/components/SlaChip.vue'
+import DeliveryChip from '@/components/DeliveryChip.vue'
+import DeliveryDateDialog from '@/components/DeliveryDateDialog.vue'
 import RistoAvatar from '@/components/RistoAvatar.vue'
 import FileIcon from '@/components/FileIcon.vue'
 
@@ -368,12 +369,17 @@ const props = defineProps({
 })
 const emit = defineEmits(['set-title'])
 const toast = inject('toast', () => {})
+// Server-authoritative date, so buckets don't drift with the browser's timezone.
+const serverToday = inject('serverToday', ref(dateKey()))
+const today = computed(() => serverToday.value)
 
 const now = ref(Date.now())
 const message = ref('')
 const sending = ref(false)
 const replyOpen = ref(false)
 const statusOpen = ref(false)
+const deliveryOpen = ref(false)
+const committing = ref(false)
 const scrollEl = ref(null)
 const taRef = ref(null)
 const fileInput = ref(null)
@@ -422,18 +428,14 @@ async function loadActivity() {
 loadActivity()
 
 // Attachments
-const filesList = createListResource({
-	doctype: 'File',
-	fields: ['name', 'file_name', 'file_url', 'file_size', 'creation', 'attached_to_name'],
-	filters: [
-		['attached_to_doctype', '=', 'Implementation Request'],
-		['attached_to_name', '=', props.id],
-	],
-	orderBy: 'creation asc',
-	auto: true,
-})
-
-const attachments = computed(() => filesList.data ?? [])
+const attachments = ref([])
+async function loadAttachments() {
+	attachments.value = await frappeRequest({
+		url: 'onboardpro.api.get_attachments',
+		params: { docname: props.id },
+	})
+}
+loadAttachments()
 
 // Build timeline from merged activity
 const meEmail = window.frappe?.session?.user || ''
@@ -455,21 +457,22 @@ watch(
 	}
 )
 
-const prioMeta = computed(() => PRIORITY_META[doc.doc?.priority ?? 'High'])
+// Only the request's own customer may commit — has_permission gives company Managers
+// read access but not write, so gating on `role` alone would offer them a 403 button.
+const canCommit = computed(() => props.role === 'customer' && doc.doc?.customer_email === meEmail)
 
-// SLA bar helpers
-function slaBarTone(state, dueStr) {
-	if (state === 'Fulfilled') return 'green'
-	if (state === 'Failed') return 'red'
-	if (!dueStr) return 'blue'
-	const { tone } = sla(toMs(dueStr), now.value, prioMeta.value.resH)
-	return SLA_TONE_MAP[tone] ?? 'blue'
-}
-function slaBarPct(dueStr, state, wH) {
-	if (state === 'Fulfilled') return '100%'
-	if (!dueStr || !wH) return '40%'
-	const { pct } = sla(toMs(dueStr), now.value, wH)
-	return Math.min(100, Math.max(4, pct * 100)) + '%'
+async function commitDelivery(date) {
+	committing.value = true
+	try {
+		// delivery_committed_on is stamped server-side in validate() and comes back in
+		// the set_value response, so the rail updates without a second fetch.
+		await doc.setValue.submit({ delivery_date: date })
+		deliveryOpen.value = false
+		toast('Delivery date set')
+		await loadActivity()
+	} finally {
+		committing.value = false
+	}
 }
 
 async function openReply() {
@@ -531,7 +534,7 @@ async function handleUpload(e) {
 		body: fd,
 		headers: { 'X-Frappe-CSRF-Token': window.frappe?.csrf_token ?? '' },
 	})
-	filesList.reload()
+	await loadAttachments()
 	toast('File attached')
 }
 

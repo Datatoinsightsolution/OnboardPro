@@ -13,25 +13,18 @@
   "col_break_0",
   "status",
   "priority",
+  "section_break_dates",
+  "expected_date",
+  "delivery_date",
+  "col_break_dates",
+  "delivery_committed_on",
+  "resolved_on",
   "section_break_details",
   "data_type",
   "assignee",
   "assignee_name",
   "section_break_description",
-  "description",
-  "section_break_sla",
-  "sla_policy",
-  "first_responded_on",
-  "col_break_sla_top",
-  "sla_creation",
-  "on_hold_since",
-  "total_hold_time",
-  "section_break_sla_targets",
-  "fr_due_at",
-  "fr_state",
-  "col_break_sla",
-  "res_due_at",
-  "res_state"
+  "description"
  ],
  "fields": [
   {
@@ -94,6 +87,45 @@
    "options": "Urgent\nHigh\nMedium\nLow"
   },
   {
+   "fieldname": "section_break_dates",
+   "fieldtype": "Section Break",
+   "label": "Dates"
+  },
+  {
+   "description": "When the data is needed by. Set by staff when the request is raised.",
+   "fieldname": "expected_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Expected Date",
+   "reqd": 1
+  },
+  {
+   "description": "The date the customer commits to delivering by. The customer may set this only once; staff can amend it afterwards.",
+   "fieldname": "delivery_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Delivery Date"
+  },
+  {
+   "fieldname": "col_break_dates",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Stamped when the delivery date is first committed. Never reset by later amendments.",
+   "fieldname": "delivery_committed_on",
+   "fieldtype": "Datetime",
+   "label": "Delivery Committed On",
+   "read_only": 1
+  },
+  {
+   "description": "Stamped on the first transition to Resolved. Never cleared or re-stamped.",
+   "fieldname": "resolved_on",
+   "fieldtype": "Datetime",
+   "label": "Resolved On",
+   "read_only": 1
+  },
+  {
    "fieldname": "section_break_details",
    "fieldtype": "Section Break",
    "label": "Details"
@@ -133,90 +165,10 @@
    "label": "Description"
   },
   {
-   "fieldname": "section_break_sla",
-   "fieldtype": "Section Break",
-   "label": "SLA"
-  },
-  {
-   "fieldname": "sla_policy",
-   "fieldtype": "Link",
-   "label": "SLA Policy",
-   "options": "SLA Policy",
-   "read_only": 1
-  },
-  {
-   "fieldname": "first_responded_on",
-   "fieldtype": "Datetime",
-   "label": "First Responded On",
-   "read_only": 1
-  },
-  {
-   "fieldname": "col_break_sla_top",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "sla_creation",
-   "fieldtype": "Datetime",
-   "hidden": 1,
-   "label": "SLA Creation",
-   "read_only": 1
-  },
-  {
    "fieldname": "last_customer_reply",
    "fieldtype": "Datetime",
    "hidden": 1,
    "label": "Last Customer Reply",
-   "read_only": 1
-  },
-  {
-   "fieldname": "on_hold_since",
-   "fieldtype": "Datetime",
-   "hidden": 1,
-   "label": "On Hold Since",
-   "read_only": 1
-  },
-  {
-   "fieldname": "total_hold_time",
-   "fieldtype": "Float",
-   "hidden": 1,
-   "label": "Total Hold Time (seconds)",
-   "read_only": 1
-  },
-  {
-   "fieldname": "section_break_sla_targets",
-   "fieldtype": "Section Break",
-   "label": "SLA Targets"
-  },
-  {
-   "fieldname": "fr_due_at",
-   "fieldtype": "Datetime",
-   "label": "First Response Due At",
-   "read_only": 1
-  },
-  {
-   "default": "In Progress",
-   "fieldname": "fr_state",
-   "fieldtype": "Select",
-   "label": "First Response State",
-   "options": "In Progress\nFulfilled\nFailed\nPaused",
-   "read_only": 1
-  },
-  {
-   "fieldname": "col_break_sla",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "res_due_at",
-   "fieldtype": "Datetime",
-   "label": "Resolution Due At",
-   "read_only": 1
-  },
-  {
-   "default": "In Progress",
-   "fieldname": "res_state",
-   "fieldtype": "Select",
-   "label": "Resolution State",
-   "options": "In Progress\nFulfilled\nFailed\nPaused",
    "read_only": 1
   }
  ],

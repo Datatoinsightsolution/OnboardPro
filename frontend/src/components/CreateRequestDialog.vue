@@ -68,6 +68,24 @@
 					</select>
 				</div>
 
+				<!-- Expected date -->
+				<div>
+					<label class="flabel">
+						Expected date
+						<span data-tone="red" style="color: var(--t-ink)">*</span>
+					</label>
+					<input
+						v-model="form.expected_date"
+						type="date"
+						class="finput"
+						:min="todayStr"
+					/>
+					<div class="fhint">
+						When you need this data by. The customer commits to their own delivery date
+						after seeing the request.
+					</div>
+				</div>
+
 				<!-- Data type -->
 				<div>
 					<label class="flabel">Data type</label>
@@ -103,19 +121,6 @@
 							<span class="dot"></span>{{ p }}
 						</button>
 					</div>
-					<div v-if="slaInfo" class="slacalc" style="margin-top: 12px">
-						<div class="ic"><FeatherIcon name="clock" /></div>
-						<div class="txt">
-							Business-hours SLA — first response within <b>{{ slaInfo.frH }}h</b>,
-							resolution within
-							<b>{{
-								slaInfo.resH >= 48
-									? Math.round(slaInfo.resH / 24) + ' days'
-									: slaInfo.resH + 'h'
-							}}</b>
-							of working time.
-						</div>
-					</div>
 				</div>
 
 				<!-- Instructions -->
@@ -150,7 +155,7 @@
 <script setup>
 import { ref, computed, inject } from 'vue'
 import { createResource, FeatherIcon } from 'frappe-ui'
-import { PRIORITY_META, DATATYPE_ICON } from '@/utils/helpers'
+import { PRIORITY_META, DATATYPE_ICON, dateKey } from '@/utils/helpers'
 
 const emit = defineEmits(['close', 'created'])
 const toast = inject('toast', () => {})
@@ -165,14 +170,18 @@ const DATA_TYPES = [
 	'Documents',
 ]
 
+// Deliberately no default expected date — the whole feature rests on this being a real
+// deadline, and a pre-filled value invites nobody to think about it.
 const form = ref({
 	subject: '',
 	customer: '',
+	expected_date: '',
 	data_type: 'Master Data',
 	priority: 'High',
 	description: '',
 })
 const submitting = ref(false)
+const todayStr = dateKey()
 
 // Load customers via whitelisted API to avoid permission issues
 const customers = createResource({
@@ -181,14 +190,10 @@ const customers = createResource({
 	auto: true,
 })
 
-// Fetch live SLA times from the active policy instead of using hardcoded values
-const slaPolicyConfig = createResource({
-	url: 'onboardpro.api.get_sla_config',
-	auto: true,
-})
-
-const slaInfo = computed(() => (slaPolicyConfig.data ?? {})[form.value.priority] ?? null)
-const isValid = computed(() => form.value.subject.trim().length > 2 && !!form.value.customer)
+const isValid = computed(
+	() =>
+		form.value.subject.trim().length > 2 && !!form.value.customer && !!form.value.expected_date
+)
 
 const insertDoc = createResource({
 	url: 'frappe.client.insert',
@@ -210,6 +215,7 @@ function submit() {
 			doctype: 'Implementation Request',
 			subject: form.value.subject.trim(),
 			customer: form.value.customer,
+			expected_date: form.value.expected_date,
 			data_type: form.value.data_type,
 			priority: form.value.priority,
 			description: form.value.description.trim(),
