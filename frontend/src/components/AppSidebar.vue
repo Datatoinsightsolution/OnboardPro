@@ -15,29 +15,41 @@
 		<nav class="nav">
 			<div class="nav-label">Workspace</div>
 
-			<router-link to="/pulse" custom v-slot="{ navigate, isActive }">
-				<button :class="['nav-item', isActive ? 'active' : '']" @click="navigate">
+			<router-link to="/dashboard" custom v-slot="{ navigate }">
+				<button
+					:class="['nav-item', route.name === 'Dashboard' ? 'active' : '']"
+					@click="navigate"
+				>
 					<FeatherIcon name="activity" />
-					SLA Pulse
+					Dashboard
 					<span
-						v-if="breachCount > 0"
+						v-if="overdueCount > 0"
 						class="nav-count"
 						style="color: var(--t-solid)"
 						data-tone="red"
 					>
-						{{ breachCount }}
+						{{ overdueCount }}
 					</span>
 				</button>
 			</router-link>
 
-			<router-link to="/" custom v-slot="{ navigate, isActive }">
+			<router-link to="/" custom v-slot="{ navigate }">
+				<!-- Positive test, not an exclusion list: `to="/"` prefix-matches every route,
+				     so isActive would light this up on /dashboard and /companies too. -->
 				<button
-					:class="['nav-item', isActive && route.name !== 'Pulse' ? 'active' : '']"
+					:class="['nav-item', route.name === 'Requests' ? 'active' : '']"
 					@click="navigate"
 				>
 					<FeatherIcon name="inbox" />
 					Requests
 					<span class="nav-count">{{ openCount }}</span>
+				</button>
+			</router-link>
+
+			<router-link v-if="role === 'staff'" to="/companies" custom v-slot="{ navigate, isActive }">
+				<button :class="['nav-item', isActive ? 'active' : '']" @click="navigate">
+					<FeatherIcon name="git-branch" />
+					Companies
 				</button>
 			</router-link>
 		</nav>
@@ -92,7 +104,7 @@ import RistoAvatar from '@/components/RistoAvatar.vue'
 
 const props = defineProps({
 	openCount: { type: Number, default: 0 },
-	breachCount: { type: Number, default: 0 },
+	overdueCount: { type: Number, default: 0 },
 	role: { type: String, default: 'staff' },
 	userName: { type: String, default: '' },
 	open: { type: Boolean, default: false },

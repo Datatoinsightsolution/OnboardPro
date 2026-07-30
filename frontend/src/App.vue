@@ -8,7 +8,7 @@
 	<div v-else class="app">
 		<AppSidebar
 			:open-count="openCount"
-			:breach-count="breachCount"
+			:overdue-count="overdueCount"
 			:role="role"
 			:user-name="userName"
 			:open="sidebarOpen"
@@ -23,7 +23,7 @@
 				</button>
 				<div class="crumb">
 					<span class="root" @click="router.push('/')">
-						{{ role === 'customer' ? 'My requests' : 'Requests' }}
+						{{ role === 'customer' ? (isManager ? 'Team requests' : 'My requests') : 'Requests' }}
 					</span>
 					<template v-if="route.name === 'RequestDetail'">
 						<FeatherIcon
@@ -32,12 +32,19 @@
 						/>
 						<span class="here">{{ pageTitle || route.params.id }}</span>
 					</template>
-					<template v-else-if="route.name === 'Pulse'">
+					<template v-else-if="route.name === 'Dashboard'">
 						<FeatherIcon
 							name="chevron-right"
 							style="width: 15px; height: 15px; color: var(--ink-4); flex: none"
 						/>
-						<span class="here">SLA Pulse</span>
+						<span class="here">Dashboard</span>
+					</template>
+					<template v-else-if="route.name === 'Companies'">
+						<FeatherIcon
+							name="chevron-right"
+							style="width: 15px; height: 15px; color: var(--ink-4); flex: none"
+						/>
+						<span class="here">Companies</span>
 					</template>
 				</div>
 				<span class="grow"></span>
@@ -54,6 +61,7 @@
 			<div class="viewport">
 				<router-view
 					:role="role"
+					:is-manager="isManager"
 					@requests-loaded="onRequestsLoaded"
 					@set-title="pageTitle = $event"
 				/>
@@ -74,6 +82,7 @@
 import { ref, watch, provide, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { frappeRequest, FeatherIcon } from 'frappe-ui'
+import { dateKey } from '@/utils/helpers'
 import AppSidebar from '@/components/AppSidebar.vue'
 
 const route = useRoute()
@@ -81,10 +90,13 @@ const router = useRouter()
 
 const loading = ref(true)
 const role = ref('staff')
+const isManager = ref(false)
 const userName = ref('')
 const pageTitle = ref('')
 const openCount = ref(0)
-const breachCount = ref(0)
+const overdueCount = ref(0)
+// Seeded from the server on mount so date buckets follow system time, not the browser's.
+const serverToday = ref(dateKey())
 const toasts = ref([])
 const sidebarOpen = ref(false)
 
@@ -97,6 +109,8 @@ onMounted(async () => {
 		const r = await frappeRequest({ url: 'onboardpro.api.get_session_role' })
 		role.value = r.role
 		userName.value = r.full_name
+		isManager.value = !!r.is_manager
+		serverToday.value = r.today || dateKey()
 		loading.value = false
 	} catch {
 		// Not logged in or session expired — hand off to Frappe's login page
@@ -109,9 +123,9 @@ function redirectToLogin() {
 	window.location.href = `/login?redirect-to=${next}`
 }
 
-function onRequestsLoaded({ open, breach }) {
+function onRequestsLoaded({ open, overdue }) {
 	openCount.value = open
-	breachCount.value = breach
+	overdueCount.value = overdue ?? 0
 }
 
 function toast(msg) {
@@ -124,4 +138,5 @@ function toast(msg) {
 
 provide('toast', toast)
 provide('role', role)
+provide('serverToday', serverToday)
 </script>

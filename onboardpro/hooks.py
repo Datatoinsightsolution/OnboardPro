@@ -128,10 +128,6 @@ fixtures = ["Role", "Workspace"]
 # -----------
 # Permissions evaluated in scripted ways
 
-scheduler_events = {
-	"hourly": ["onboardpro.onboardpro.sla.update_all_sla_statuses"],
-}
-
 permission_query_conditions = {
 	"Implementation Request": "onboardpro.onboardpro.doctype.implementation_request.implementation_request.get_permission_query_conditions",
 }
