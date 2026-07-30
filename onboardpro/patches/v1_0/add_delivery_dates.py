@@ -6,8 +6,6 @@ import frappe
 LEAD_DAYS = {"Urgent": 2, "High": 5, "Medium": 10, "Low": 15}
 DEFAULT_LEAD = 7
 
-TABLE = "`tabImplementation Request`"
-
 
 def execute():
 	"""Backfill the new date fields on pre-existing Implementation Requests.
@@ -33,14 +31,14 @@ def _backfill_expected_date():
 	writing a Version, and avoids bumping `modified`."""
 	for priority, days in LEAD_DAYS.items():
 		frappe.db.sql(
-			f"""UPDATE {TABLE}
+			"""UPDATE `tabImplementation Request`
 				SET expected_date = DATE_ADD(DATE(creation), INTERVAL %(days)s DAY)
 				WHERE expected_date IS NULL AND priority = %(priority)s""",
 			{"days": days, "priority": priority},
 		)
 
 	frappe.db.sql(
-		f"""UPDATE {TABLE}
+		"""UPDATE `tabImplementation Request`
 			SET expected_date = DATE_ADD(DATE(creation), INTERVAL %(days)s DAY)
 			WHERE expected_date IS NULL""",
 		{"days": DEFAULT_LEAD},
